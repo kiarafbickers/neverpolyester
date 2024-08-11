@@ -581,20 +581,6 @@ AS $function$ select distinct c.id, c.name, c.slug, COALESCE(
 ;
 
 
-
-CREATE OR REPLACE FUNCTION public.get_active_subtags()
- RETURNS TABLE(id uuid, name text, slug text)
-  LANGUAGE sql
- STABLE
-  SET search_path = ''
-AS $function$
-  select distinct t.id, t.name, t.slug
-  from public.subtags t
-  join public.sublistings_subtags lt on t.id = lt.subtag_id;
-$function$
-;
-
-
 CREATE OR REPLACE FUNCTION public.get_active_topics()
  RETURNS TABLE(id uuid, name text, slug text)
   LANGUAGE sql
@@ -1743,7 +1729,7 @@ for delete
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 create policy "Allow admin users to select user searches"
@@ -1753,7 +1739,7 @@ for select
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 create policy "Allow admin users to update user searches"
@@ -1763,7 +1749,7 @@ for update
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 create policy "Allow everyone to insert user searches"
@@ -1781,7 +1767,7 @@ for delete
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 create policy "Allow admin users to insert campaigns"
@@ -1791,7 +1777,7 @@ for insert
 to public
 with check  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 create policy "Allow admin users to update campaigns"
@@ -1801,7 +1787,7 @@ for update
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 create policy "Enable read access for all users"
@@ -1827,7 +1813,7 @@ for all
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 create policy "Users can manage their own blog posts"
@@ -1854,7 +1840,7 @@ for all
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
   create policy "Public subcategories are viewable by everyone."
 on "public"."subcategories"
@@ -1871,7 +1857,7 @@ for all
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 create policy "Allow admin users to delete comments"
@@ -1881,7 +1867,7 @@ for delete
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 create policy "Allow admin users to select all comments"
@@ -1891,7 +1877,7 @@ for select
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 create policy "Allow admin users to update comments"
@@ -1901,7 +1887,7 @@ for update
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 create policy "Allow authenticated users to insert comments"
@@ -1927,7 +1913,7 @@ for delete
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 create policy "Allow admin users to select feedback"
@@ -1937,7 +1923,7 @@ for select
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 create policy "Allow admin users to update feedback"
@@ -1947,7 +1933,7 @@ for update
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 create policy "Allow everyone to insert feedback"
@@ -2118,7 +2104,7 @@ for delete
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 create policy "Allow authenticated users to insert promotions"
@@ -2160,7 +2146,7 @@ for all
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
   create policy "Public subtags are viewable by everyone."
 on "public"."subtags"
@@ -2177,7 +2163,7 @@ for all
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 create policy "Public topics are viewable by everyone."
@@ -2195,7 +2181,7 @@ for all
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 create policy "Public profiles are viewable by everyone."
@@ -2205,36 +2191,6 @@ for select
 to public
 using (true);
 
-create policy "Allow updates to likes, views, ratings, and clicks"
-on "public"."sublistings"
-as permissive
-for update
-to public
-using (true)
-with check (
-  -- Allow updates to these columns only
-  NEW.likes IS NOT DISTINCT FROM OLD.likes AND
-  NEW.views IS NOT DISTINCT FROM OLD.views AND
-  NEW.clicks IS NOT DISTINCT FROM OLD.clicks AND
-  NEW.average_rating IS NOT DISTINCT FROM OLD.average_rating AND
-  NEW.ratings_count IS NOT DISTINCT FROM OLD.ratings_count
-);
-
-create policy "Allow updates to likes, views, ratings, and clicks"
-on "public"."listings"
-as permissive
-for update
-to public
-using (true)
-with check (
-  -- Allow updates to these columns only
-  NEW.likes IS NOT DISTINCT FROM OLD.likes AND
-  NEW.views IS NOT DISTINCT FROM OLD.views AND
-  NEW.clicks IS NOT DISTINCT FROM OLD.clicks AND
-  NEW.average_rating IS NOT DISTINCT FROM OLD.average_rating AND
-  NEW.ratings_count IS NOT DISTINCT FROM OLD.ratings_count
-);
-
 
 create policy "Super-admins can update any profile field"
 on "public"."users"
@@ -2243,7 +2199,7 @@ for update
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 create policy "Users can insert their own profile."
@@ -2460,9 +2416,16 @@ on "storage"."objects"
 as permissive
 for delete
 to public
-using (((bucket_id = 'cattag_images'::text) AND (auth.role() = 'authenticated'::text) AND (EXISTS ( SELECT 1
-   FROM users
-  WHERE ((users.id = auth.uid()) AND (users.is_super_admin = true))))));
+using (
+    (bucket_id = 'cattag_images'::text) 
+    AND (auth.role() = 'authenticated'::text) 
+    AND (EXISTS (
+        SELECT 1
+        FROM users
+        WHERE users.id = auth.uid() 
+        AND users.is_super_admin = true
+    ))
+);
 
 
 create policy "Allow admin users to update cattag images"
@@ -2470,9 +2433,17 @@ on "storage"."objects"
 as permissive
 for update
 to public
-using (((bucket_id = 'cattag_images'::text) AND (auth.role() = 'authenticated'::text) AND (EXISTS ( SELECT 1
-   FROM users
-  WHERE ((users.id = auth.uid()) AND (users.is_super_admin = true))))));
+using (
+    (bucket_id = 'cattag_images'::text) 
+    AND (auth.role() = 'authenticated'::text) 
+    AND (EXISTS (
+        SELECT 1
+        FROM users
+        WHERE users.id = auth.uid() 
+        AND users.is_super_admin = true
+    ))
+);
+
 
 
 create policy "Allow admin users to upload cattag images"
@@ -2480,9 +2451,17 @@ on "storage"."objects"
 as permissive
 for insert
 to public
-with check (((bucket_id = 'cattag_images'::text) AND (auth.role() = 'authenticated'::text) AND (EXISTS ( SELECT 1
-   FROM users
-  WHERE ((users.id = auth.uid()) AND (users.is_super_admin = true))))));
+with check (
+    (bucket_id = 'cattag_images'::text) 
+    AND (auth.role() = 'authenticated'::text) 
+    AND (EXISTS (
+        SELECT 1
+        FROM users
+        WHERE users.id = auth.uid() 
+        AND users.is_super_admin = true
+    ))
+);
+
 
 
 
@@ -2567,7 +2546,7 @@ for all
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 
@@ -2650,7 +2629,7 @@ for all
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 
@@ -2804,7 +2783,7 @@ for all
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 -- SUBCATEGORY-GROUPS
@@ -2888,7 +2867,7 @@ for all
 to public
 using  (( SELECT auth.uid() AS uid) IN ( SELECT users.id
    FROM users
-  WHERE (users.is_super_admin = true)))
+  WHERE (users.is_super_admin = true)));
 
 
 
