@@ -20,27 +20,14 @@ import { cn } from '@/lib/utils';
 // Import Data
 import { GENERAL_SETTINGS } from '@/constants';
 // Import Assets & Icons
-import { BadgeCheckIcon, BarChart2Icon, Heart, StarIcon } from 'lucide-react';
-
-type ListingCardSettings = {
-	size: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-	type: 'col' | 'row';
-	showImage: true | false;
-	priority: true | false;
-};
+import { BadgeCheckIcon, BadgePercentIcon, MapIcon } from 'lucide-react';
 
 /**
  * A card component that displays a listing.
  * @param listing - The listing to display.
  * @param settings - The settings for the card.
  */
-export default function ListingCard({
-	listing,
-	settings,
-}: {
-	listing: ListingType;
-	settings: ListingCardSettings;
-}) {
+export default function ListingCard({ listing }: { listing: ListingType }) {
 	const isNew =
 		new Date(listing.created_at || Date.now()) >
 		new Date(
@@ -50,109 +37,64 @@ export default function ListingCard({
 	return (
 		<ImageCard
 			linkHover
-			className={cn(
-				settings.type === 'row' && 'flex',
-				'dark:border border-muted fade-in'
-			)}
+			className="border-1 border-transparent fade-in bg-transparent shadow-none group "
 		>
-			{!settings.showImage === false && (
-				<ImageCardImageContainer
-					className={cn(
-						settings.type === 'row' && 'rounded-tr-none rounded-bl-xl',
-						settings.size === 'xs' && 'rounded-xl',
-						settings.size === 'sm' && 'w-3/12'
-					)}
-				>
-					<SupabaseImage
-						dbImageUrl={listing.default_image_url}
-						width={1600}
-						height={900}
-						database="listing_images"
-						priority={settings.priority}
-					/>
+			<ImageCardImageContainer className="rounded-lg aspect-video w-auto">
+				<SupabaseImage
+					dbImageUrl={listing.default_image_url}
+					width={1600}
+					height={900}
+					database="listing_images"
+					priority
+					className="group-hover:scale-105 transition-transform duration-300 h-full w-full"
+				/>
 
-					<ImageCardBanner className="flex gap-2 bg-transparent" location="tr">
-						{listing.is_promoted && (
-							<span className="bg-green-400/60 text-green-800 rounded-sm w-fit px-1 text-sm tracking-tight">
-								Promoted
-							</span>
-						)}
-						{listing.created_at && isNew && (
-							<span className="bg-red-400/60 text-red-800 rounded-sm w-fit px-1 text-sm tracking-tight">
-								New
-							</span>
-						)}
-						{listing.owner_id && (
-							<span className="bg-transparent">
-								<BadgeCheckIcon className="h-5 w-5 text-green-500" />
-							</span>
-						)}
-					</ImageCardBanner>
-
-					<ImageCardLink
-						href={`/explore/${listing.slug}`}
-						data-umami-event="Listing Card"
-						data-umami-event-listing={listing.slug}
-					/>
-				</ImageCardImageContainer>
-			)}
-			<ImageCardFooter
-				className={cn(
-					'flex flex-col space-y-2 relative w-full overflow-hidden',
-					settings.size === 'xs' && 'hidden'
-				)}
-			>
-				<div className="relative w-full gap-x-2 flex overflow-x-hidden">
-					{listing.category_id && (
-						<ImageCardTagGroup
-							tags={[{ name: listing.category?.name || 'Not Found' }]}
-						/>
+				<ImageCardBanner className="flex gap-2 bg-transparent" location="tr">
+					{listing.is_promoted && (
+						<span className="bg-green-400/60 text-green-800 rounded-sm w-fit px-1 text-sm tracking-tight">
+							Promoted
+						</span>
 					)}
-				</div>
+					{listing.created_at && isNew && (
+						<span className="bg-light-red-bg text-text-on-light-red rounded-sm w-fit px-1 text-sm tracking-tight">
+							New
+						</span>
+					)}
+					{listing.owner_id && (
+						<span className="bg-transparent">
+							<BadgeCheckIcon className="h-5 w-5 text-green-500" />
+						</span>
+					)}
+				</ImageCardBanner>
+
 				<ImageCardLink
 					href={`/explore/${listing.slug}`}
 					data-umami-event="Listing Card"
 					data-umami-event-listing={listing.slug}
 				/>
-				<ImageCardTitle>{listing.title}</ImageCardTitle>
+			</ImageCardImageContainer>
 
-				{GENERAL_SETTINGS.USE_RATING_ON_CARD &&
-				listing.average_rating &&
-				listing.average_rating > 0 ? (
-					<div className="flex flex-wrap items-center gap-x-2 py-2">
-						<StarRating
-							rating={listing.average_rating}
-							maxRating={5}
-							numberOfStars={5}
-						/>{' '}
-						<p className="text-sm text-muted-foreground">
-							{listing.ratings_count}{' '}
-							{listing.ratings_count === 1 ? 'rating' : 'ratings'}
-						</p>
-					</div>
-				) : null}
-
-				<ImageCardDescription>{listing.excerpt}</ImageCardDescription>
-				<ImageCardTagGroup tags={listing.tags} />
-				{GENERAL_SETTINGS.USE_STATS &&
-					GENERAL_SETTINGS.USE_LIKE &&
-					GENERAL_SETTINGS.USE_VIEW &&
-					GENERAL_SETTINGS.USE_RATE && (
-						<div
-							className="flex flex-wrap flex-end flex-row gap-1 pt-2 justify-between items-center text-slate-600 dark:text-slate-200 z-40"
-							style={{ fontSize: 13 }}
-						>
-							<NumberIconBadge value={listing.likes ?? 0} Icon={Heart} />
-							<NumberIconBadge
-								value={listing.views ?? 0}
-								Icon={BarChart2Icon}
-							/>
-							<NumberIconBadge
-								value={listing.average_rating ?? 0}
-								Icon={StarIcon}
-							/>
+			<ImageCardFooter className="flex flex-col relative w-full overflow-hidden bg-transparent p-0 pt-2">
+				<ImageCardLink
+					href={`/explore/${listing.slug}`}
+					data-umami-event="Listing Card"
+					data-umami-event-listing={listing.slug}
+				/>
+				<div className="flex justify-between items-center h-7 overflow-hidden w-full">
+					<ImageCardTitle>{listing.title}</ImageCardTitle>
+					{/* @ts-ignore TODO : fix : Supabase Error: https://github.com/supabase/postgrest-js/issues/408#issuecomment-2175585000 */}
+					{!!listing.discount_code_percentage && (
+						<div className="bg-light-red-bg text-text-on-light-red whitespace-nowrap h-fit p-1 rounded-md text-sm font-medium items-center hidden md:flex">
+							<BadgePercentIcon size={14} className="mr-1" />{' '}
+							{/* @ts-ignore TODO : fix : Supabase Error: https://github.com/supabase/postgrest-js/issues/408#issuecomment-2175585000 */}
+							{listing.discount_code_percentage}% Off
 						</div>
 					)}
+				</div>
+				<div className="relative w-full gap-x-2 flex text-sm items-center text-muted-foreground">
+					<MapIcon className="h-4 w-4" />
+					{!!listing.category?.name && <p>{listing.category?.name}, USA</p>}
+				</div>
 			</ImageCardFooter>
 		</ImageCard>
 	);

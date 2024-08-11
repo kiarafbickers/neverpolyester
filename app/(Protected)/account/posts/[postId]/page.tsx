@@ -54,7 +54,9 @@ export default async function BlogPostEditorPage({
 
 	return (
 		<SectionOuterContainer>
-			<SectionTitle>Update Post</SectionTitle>
+			<SectionTitle className="mx-0 max-w-none text-left">
+				Update Post
+			</SectionTitle>
 			<BlogPostEditor
 				post={postData}
 				topicChoices={topicData}

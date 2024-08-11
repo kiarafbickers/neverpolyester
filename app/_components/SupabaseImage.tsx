@@ -34,7 +34,13 @@ export default function SupabaseImage({
 	dbImageUrl: string | null;
 	width: number;
 	height: number;
-	database: 'avatars' | 'listing_images' | 'blog_images' | 'ad_images';
+	database:
+		| 'avatars'
+		| 'listing_images'
+		| 'sublisting_images'
+		| 'blog_images'
+		| 'ad_images'
+		| 'cattag_images';
 	className?: string;
 	imageAlt?: string;
 	priority: boolean;
@@ -84,7 +90,7 @@ export default function SupabaseImage({
 			alt={imageAlt || 'Cover Image'}
 			className={cn(
 				isLoading && 'animate-pulse',
-				'object-cover bg-no-repeat h-auto min-h-full w-auto',
+				'object-cover bg-no-repeat h-auto w-full',
 				className
 			)}
 			placeholder="blur"

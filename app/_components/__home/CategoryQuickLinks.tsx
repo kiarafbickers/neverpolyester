@@ -20,7 +20,7 @@ export default async function CategoryQuickLinks() {
 		0
 	);
 	return (
-		<SubSectionOuterContainer>
+		<SubSectionOuterContainer className="py-20">
 			<SubSectionTitle className="mx-auto text-center">
 				Browse all{' '}
 				<span className="underline underline-offset-4 decoration-2 decoration-wavy decoration-primary/40">
@@ -44,10 +44,10 @@ export default async function CategoryQuickLinks() {
 									<p className="text-2xl font-semibold leading-6 mb-2">
 										{category.name}
 									</p>
-									<p className="text-sm text-black/80 dark:text-white/80 mt-2 line-clamp-2 sm:h-12">
+									<p className="text-sm text-foreground/80 dark:text-white/80 mt-2 line-clamp-2 sm:h-12">
 										{category.headline}
 									</p>
-									<p className="text-sm text-black/80 dark:text-white/80 mt-2">
+									<p className="text-sm text-foreground/80 dark:text-white/80 mt-2">
 										<span className="font-bold">{category.listing_count}</span>{' '}
 										{category.listing_count > 1 ? 'Listings' : 'Listing'}
 									</p>

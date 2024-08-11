@@ -26,8 +26,6 @@ import { correctUTC, formatDate } from '@/utils';
 import { COMPANY_BASIC_INFORMATION, PROMOTIONS_DATA } from '@/constants';
 // Import Assets & Icons
 
-// TODO - Update React Day Picker to v9 - currently range selection is allowing disabled dates to be selected. Also UTC Dates will make things easier.
-
 export default function FeeCalculator({
 	listings,
 	categories,

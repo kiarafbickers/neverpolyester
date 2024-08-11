@@ -65,6 +65,7 @@ export default async function createStripeCheckoutSession(
 			ui_mode: 'embedded',
 			payment_method_types: ['card'],
 			customer_email: user.email,
+			customer_creation: 'always',
 			mode: 'payment',
 			line_items: [
 				{

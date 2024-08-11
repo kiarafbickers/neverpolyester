@@ -6,8 +6,8 @@ import ListingEditor from '@/components/listings/ListingEditor';
 import { SectionOuterContainer, SectionTitle } from '@/ui/Section';
 // Import Functions & Actions & Hooks & State
 import getPartialCategories from '@/actions/categories/getPartialCategories';
-import getPartialTags from '@/actions/tags/getPartialTags';
 import serverAuth from '@/actions/auth/serverAuth';
+import getFullTags from '@/actions/tags/getFullTags';
 // Import Data
 // Import Assets & Icons
 
@@ -25,7 +25,7 @@ export default async function NewListingPage() {
 		return error;
 	}
 
-	const tagData = await getPartialTags('all');
+	const tagData = await getFullTags('all');
 	const categoryData = await getPartialCategories('all');
 
 	return (

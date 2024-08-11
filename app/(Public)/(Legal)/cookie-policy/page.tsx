@@ -8,6 +8,7 @@ import {
 	SectionDescription,
 	SubSectionOuterContainer,
 	SubSectionInnerContainer,
+	SectionHeaderContainer,
 } from '@/ui/Section';
 // Import Functions & Actions & Hooks & State
 // Import Data
@@ -23,11 +24,13 @@ export const metadata: Metadata = {
 export default function CookiePolicyPage() {
 	return (
 		<SectionOuterContainer id="Cookie Policy" className="prose">
-			<SectionTitle>Cookie Policy</SectionTitle>
-			<SectionDescription>Last updated May 28, 2024</SectionDescription>
+			<SectionHeaderContainer>
+				<SectionTitle>Cookie Policy</SectionTitle>
+				<SectionDescription>Last updated May 28, 2024</SectionDescription>
+			</SectionHeaderContainer>
 			<SubSectionOuterContainer className="max-w-3xl py-0">
-				<SubSectionInnerContainer className="items-start py-0">
-					<p className="text-black dark:text-zinc-200">
+				<SubSectionInnerContainer className="items-start prose text-justify dark:prose-invert">
+					<p className="text-foreground dark:text-zinc-200">
 						This Cookie Policy explains how {COMPANY_BASIC_INFORMATION.NAME}{' '}
 						(&apos;Company,&apos; &apos;we,&apos; &apos;us,&apos; and
 						&apos;our&apos;) uses cookies and similar technologies to recognize
@@ -43,7 +46,7 @@ export default function CookiePolicyPage() {
 						What are cookies?
 					</h2>
 
-					<p className="text-black dark:text-zinc-200">
+					<p className="text-foreground dark:text-zinc-200">
 						Cookies are small data files that are placed on your computer or
 						mobile device when you visit a website. Cookies are widely used by
 						website owners in order to make their websites work, or to work more
@@ -64,7 +67,7 @@ export default function CookiePolicyPage() {
 						Why do we use cookies?
 					</h2>
 
-					<p className="text-black dark:text-zinc-200">
+					<p className="text-foreground dark:text-zinc-200">
 						We use first- and third-party cookies for several reasons. Some
 						cookies are required for technical reasons in order for our Website
 						to operate, and we refer to these as &apos;essential&apos; or
@@ -78,7 +81,7 @@ export default function CookiePolicyPage() {
 						How can I control cookies?
 					</h2>
 
-					<p className="text-black dark:text-zinc-200">
+					<p className="text-foreground dark:text-zinc-200">
 						You have the right to decide whether to accept or reject cookies.
 						You can exercise your cookie rights by setting your preferences in
 						the Cookie Consent Manager. The Cookie Consent Manager allows you to
@@ -97,7 +100,7 @@ export default function CookiePolicyPage() {
 					<h3 className="my-2 font-extrabold text-gray-700 dark:text-zinc-200">
 						Necessary & Functional cookies:
 					</h3>
-					<ul className="my-2 text-black dark:text-zinc-200">
+					<ul className="my-2 text-foreground dark:text-zinc-200">
 						<li>Name: sb-[id]-auth-token</li>
 						<li>Provider: Supabase.com</li>
 						<li>Purpose: Authentication & Authorization</li>
@@ -105,7 +108,7 @@ export default function CookiePolicyPage() {
 						<li>Type: Session Cookie</li>
 						<li>Expires in: After closing the session</li>
 					</ul>
-					<ul className="my-2 text-black dark:text-zinc-200">
+					<ul className="my-2 text-foreground dark:text-zinc-200">
 						<li>Name: __stripe_mid</li>
 						<li>Provider: Stripe.com</li>
 						<li>Purpose: Payment & Fraud Prevention</li>
@@ -118,7 +121,7 @@ export default function CookiePolicyPage() {
 						How can I control cookies on my browser?
 					</h2>
 
-					<p className="text-black dark:text-zinc-200">
+					<p className="text-foreground dark:text-zinc-200">
 						As the means by which you can refuse cookies through your web
 						browser controls vary from browser to browser, you should visit your
 						browser&apos;s help menu for more information. The following is
@@ -127,7 +130,7 @@ export default function CookiePolicyPage() {
 					</p>
 					<li>
 						<Link
-							className="text-black underline dark:text-zinc-200"
+							className="text-foreground underline dark:text-zinc-200"
 							href="https://support.google.com/chrome/answer/95647#zippy=%2Callow-or-block-cookies"
 						>
 							Chrome
@@ -135,7 +138,7 @@ export default function CookiePolicyPage() {
 					</li>
 					<li>
 						<Link
-							className="text-black underline dark:text-zinc-200"
+							className="text-foreground underline dark:text-zinc-200"
 							href="https://support.microsoft.com/en-us/windows/delete-and-manage-cookies-168dab11-0753-043d-7c16-ede5947fc64d"
 						>
 							Internet Explorer
@@ -143,7 +146,7 @@ export default function CookiePolicyPage() {
 					</li>
 					<li>
 						<Link
-							className="text-black underline dark:text-zinc-200"
+							className="text-foreground underline dark:text-zinc-200"
 							href="https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop?redirectslug=enable-and-disable-cookies-website-preferences&redirectlocale=en-US"
 						>
 							Firefox
@@ -151,7 +154,7 @@ export default function CookiePolicyPage() {
 					</li>
 					<li>
 						<Link
-							className="text-black underline dark:text-zinc-200"
+							className="text-foreground underline dark:text-zinc-200"
 							href="https://support.apple.com/en-ie/guide/safari/sfri11471/mac"
 						>
 							Safari
@@ -159,7 +162,7 @@ export default function CookiePolicyPage() {
 					</li>
 					<li>
 						<Link
-							className="text-black underline dark:text-zinc-200"
+							className="text-foreground underline dark:text-zinc-200"
 							href="https://support.microsoft.com/en-us/windows/microsoft-edge-browsing-data-and-privacy-bb8174ba-9d73-dcf2-9b4a-c582b4e640dd"
 						>
 							Edge
@@ -167,14 +170,14 @@ export default function CookiePolicyPage() {
 					</li>
 					<li>
 						<Link
-							className="text-black underline dark:text-zinc-200"
+							className="text-foreground underline dark:text-zinc-200"
 							href="https://help.opera.com/en/latest/web-preferences/"
 						>
 							Opera
 						</Link>
 					</li>
 					<br />
-					<p className="text-black dark:text-zinc-200">
+					<p className="text-foreground dark:text-zinc-200">
 						In addition, most advertising networks offer you a way to opt out of
 						targeted advertising. If you would like to find out more
 						information, please visit:
@@ -182,7 +185,7 @@ export default function CookiePolicyPage() {
 
 					<li>
 						<Link
-							className="text-black underline dark:text-zinc-200"
+							className="text-foreground underline dark:text-zinc-200"
 							href="http://www.aboutads.info/choices/"
 						>
 							Digital Advertising Alliance
@@ -190,7 +193,7 @@ export default function CookiePolicyPage() {
 					</li>
 					<li>
 						<Link
-							className="text-black underline dark:text-zinc-200"
+							className="text-foreground underline dark:text-zinc-200"
 							href="https://youradchoices.ca/"
 						>
 							Digital Advertising Alliance of Canada
@@ -198,7 +201,7 @@ export default function CookiePolicyPage() {
 					</li>
 					<li>
 						<Link
-							className="text-black underline dark:text-zinc-200"
+							className="text-foreground underline dark:text-zinc-200"
 							href="http://www.youronlinechoices.com/"
 						>
 							European Interactive Digital Advertising Alliance
@@ -207,7 +210,7 @@ export default function CookiePolicyPage() {
 					<h2 className="my-3 font-extrabold text-gray-900 dark:text-zinc-200">
 						What about other tracking technologies, like web beacons?
 					</h2>
-					<p className="text-black dark:text-zinc-200">
+					<p className="text-foreground dark:text-zinc-200">
 						Cookies are not the only way to recognize or track visitors to a
 						website. We may use other, similar technologies from time to time,
 						like web beacons (sometimes called &apos;tracking pixels&apos; or
@@ -226,7 +229,7 @@ export default function CookiePolicyPage() {
 					<h2 className="my-3 font-extrabold text-gray-900 dark:text-zinc-200">
 						Do you serve targeted advertising?
 					</h2>
-					<p className="text-black dark:text-zinc-200">
+					<p className="text-foreground dark:text-zinc-200">
 						Third parties may serve cookies on your computer or mobile device to
 						serve advertising through our Website. These companies may use
 						information about your visits to this and other websites in order to
@@ -243,7 +246,7 @@ export default function CookiePolicyPage() {
 					<h2 className="my-3 font-extrabold text-gray-900 dark:text-zinc-200">
 						How often will you update this Cookie Policy?
 					</h2>
-					<p className="text-black dark:text-zinc-200">
+					<p className="text-foreground dark:text-zinc-200">
 						We may update this Cookie Policy from time to time in order to
 						reflect, for example, changes to the cookies we use or for other
 						operational, legal, or regulatory reasons. Please therefore revisit
@@ -254,12 +257,12 @@ export default function CookiePolicyPage() {
 					<h2 className="my-3 font-extrabold text-gray-900 dark:text-zinc-200">
 						Where can I get further information?
 					</h2>
-					<p className="text-black dark:text-zinc-200">
+					<p className="text-foreground dark:text-zinc-200">
 						If you have any questions about our use of cookies or other
 						technologies, please email us at{' '}
 						{COMPANY_BASIC_INFORMATION.SUPPORT_EMAIL} or by mail to:
 					</p>
-					<ul className="my-2 text-black dark:text-zinc-200">
+					<ul className="my-2 text-foreground dark:text-zinc-200">
 						<li>{COMPANY_BASIC_INFORMATION.RESPONSIBLE_PERSON}</li>
 						<li>{COMPANY_BASIC_INFORMATION.ADDRESS || ''}</li>
 					</ul>

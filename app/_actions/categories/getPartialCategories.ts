@@ -15,6 +15,16 @@ import {
 	handleServerSuccess,
 } from '@/lib/handlingServerResponses';
 
+type partialCategory = {
+	id: string;
+	name: string;
+	slug: string;
+	category_groups: {
+		id: string;
+		name: string;
+	}[];
+};
+
 /**
  * Retrieves partial categories based on the specified modifier.
  * @param modifier - The modifier to determine which categories to retrieve. Can be 'active' or 'all'.
@@ -28,7 +38,9 @@ export default async function getPartialCategories(modifier: 'active' | 'all') {
 		if (modifier === 'active') {
 			results = await supabase.rpc('get_active_categories');
 		} else if (modifier === 'all') {
-			results = await supabase.from('categories').select(`id, name, slug`);
+			results = await supabase
+				.from('categories')
+				.select(`id, name, slug, category_groups(id, name)`);
 		} else {
 			throw new BadRequestError('Invalid modifier.');
 		}
@@ -41,7 +53,7 @@ export default async function getPartialCategories(modifier: 'active' | 'all') {
 			);
 		}
 
-		return handleServerSuccess(data);
+		return handleServerSuccess(data as partialCategory[]);
 	} catch (error) {
 		return handleServerError(error, []);
 	}

@@ -96,13 +96,12 @@ export default async function BlogOverviewPage({ params }: BlogPostPageProps) {
 	post.content = `# ${post.title}\n${post.content}`;
 
 	return (
-		<SectionOuterContainer className="max-w-6xl px-4">
-			<Breadcrumps />
-
+		<SectionOuterContainer className="max-w-6xl">
 			<SubSectionOuterContainer>
+				<Breadcrumps />
 				<SubSectionInnerContainer>
-					<div className="grid md:flex flex-row w-full relative lg:gap-x-8">
-						<div className="md:w-8/12 lg:w-9/12 mx-auto">
+					<div className="grid md:flex flex-row w-full relative gap-x-4 md:gap-x-8">
+						<div className="w-full mx-auto max-w-5xl">
 							<article className="bg-white dark:bg-black dark:border dark:border-white rounded-md drop-shadow-xl ">
 								<SupabaseImage
 									dbImageUrl={post.default_image_url}
@@ -134,7 +133,7 @@ export default async function BlogOverviewPage({ params }: BlogPostPageProps) {
 							/>
 						</div>
 
-						<div className="order-first md:order-none">
+						<div className="order-first md:order-none w-60">
 							<AuthorInfo author={post.author} />
 							<DateInfo
 								createDate={

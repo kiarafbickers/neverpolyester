@@ -3,9 +3,9 @@
 // Import Types
 import {
 	CategoryType,
-	TagType,
-	TopicType,
 	ListingType,
+	TagType,
+	FullTagType,
 } from '@/supabase-special-types';
 import { Tables } from '@/supabase-types';
 // Import External Packages
@@ -82,6 +82,13 @@ const ListingFormSchema = z.object({
 	is_user_published: z.boolean().nullable(),
 	is_admin_published: z.boolean().nullable(),
 	click_url: z.string().url(),
+	address: z.string().optional(),
+	farmer_names: z.string().optional(),
+	founding_year: z.string().optional(),
+	discount_code_text: z.string().optional(),
+	discount_code_percentage: z.string().optional(),
+	discount_code: z.string().optional(),
+	logo_image_url: z.string().optional(),
 });
 
 const mdParser = new MarkdownIt();
@@ -94,17 +101,67 @@ export default function ListingEditor({
 	isSuperAdmin,
 }: {
 	listing: ListingType | undefined;
-	tagChoices: TopicType[];
+	tagChoices: FullTagType[];
 	categoryChoices: CategoryType[];
 	userId: Tables<'users'>['id'];
 	isSuperAdmin: boolean;
 }) {
-	const [selectedTags, setSelectedTags] = useState<TagType[]>(
-		listing?.tags ?? []
-	);
+	const [selectedTags, setSelectedTags] = useState<{
+		[groupName: string]: Omit<TagType, 'tag_groups'>[];
+	}>(listing?.tags ? groupTagsByGroupName(listing?.tags) : {});
 	const [aiGenerated, setAiGenerated] = useState(false);
 	const [reloaded, setReloaded] = useState(false);
 	const Router = useRouter();
+
+	function groupTagsByGroupName(tags: Omit<TagType, 'tag_groups'>[]): {
+		[groupName: string]: Omit<TagType, 'tag_groups'>[];
+	} {
+		const groupedTags: { [groupName: string]: Omit<TagType, 'tag_groups'>[] } =
+			{};
+
+		tags.forEach((tag) => {
+			const tagChoice = tagChoices.find((choice) => choice.id === tag.id);
+			if (tagChoice) {
+				tagChoice.tag_groups.forEach((group) => {
+					if (!groupedTags[group.name]) {
+						groupedTags[group.name] = [];
+					}
+					groupedTags[group.name].push(tag);
+				});
+			}
+		});
+
+		if (Object.keys(groupedTags).length === 0) {
+			groupedTags['Other'] = tags;
+		}
+
+		return groupedTags;
+	}
+
+	const flattenedTags = Object.values(selectedTags).flat();
+
+	function clusterTagsByGroups() {
+		const tagChoiceGroups: {
+			[groupName: string]: (typeof tagChoices)[0][];
+		} = { Other: [] };
+
+		tagChoices.forEach((tag) => {
+			if (tag.tag_groups.length === 0) {
+				tagChoiceGroups['Other'].push(tag);
+			} else {
+				tag.tag_groups.forEach((group) => {
+					if (!tagChoiceGroups[group.name]) {
+						tagChoiceGroups[group.name] = [];
+					}
+					tagChoiceGroups[group.name].push(tag);
+				});
+			}
+		});
+
+		return tagChoiceGroups;
+	}
+
+	const tagChoiceGroups = clusterTagsByGroups();
 
 	const form = useForm<z.infer<typeof ListingFormSchema>>({
 		resolver: zodResolver(ListingFormSchema),
@@ -118,6 +175,13 @@ export default function ListingEditor({
 			is_user_published: listing?.is_user_published ?? false,
 			is_admin_published: listing?.is_admin_published ?? false,
 			default_image_url: listing?.default_image_url ?? '',
+			address: listing?.address ?? '',
+			farmer_names: listing?.farmer_names ?? '',
+			founding_year: listing?.founding_year ?? '',
+			discount_code_text: listing?.discount_code_text ?? '',
+			discount_code_percentage: listing?.discount_code_percentage ?? '',
+			discount_code: listing?.discount_code ?? '',
+			logo_image_url: listing?.logo_image_url ?? '',
 		},
 	});
 
@@ -158,21 +222,35 @@ export default function ListingEditor({
 	};
 
 	// Handle tag changes
-	const handleTagChange = (value: { name: string }[]) => {
+	const handleTagChange = (
+		value: { name: string }[],
+		groupName: string | undefined
+	) => {
+		// Enrich the tags with additional information
 		const enrichedValue = value
 			.map((tag) => {
 				const tempTag = tagChoices.find(
 					(tagChoice) => tagChoice.name === tag.name
 				);
-				return { id: tempTag?.id, name: tag.name, slug: tempTag?.slug };
+				return tempTag
+					? { id: tempTag.id, name: tag.name, slug: tempTag.slug }
+					: null;
 			})
-			.filter(Boolean) as TagType[];
+			.filter((tag): tag is TagType => tag !== null); // Filter out null values
 
-		setSelectedTags(enrichedValue);
+		setSelectedTags((prevSelectedTags) => {
+			const updatedTags = {
+				...prevSelectedTags,
+				[groupName as string]: enrichedValue,
+			};
+
+			// Return the updated tags
+			return updatedTags;
+		});
 	};
 
 	async function onSubmit(values: z.infer<typeof ListingFormSchema>) {
-		let tagIds = selectedTags
+		let tagIds = flattenedTags
 			.map((tag) => {
 				const existingTag = tagChoices.find(
 					(tagChoice) => tagChoice.name === tag.name
@@ -245,7 +323,7 @@ export default function ListingEditor({
 								type="button"
 								onClick={() => Router.push('/account/listings')}
 								variant="outline"
-								disabled={!isDirty || isSubmitting}
+								disabled={isSubmitting}
 							>
 								Discard
 							</Button>
@@ -254,8 +332,8 @@ export default function ListingEditor({
 								disabled={
 									(!isDirty &&
 										(listing?.tags
-											? arraysEqual(listing?.tags, selectedTags)
-											: selectedTags.length === 0)) ||
+											? arraysEqual(listing?.tags, flattenedTags)
+											: flattenedTags.length === 0)) ||
 									isSubmitting
 								}
 								data-umami-event={
@@ -287,8 +365,8 @@ export default function ListingEditor({
 					</div>
 				</div>
 
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-					<Card className="row-span-3">
+				<div className="grid grid-cols-1 md:grid-cols-5 md:gap-12 gap-y-8 md:gap-y-0">
+					<Card className="col-span-3">
 						<CardHeader>
 							<CardTitle>Description Details</CardTitle>
 							<CardDescription>
@@ -356,52 +434,29 @@ export default function ListingEditor({
 							/>
 						</CardContent>
 					</Card>
-
-					<Card>
-						<CardHeader>
-							<CardTitle>Publish</CardTitle>
-							<CardDescription>
-								You listing is currently in the{' '}
-								<span className="font-semibold">
-									{listing?.is_user_published ? 'published' : 'draft'}
-								</span>{' '}
-								state.{' '}
-							</CardDescription>
-						</CardHeader>
-						<CardContent className="grid">
-							<FormField
-								control={form.control}
-								name="is_user_published"
-								render={({ field }) => (
-									<FormItem className="inline-flex space-y-0 h-10 items-center space-x-4">
-										<FormLabel>
-											{' '}
-											{listing?.is_user_published
-												? 'Deactivate: '
-												: 'Activate: '}
-										</FormLabel>
-
-										<FormControl>
-											<Switch
-												checked={field.value ? true : false}
-												onCheckedChange={field.onChange}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							{isSuperAdmin && (
+					<div className="col-span-2 grid gap-y-8 w-full">
+						<Card>
+							<CardHeader>
+								<CardTitle>Publish</CardTitle>
+								<CardDescription>
+									You listing is currently in the{' '}
+									<span className="font-semibold">
+										{listing?.is_user_published ? 'published' : 'draft'}
+									</span>{' '}
+									state.{' '}
+								</CardDescription>
+							</CardHeader>
+							<CardContent className="grid">
 								<FormField
 									control={form.control}
-									name="is_admin_published"
+									name="is_user_published"
 									render={({ field }) => (
 										<FormItem className="inline-flex space-y-0 h-10 items-center space-x-4">
 											<FormLabel>
 												{' '}
-												{listing?.is_admin_published
-													? 'ADMIN: Deactivate: '
-													: 'ADMIN: Activate: '}
+												{listing?.is_user_published
+													? 'Deactivate: '
+													: 'Activate: '}
 											</FormLabel>
 
 											<FormControl>
@@ -414,249 +469,470 @@ export default function ListingEditor({
 										</FormItem>
 									)}
 								/>
-							)}
-						</CardContent>
-					</Card>
+								{isSuperAdmin && (
+									<FormField
+										control={form.control}
+										name="is_admin_published"
+										render={({ field }) => (
+											<FormItem className="inline-flex space-y-0 h-10 items-center space-x-4">
+												<FormLabel>
+													{' '}
+													{listing?.is_admin_published
+														? 'ADMIN: Deactivate: '
+														: 'ADMIN: Activate: '}
+												</FormLabel>
 
-					<Card>
-						<CardHeader>
-							<CardTitle>Tags & Categories</CardTitle>
-							<CardDescription>
-								Let people know what your listing is about.
-							</CardDescription>
-						</CardHeader>
-						<CardContent className="space-y-4">
-							<TagSelect
-								updaterFunction={handleTagChange}
-								possibleTags={tagChoices as { name: string }[]}
-								selectedTags={
-									listing
-										? (listing.tags as { name: string }[]) || undefined
-										: null
-								}
-							/>
-
-							<FormField
-								control={form.control}
-								name="category_id"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Category</FormLabel>
-										<FormControl>
-											<Select onValueChange={field.onChange} {...field}>
-												<SelectTrigger>
-													<SelectValue placeholder="Choose the best fitting Category" />
-												</SelectTrigger>
-
-												<SelectContent>
-													{categoryChoices.map((category) => (
-														<SelectItem key={category.id} value={category.id}>
-															{category.name}
-														</SelectItem>
-													))}
-												</SelectContent>
-											</Select>
-										</FormControl>
-										<FormDescription>
-											The main category of your listing. Choose wisely.
-										</FormDescription>
-
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-
-							<p className="italic text-xs pt-6 text-muted-foreground">
-								If you need a new Tags or Categories, send us an email{' '}
-								{COMPANY_BASIC_INFORMATION.SUPPORT_EMAIL}!
-							</p>
-						</CardContent>
-					</Card>
-
-					<Card>
-						<CardHeader>
-							<CardTitle>Linking Details</CardTitle>
-							<CardDescription>
-								Choose where your listing will be linked to.
-							</CardDescription>
-						</CardHeader>
-						<CardContent>
-							<FormField
-								control={form.control}
-								name="click_url"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>URL</FormLabel>
-										<FormDescription>
-											The (affiliate) link which users will be redirected to.
-										</FormDescription>
-										<FormControl>
-											<Input placeholder="https://" {...field} />
-										</FormControl>
-										<FormMessage />
-										{!isValidUrl(field.value) && (
-											<>
-												<span className="text-xs italic">
-													Please enter a valid URL
-												</span>
-												<br />
-											</>
+												<FormControl>
+													<Switch
+														checked={field.value ? true : false}
+														onCheckedChange={field.onChange}
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
 										)}
-										{GENERAL_SETTINGS.USE_AI_CONTENT_CREATION &&
-											isSuperAdmin && (
-												<Button
-													type="button"
-													onClick={() => {
-														setAiGenerated(true), handleAiButton(field.value);
-													}}
-													variant="outline"
-													disabled={
-														isSubmitting ||
-														!isValidUrl(field.value) ||
-														aiGenerated
-													}
-													data-umami-event="Button AI Description"
-													data-umami-event-userid={userId}
-												>
-													<span>Generate AI Description</span>{' '}
-													{aiGenerated && (
-														<LoaderCircleIcon className="ml-1 animate-spin" />
-													)}
-												</Button>
-											)}
-									</FormItem>
+									/>
 								)}
-							/>
-						</CardContent>
-					</Card>
-					<Card>
-						<CardHeader>
-							<CardTitle>Cover Image</CardTitle>
-							<CardDescription>Visuals are important!</CardDescription>
-						</CardHeader>
-						<CardContent className="space-y-2">
-							<FormField
-								control={form.control}
-								name="default_image_url"
-								render={({ field }) => (
-									<FormItem>
-										<FormControl>
-											<SupabaseImageUploadArea
-												uid={userId}
-												url={listing?.default_image_url || field.value}
-												width={900}
-												height={600}
-												database="listing_images"
-												onUpload={(url: string) => {
-													setValue('default_image_url', url, {
+							</CardContent>
+						</Card>
+
+						<Card>
+							<CardHeader>
+								<CardTitle>Tags & Categories</CardTitle>
+								<CardDescription>
+									Let people know what your listing is about.
+								</CardDescription>
+							</CardHeader>
+							<CardContent className="space-y-4">
+								{Object.keys(tagChoiceGroups).map((groupName) => (
+									<TagSelect
+										key={groupName}
+										updaterFunction={handleTagChange}
+										possibleTags={
+											tagChoiceGroups[groupName] as { name: string }[]
+										}
+										selectedTags={
+											listing
+												? (selectedTags[groupName] as { name: string }[]) ||
+												  undefined
+												: null
+										}
+										label={`Tag Group: ${groupName}`}
+										placeholder="Choose the tags that fit your listing"
+										whatIsSelected={groupName}
+										code={groupName}
+									/>
+								))}
+
+								<FormField
+									control={form.control}
+									name="category_id"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Category</FormLabel>
+											<FormControl>
+												<Select onValueChange={field.onChange} {...field}>
+													<SelectTrigger>
+														<SelectValue placeholder="Choose the best fitting Category" />
+													</SelectTrigger>
+
+													<SelectContent>
+														{categoryChoices.map((category) => (
+															<SelectItem key={category.id} value={category.id}>
+																{category.name}
+															</SelectItem>
+														))}
+													</SelectContent>
+												</Select>
+											</FormControl>
+											<FormDescription>
+												The main category of your listing. Choose wisely.
+											</FormDescription>
+
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<p className="italic text-xs pt-6 text-muted-foreground">
+									If you need a new Tags or Categories, send us an email{' '}
+									{COMPANY_BASIC_INFORMATION.SUPPORT_EMAIL}!
+								</p>
+							</CardContent>
+						</Card>
+
+						<Card>
+							<CardHeader>
+								<CardTitle>Miscellaneous</CardTitle>
+								<CardDescription>
+									Enter some more data to enrich your profile.
+								</CardDescription>
+							</CardHeader>
+							<CardContent>
+								<FormField
+									control={form.control}
+									name="address"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Address</FormLabel>
+											<FormDescription>
+												Your farm&apos;s address
+											</FormDescription>
+											<FormControl>
+												<Input {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<FormField
+									control={form.control}
+									name="farmer_names"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Farmer Names</FormLabel>
+											<FormDescription>
+												Enter the names of your farmers. Will be displayed on
+												the product page.{' '}
+											</FormDescription>
+											<FormControl>
+												<Input {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<FormField
+									control={form.control}
+									name="founding_year"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Founding Year</FormLabel>
+											<FormDescription>
+												When was your farm founded?
+											</FormDescription>
+											<FormControl>
+												<Input {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<h4 className="font-semibold"> </h4>
+							</CardContent>
+						</Card>
+
+						<Card>
+							<CardHeader>
+								<CardTitle>Current Promotions</CardTitle>
+								<CardDescription>
+									Do you have any current promotions? If not, leave it empty.
+								</CardDescription>
+							</CardHeader>
+							<CardContent>
+								<FormField
+									control={form.control}
+									name="discount_code"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Discount Code</FormLabel>
+											<FormDescription>
+												What is the discount code? (e.g. FIRSTORDER)
+											</FormDescription>
+											<FormControl>
+												<Input {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<FormField
+									control={form.control}
+									name="discount_code_percentage"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Discount Code Percentage</FormLabel>
+											<FormDescription>
+												What is the discount code percentage? (e.g. 30)
+											</FormDescription>
+											<FormControl>
+												<Input {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<FormField
+									control={form.control}
+									name="discount_code_text"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Discount Code Text</FormLabel>
+											<FormDescription>
+												A little explainer text in regards to who and how one
+												can redeem the code. (e.g. &quot;Use code
+												&apos;FIRSTORDER&apos; to get this discount on orders of
+												$100 or more&quot;)
+											</FormDescription>
+											<FormControl>
+												<Textarea {...field} rows={3} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</CardContent>
+						</Card>
+
+						<Card>
+							<CardHeader>
+								<CardTitle>Linking Details</CardTitle>
+								<CardDescription>
+									Choose where your listing will be linked to.
+								</CardDescription>
+							</CardHeader>
+							<CardContent>
+								<FormField
+									control={form.control}
+									name="click_url"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>URL</FormLabel>
+											<FormDescription>
+												The (affiliate) link which users will be redirected to.
+											</FormDescription>
+											<FormControl>
+												<Input placeholder="https://" {...field} />
+											</FormControl>
+											<FormMessage />
+											{!isValidUrl(field.value) && (
+												<>
+													<span className="text-xs italic">
+														Please enter a valid URL
+													</span>
+													<br />
+												</>
+											)}
+											{GENERAL_SETTINGS.USE_AI_CONTENT_CREATION &&
+												isSuperAdmin && (
+													<Button
+														type="button"
+														onClick={() => {
+															setAiGenerated(true), handleAiButton(field.value);
+														}}
+														variant="outline"
+														disabled={
+															isSubmitting ||
+															!isValidUrl(field.value) ||
+															aiGenerated
+														}
+														data-umami-event="Button AI Description"
+														data-umami-event-userid={userId}
+													>
+														<span>Generate AI Description</span>{' '}
+														{aiGenerated && (
+															<LoaderCircleIcon className="ml-1 animate-spin" />
+														)}
+													</Button>
+												)}
+										</FormItem>
+									)}
+								/>
+							</CardContent>
+						</Card>
+						<Card>
+							<CardHeader>
+								<CardTitle>Cover Image</CardTitle>
+								<CardDescription>Visuals are important!</CardDescription>
+							</CardHeader>
+							<CardContent className="space-y-2">
+								<FormField
+									control={form.control}
+									name="default_image_url"
+									render={({ field }) => (
+										<FormItem>
+											<FormControl>
+												<SupabaseImageUploadArea
+													uid={userId}
+													url={listing?.default_image_url || field.value}
+													width={900}
+													height={600}
+													database="listing_images"
+													onUpload={(url: string) => {
+														setValue('default_image_url', url, {
+															shouldValidate: true,
+															shouldDirty: true,
+															shouldTouch: true,
+														});
+													}}
+												/>
+											</FormControl>
+											<Button
+												className="text-xs text-foreground dark:text-white italic mt-2 mb-4"
+												variant="link"
+												type="button"
+												size="sm"
+												onClick={() => {
+													setValue('default_image_url', '', {
 														shouldValidate: true,
 														shouldDirty: true,
 														shouldTouch: true,
 													});
 												}}
-											/>
-										</FormControl>
+											>
+												Delete Cover Image
+											</Button>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
 
-										<FormMessage />
-									</FormItem>
+								<FormField
+									control={form.control}
+									name="logo_image_url"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Logo</FormLabel>
+
+											<FormControl>
+												<SupabaseImageUploadArea
+													uid={userId}
+													url={listing?.logo_image_url || field.value}
+													width={256}
+													height={128}
+													database="listing_images"
+													onUpload={(url: string) => {
+														setValue('logo_image_url', url, {
+															shouldValidate: true,
+															shouldDirty: true,
+															shouldTouch: true,
+														});
+													}}
+												/>
+											</FormControl>
+											<Button
+												className="text-xs text-foreground dark:text-white italic mt-2 mb-4"
+												variant="link"
+												type="button"
+												size="sm"
+												onClick={() => {
+													setValue('logo_image_url', '', {
+														shouldValidate: true,
+														shouldDirty: true,
+														shouldTouch: true,
+													});
+												}}
+											>
+												Delete Logo
+											</Button>
+
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								{listing && listing.is_admin_published && (
+									<>
+										<CardTitle className="pt-6">Feature Badge</CardTitle>
+										<CardDescription>
+											Download our Badge and show that you are featured on our
+											website! You can link to: <br /> <br />
+											<span className="italic">{`${COMPANY_BASIC_INFORMATION.URL}/explore/${listing.slug}`}</span>
+										</CardDescription>
+										<Image
+											src="/img/featured_badge.png"
+											alt="Feature Badge"
+											width={1200}
+											height={400}
+										/>
+									</>
 								)}
-							/>
-							{listing && listing.is_admin_published && (
-								<>
-									<CardTitle className="pt-6">Feature Badge</CardTitle>
-									<CardDescription>
-										Download our Badge and show that you are featured on our
-										website! You can link to: <br /> <br />
-										<span className="italic">{`${COMPANY_BASIC_INFORMATION.URL}/explore/${listing.slug}`}</span>
-									</CardDescription>
-									<Image
-										src="/img/featured_badge.png"
-										alt="Feature Badge"
-										width={1200}
-										height={400}
-									/>
-								</>
-							)}
-						</CardContent>
-					</Card>
-					<Card>
-						<CardHeader>
-							<CardTitle>Defined Details</CardTitle>
-							<CardDescription>Stuff you cannot change</CardDescription>
-						</CardHeader>
-						<CardContent className="space-y-2">
-							<FormField
-								control={form.control}
-								name="title"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Slug</FormLabel>
-										<FormDescription>
-											This is the slug of your listing.
-										</FormDescription>
-										<FormControl>
-											<Input
-												placeholder={field.value
-													.toString()
-													.replace(/[\W_]+/g, ' ')
-													.split(' ')
-													.join('-')
-													.toLowerCase()}
-												value={field.value
-													.toString()
-													.replace(/[\W_]+/g, ' ')
-													.split(' ')
-													.join('-')
-													.toLowerCase()}
+							</CardContent>
+						</Card>
+						<Card>
+							<CardHeader>
+								<CardTitle>Defined Details</CardTitle>
+								<CardDescription>Stuff you cannot change</CardDescription>
+							</CardHeader>
+							<CardContent className="space-y-2">
+								<FormField
+									control={form.control}
+									name="title"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Slug</FormLabel>
+											<FormDescription>
+												This is the slug of your listing.
+											</FormDescription>
+											<FormControl>
+												<Input
+													placeholder={field.value
+														.toString()
+														.replace(/[\W_]+/g, ' ')
+														.split(' ')
+														.join('-')
+														.toLowerCase()}
+													value={field.value
+														.toString()
+														.replace(/[\W_]+/g, ' ')
+														.split(' ')
+														.join('-')
+														.toLowerCase()}
+													disabled
+												/>
+											</FormControl>
+
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								{listing && (
+									<>
+										<FormItem>
+											<FormLabel>Listing ID</FormLabel>
+											<Input value={listing.id} disabled />
+										</FormItem>
+										<FormItem>
+											<FormLabel>Views</FormLabel>
+											<Input value={listing.views ?? 0} disabled />
+										</FormItem>
+										<FormItem>
+											<FormLabel>Likes</FormLabel>
+											<Input value={listing.likes ?? 0} disabled />
+										</FormItem>
+										<FormItem>
+											<FormLabel>Clicks</FormLabel>
+											<Input value={listing.clicks ?? 0} disabled />
+										</FormItem>
+										<FormItem className="grid pt-2">
+											<FormLabel>Admin Approval</FormLabel>
+											<FormDescription>
+												Once you publish, our admins will review your listing.
+											</FormDescription>
+											<Switch
+												checked={listing.is_admin_published ?? false}
 												disabled
 											/>
-										</FormControl>
-
-										<FormMessage />
-									</FormItem>
+										</FormItem>
+										<FormItem className="grid pt-2">
+											<FormLabel>Is Promoted</FormLabel>
+											<FormDescription>
+												(Send an email to{' '}
+												{COMPANY_BASIC_INFORMATION.SUPPORT_EMAIL} if you wish to
+												promote this listing.)
+											</FormDescription>
+											<Switch checked={listing.is_promoted ?? false} disabled />
+										</FormItem>
+									</>
 								)}
-							/>
-							{listing && (
-								<>
-									<FormItem>
-										<FormLabel>Listing ID</FormLabel>
-										<Input value={listing.id} disabled />
-									</FormItem>
-									<FormItem>
-										<FormLabel>Views</FormLabel>
-										<Input value={listing.views ?? 0} disabled />
-									</FormItem>
-									<FormItem>
-										<FormLabel>Likes</FormLabel>
-										<Input value={listing.likes ?? 0} disabled />
-									</FormItem>
-									<FormItem>
-										<FormLabel>Clicks</FormLabel>
-										<Input value={listing.clicks ?? 0} disabled />
-									</FormItem>
-									<FormItem className="grid pt-2">
-										<FormLabel>Admin Approval</FormLabel>
-										<FormDescription>
-											Once you publish, our admins will review your listing.
-										</FormDescription>
-										<Switch
-											checked={listing.is_admin_published ?? false}
-											disabled
-										/>
-									</FormItem>
-									<FormItem className="grid pt-2">
-										<FormLabel>Is Promoted</FormLabel>
-										<FormDescription>
-											(Send an email to{' '}
-											{COMPANY_BASIC_INFORMATION.SUPPORT_EMAIL} if you wish to
-											promote this listing.)
-										</FormDescription>
-										<Switch checked={listing.is_promoted ?? false} disabled />
-									</FormItem>
-								</>
-							)}
-						</CardContent>
-					</Card>
+							</CardContent>
+						</Card>
+					</div>
 				</div>
 			</form>
 		</Form>

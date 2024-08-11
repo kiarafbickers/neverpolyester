@@ -164,6 +164,8 @@ export type Database = {
           description: string | null
           headline: string | null
           id: string
+          image_url_hero: string | null
+          image_url_small: string | null
           name: string
           slug: string
           updated_at: string | null
@@ -173,6 +175,8 @@ export type Database = {
           description?: string | null
           headline?: string | null
           id?: string
+          image_url_hero?: string | null
+          image_url_small?: string | null
           name: string
           slug: string
           updated_at?: string | null
@@ -182,11 +186,64 @@ export type Database = {
           description?: string | null
           headline?: string | null
           id?: string
+          image_url_hero?: string | null
+          image_url_small?: string | null
           name?: string
           slug?: string
           updated_at?: string | null
         }
         Relationships: []
+      }
+      category_groups: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      category_groups_categories_association: {
+        Row: {
+          category_group_id: string
+          category_id: string
+        }
+        Insert: {
+          category_group_id: string
+          category_id: string
+        }
+        Update: {
+          category_group_id?: string
+          category_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "category_groups_categories_association_category_group_id_fkey"
+            columns: ["category_group_id"]
+            isOneToOne: false
+            referencedRelation: "category_groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "category_groups_categories_association_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       comments: {
         Row: {
@@ -197,6 +254,7 @@ export type Database = {
           is_approved: boolean | null
           listing_id: string | null
           parent_comment_id: string | null
+          sublisting_id: string | null
           updated_at: string | null
           user_id: string
         }
@@ -208,6 +266,7 @@ export type Database = {
           is_approved?: boolean | null
           listing_id?: string | null
           parent_comment_id?: string | null
+          sublisting_id?: string | null
           updated_at?: string | null
           user_id: string
         }
@@ -219,6 +278,7 @@ export type Database = {
           is_approved?: boolean | null
           listing_id?: string | null
           parent_comment_id?: string | null
+          sublisting_id?: string | null
           updated_at?: string | null
           user_id?: string
         }
@@ -242,6 +302,13 @@ export type Database = {
             columns: ["parent_comment_id"]
             isOneToOne: false
             referencedRelation: "comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comments_sublisting_id_fkey"
+            columns: ["sublisting_id"]
+            isOneToOne: false
+            referencedRelation: "sublistings"
             referencedColumns: ["id"]
           },
           {
@@ -285,6 +352,7 @@ export type Database = {
       }
       listings: {
         Row: {
+          address: string | null
           average_rating: number | null
           category_id: string | null
           click_url: string
@@ -292,15 +360,21 @@ export type Database = {
           created_at: string | null
           default_image_url: string | null
           description: string
+          discount_code: string | null
+          discount_code_percentage: string | null
+          discount_code_text: string | null
           embedding: string | null
           excerpt: string | null
+          farmer_names: string | null
           finder_id: string | null
+          founding_year: string | null
           fts: unknown | null
           id: string
           is_admin_published: boolean | null
           is_promoted: boolean | null
           is_user_published: boolean | null
           likes: number | null
+          logo_image_url: string | null
           owner_id: string | null
           ratings_count: number | null
           slug: string
@@ -309,6 +383,7 @@ export type Database = {
           views: number | null
         }
         Insert: {
+          address?: string | null
           average_rating?: number | null
           category_id?: string | null
           click_url: string
@@ -316,15 +391,21 @@ export type Database = {
           created_at?: string | null
           default_image_url?: string | null
           description: string
+          discount_code?: string | null
+          discount_code_percentage?: string | null
+          discount_code_text?: string | null
           embedding?: string | null
           excerpt?: string | null
+          farmer_names?: string | null
           finder_id?: string | null
+          founding_year?: string | null
           fts?: unknown | null
           id?: string
           is_admin_published?: boolean | null
           is_promoted?: boolean | null
           is_user_published?: boolean | null
           likes?: number | null
+          logo_image_url?: string | null
           owner_id?: string | null
           ratings_count?: number | null
           slug: string
@@ -333,6 +414,7 @@ export type Database = {
           views?: number | null
         }
         Update: {
+          address?: string | null
           average_rating?: number | null
           category_id?: string | null
           click_url?: string
@@ -340,15 +422,21 @@ export type Database = {
           created_at?: string | null
           default_image_url?: string | null
           description?: string
+          discount_code?: string | null
+          discount_code_percentage?: string | null
+          discount_code_text?: string | null
           embedding?: string | null
           excerpt?: string | null
+          farmer_names?: string | null
           finder_id?: string | null
+          founding_year?: string | null
           fts?: unknown | null
           id?: string
           is_admin_published?: boolean | null
           is_promoted?: boolean | null
           is_user_published?: boolean | null
           likes?: number | null
+          logo_image_url?: string | null
           owner_id?: string | null
           ratings_count?: number | null
           slug?: string
@@ -483,12 +571,14 @@ export type Database = {
           },
         ]
       }
-      tags: {
+      subcategories: {
         Row: {
           created_at: string | null
           description: string | null
           headline: string | null
           id: string
+          image_url_hero: string | null
+          image_url_small: string | null
           name: string
           slug: string
           updated_at: string | null
@@ -498,6 +588,8 @@ export type Database = {
           description?: string | null
           headline?: string | null
           id?: string
+          image_url_hero?: string | null
+          image_url_small?: string | null
           name: string
           slug: string
           updated_at?: string | null
@@ -507,6 +599,382 @@ export type Database = {
           description?: string | null
           headline?: string | null
           id?: string
+          image_url_hero?: string | null
+          image_url_small?: string | null
+          name?: string
+          slug?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      subcategory_groups: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      subcategory_groups_subcategories_association: {
+        Row: {
+          subcategory_group_id: string
+          subcategory_id: string
+        }
+        Insert: {
+          subcategory_group_id: string
+          subcategory_id: string
+        }
+        Update: {
+          subcategory_group_id?: string
+          subcategory_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subcategory_groups_subcategories_asso_subcategory_group_id_fkey"
+            columns: ["subcategory_group_id"]
+            isOneToOne: false
+            referencedRelation: "subcategory_groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subcategory_groups_subcategories_associatio_subcategory_id_fkey"
+            columns: ["subcategory_id"]
+            isOneToOne: false
+            referencedRelation: "subcategories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sublistings: {
+        Row: {
+          availability: boolean
+          average_rating: number | null
+          click_url: string
+          clicks: number | null
+          created_at: string | null
+          default_image_url: string | null
+          description: string
+          embedding: string | null
+          excerpt: string | null
+          finder_id: string
+          fts: unknown | null
+          id: string
+          is_admin_published: boolean | null
+          is_promoted: boolean | null
+          is_user_published: boolean | null
+          likes: number | null
+          listing_id: string | null
+          owner_id: string | null
+          price_promotional_in_cents: number | null
+          price_regular_in_cents: number | null
+          ratings_count: number | null
+          size: string | null
+          slug: string
+          subcategory_id: string | null
+          title: string
+          updated_at: string | null
+          views: number | null
+        }
+        Insert: {
+          availability?: boolean
+          average_rating?: number | null
+          click_url: string
+          clicks?: number | null
+          created_at?: string | null
+          default_image_url?: string | null
+          description: string
+          embedding?: string | null
+          excerpt?: string | null
+          finder_id: string
+          fts?: unknown | null
+          id?: string
+          is_admin_published?: boolean | null
+          is_promoted?: boolean | null
+          is_user_published?: boolean | null
+          likes?: number | null
+          listing_id?: string | null
+          owner_id?: string | null
+          price_promotional_in_cents?: number | null
+          price_regular_in_cents?: number | null
+          ratings_count?: number | null
+          size?: string | null
+          slug: string
+          subcategory_id?: string | null
+          title: string
+          updated_at?: string | null
+          views?: number | null
+        }
+        Update: {
+          availability?: boolean
+          average_rating?: number | null
+          click_url?: string
+          clicks?: number | null
+          created_at?: string | null
+          default_image_url?: string | null
+          description?: string
+          embedding?: string | null
+          excerpt?: string | null
+          finder_id?: string
+          fts?: unknown | null
+          id?: string
+          is_admin_published?: boolean | null
+          is_promoted?: boolean | null
+          is_user_published?: boolean | null
+          likes?: number | null
+          listing_id?: string | null
+          owner_id?: string | null
+          price_promotional_in_cents?: number | null
+          price_regular_in_cents?: number | null
+          ratings_count?: number | null
+          size?: string | null
+          slug?: string
+          subcategory_id?: string | null
+          title?: string
+          updated_at?: string | null
+          views?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sublistings_finder_id_fkey"
+            columns: ["finder_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sublistings_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sublistings_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sublistings_subcategory_id_fkey"
+            columns: ["subcategory_id"]
+            isOneToOne: false
+            referencedRelation: "subcategories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sublistings_subtags: {
+        Row: {
+          sublisting_id: string
+          subtag_id: string
+        }
+        Insert: {
+          sublisting_id: string
+          subtag_id: string
+        }
+        Update: {
+          sublisting_id?: string
+          subtag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sublistings_subtags_listing_id_fkey"
+            columns: ["sublisting_id"]
+            isOneToOne: false
+            referencedRelation: "sublistings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sublistings_subtags_subtag_id_fkey"
+            columns: ["subtag_id"]
+            isOneToOne: false
+            referencedRelation: "subtags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subtag_groups: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      subtag_groups_subtags_association: {
+        Row: {
+          subtag_group_id: string
+          subtag_id: string
+        }
+        Insert: {
+          subtag_group_id: string
+          subtag_id: string
+        }
+        Update: {
+          subtag_group_id?: string
+          subtag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subtag_groups_subtags_association_subtag_group_id_fkey"
+            columns: ["subtag_group_id"]
+            isOneToOne: false
+            referencedRelation: "subtag_groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subtag_groups_subtags_association_subtag_id_fkey"
+            columns: ["subtag_id"]
+            isOneToOne: false
+            referencedRelation: "subtags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subtags: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          headline: string | null
+          id: string
+          image_url_hero: string | null
+          image_url_small: string | null
+          name: string
+          slug: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          headline?: string | null
+          id?: string
+          image_url_hero?: string | null
+          image_url_small?: string | null
+          name: string
+          slug: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          headline?: string | null
+          id?: string
+          image_url_hero?: string | null
+          image_url_small?: string | null
+          name?: string
+          slug?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      tag_groups: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      tag_groups_tags_association: {
+        Row: {
+          tag_group_id: string
+          tag_id: string
+        }
+        Insert: {
+          tag_group_id: string
+          tag_id: string
+        }
+        Update: {
+          tag_group_id?: string
+          tag_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tag_groups_tags_association_tag_group_id_fkey"
+            columns: ["tag_group_id"]
+            isOneToOne: false
+            referencedRelation: "tag_groups"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tag_groups_tags_association_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tags: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          headline: string | null
+          id: string
+          image_url_hero: string | null
+          image_url_small: string | null
+          name: string
+          slug: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          headline?: string | null
+          id?: string
+          image_url_hero?: string | null
+          image_url_small?: string | null
+          name: string
+          slug: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          headline?: string | null
+          id?: string
+          image_url_hero?: string | null
+          image_url_small?: string | null
           name?: string
           slug?: string
           updated_at?: string | null
@@ -540,11 +1008,11 @@ export type Database = {
       users: {
         Row: {
           avatar_url: string | null
-          created_at: string
+          created_at: string | null
           email: string | null
           full_name: string | null
           id: string
-          is_active: boolean
+          is_active: boolean | null
           is_super_admin: boolean | null
           tag_line: string | null
           updated_at: string | null
@@ -553,11 +1021,11 @@ export type Database = {
         }
         Insert: {
           avatar_url?: string | null
-          created_at?: string
+          created_at?: string | null
           email?: string | null
           full_name?: string | null
           id: string
-          is_active?: boolean
+          is_active?: boolean | null
           is_super_admin?: boolean | null
           tag_line?: string | null
           updated_at?: string | null
@@ -566,11 +1034,11 @@ export type Database = {
         }
         Update: {
           avatar_url?: string | null
-          created_at?: string
+          created_at?: string | null
           email?: string | null
           full_name?: string | null
           id?: string
-          is_active?: boolean
+          is_active?: boolean | null
           is_super_admin?: boolean | null
           tag_line?: string | null
           updated_at?: string | null
@@ -611,6 +1079,25 @@ export type Database = {
           id: string
           name: string
           slug: string
+          category_groups: Json
+        }[]
+      }
+      get_active_subcategories: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          name: string
+          slug: string
+          subcategory_groups: Json
+        }[]
+      }
+      get_active_subtags: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          name: string
+          slug: string
+          subtag_groups: Json
         }[]
       }
       get_active_tags: {
@@ -619,6 +1106,7 @@ export type Database = {
           id: string
           name: string
           slug: string
+          tag_groups: Json
         }[]
       }
       get_active_topics: {
@@ -647,6 +1135,35 @@ export type Database = {
           slug: string
           headline: string
           description: string
+          image_url_hero: string
+          image_url_small: string
+          category_groups: Json
+        }[]
+      }
+      get_full_active_subcategories: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          name: string
+          slug: string
+          headline: string
+          description: string
+          image_url_hero: string
+          image_url_small: string
+          subcategory_groups: Json
+        }[]
+      }
+      get_full_active_subtags: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          name: string
+          slug: string
+          headline: string
+          description: string
+          image_url_hero: string
+          image_url_small: string
+          subtag_groups: Json
         }[]
       }
       get_full_active_tags: {
@@ -657,11 +1174,31 @@ export type Database = {
           slug: string
           headline: string
           description: string
+          image_url_hero: string
+          image_url_small: string
+          tag_groups: Json
         }[]
       }
       get_listing_statistics: {
         Args: {
           logged_user_id?: string
+        }
+        Returns: Json
+      }
+      get_subcategories_with_sublisting_count: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          name: string
+          slug: string
+          headline: string
+          listing_count: number
+        }[]
+      }
+      get_sublisting_statistics: {
+        Args: {
+          logged_user_id?: string
+          sublisting_id?: string
         }
         Returns: Json
       }
@@ -722,6 +1259,13 @@ export type Database = {
       increment_field: {
         Args: {
           listing_id: string
+          field_name: string
+        }
+        Returns: undefined
+      }
+      increment_field_sublisting: {
+        Args: {
+          sublisting_id: string
           field_name: string
         }
         Returns: undefined
@@ -788,6 +1332,18 @@ export type Database = {
           similarity: number
         }[]
       }
+      match_sublistings: {
+        Args: {
+          embedding: string
+          match_threshold: number
+          match_count: number
+        }
+        Returns: {
+          id: string
+          title: string
+          similarity: number
+        }[]
+      }
       sparsevec_out: {
         Args: {
           "": unknown
@@ -809,6 +1365,13 @@ export type Database = {
       update_rating: {
         Args: {
           listing_id: string
+          new_rating: number
+        }
+        Returns: undefined
+      }
+      update_rating_sublisting: {
+        Args: {
+          sublisting_id: string
           new_rating: number
         }
         Returns: undefined

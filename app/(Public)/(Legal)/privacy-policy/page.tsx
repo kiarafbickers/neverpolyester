@@ -8,6 +8,7 @@ import {
 	SectionDescription,
 	SubSectionOuterContainer,
 	SubSectionInnerContainer,
+	SectionHeaderContainer,
 } from '@/ui/Section';
 // Import Functions & Actions & Hooks & State
 // Import Data
@@ -23,10 +24,12 @@ export const metadata: Metadata = {
 export default function PrivacyPolicyPage() {
 	return (
 		<SectionOuterContainer id="Privacy Policy">
-			<SectionTitle>Privacy Policy</SectionTitle>
-			<SectionDescription>Last updated May 28, 2024</SectionDescription>
+			<SectionHeaderContainer>
+				<SectionTitle>Privacy Policy</SectionTitle>
+				<SectionDescription>Last updated May 28, 2024</SectionDescription>
+			</SectionHeaderContainer>
 			<SubSectionOuterContainer className="max-w-3xl">
-				<SubSectionInnerContainer className="items-start prose">
+				<SubSectionInnerContainer className="items-start prose text-justify dark:prose-invert">
 					<p>
 						Welcome to {COMPANY_BASIC_INFORMATION.NAME}. We are committed to
 						protecting your privacy. This Privacy Policy explains how we

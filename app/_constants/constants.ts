@@ -1,5 +1,5 @@
 // Import Types
-import { SortDirectionObject } from '@/types';
+import { SortDirectionObject, SublistingSortDirectionObject } from '@/types';
 // Import External Packages
 // Import Components
 // Import Functions & Actions & Hooks & State
@@ -18,7 +18,7 @@ export const COMPANY_BASIC_INFORMATION = {
 	/**
 	 * The name of the company.
 	 */
-	NAME: 'CompanyName',
+	NAME: 'Breakup With The Grocery',
 
 	/**
 	 * The legal name of the company. If no legal name is available, use the name of the company.
@@ -28,7 +28,7 @@ export const COMPANY_BASIC_INFORMATION = {
 	/**
 	 * The OTHER_INFO_TEXT will only be shown in the imprint. It can be used to show additional information, e.g. the VAT-ID of your business. It is an array of strings, where each string will be shown as a separate line.
 	 */
-	OTHER_INFO_LINES: ['EU-Vat-ID: 1234'],
+	OTHER_INFO_LINES: ['-'],
 
 	/**
 	 * The address of the company. Leave as '' if you do not want to display an address.
@@ -73,12 +73,13 @@ export const COMPANY_MARKETING_INFORMATION = {
 	/**
 	 * The meta title for the resource directory. Maximum 60-70 characters.
 	 */
-	META_TITLE: 'A resource directory for ABCs and XYZs',
+	META_TITLE: 'Breakup With The Grocery Store - Farm-Fresh, Top-Quality Foods',
 
 	/**
 	 * The meta description for the resource directory. Maximum 160 characters.
 	 */
-	META_DESCRIPTION: 'Find the best tools and resources for your ABC journey.',
+	META_DESCRIPTION:
+		"An online community hub connecting local people with local meat producers, fostering appreciation for the food's journey from pasteur to plate.",
 
 	/**
 	 * The meta keywords for the resource directory. Max 10 keywords.
@@ -192,6 +193,11 @@ export const GENERAL_SETTINGS = {
 	// If you set 'true', all listings will be published immediately after you or the user have published them.
 	PRE_ADMIN_APPROVE_LISTINGS: false,
 
+	// Do you - as an Admin - want to pre-approve each user-approved SUBlisting before it is published?
+	// Set 'false' if you want to manually review and approve sublistings before they are published. This is advisable, if you allow users to publish sublistings.
+	// If you set 'true', all sublistings will be published immediately after you or the user have published them.
+	PRE_ADMIN_APPROVE_SUBLISTINGS: true,
+
 	// Do you - as an Admin - want to pre-approve each user-approved blog post before it is published?
 	// Set 'false' if you want to manually review and approve blog posts before they are published. This is advisable, if you allow users to publish blog posts.
 	// If you set 'true', all blog posts will be published immediately after you or the user have published them.
@@ -210,10 +216,27 @@ export const GENERAL_SETTINGS = {
  * ! Do not change the structure of the objects. Only change the values.
  * */
 
+// Listings & Sublistings
+
+export const LISTINGS_SETTINGS = {
+	singularName: 'Farm',
+	pluralName: 'Farms',
+	explanationForAiContentCreation:
+		'Each such listing provides detailed information about one farm or producer.',
+};
+
+export const SUBLISTINGS_SETTINGS = {
+	singularName: 'product',
+	pluralName: 'products',
+	explanationForAiContentCreation:
+		"Each such listing provides detailed information about a farm's product for example: ground beef.",
+};
+
 // HERO
 
-export const HERO_TITLE = 'All Things ABC.';
-export const HERO_SLOGAN = 'The ultimate resource directory for XYZ.';
+export const HERO_TITLE = 'Break up with the grocery store';
+export const HERO_SLOGAN =
+	"Say goodbye to grocery stores and hello to farm-fresh, top-quality foods. We're a community hub connecting you with farmers and artisan producers who harvest and deliver unique specialty ingredients right to your door. Enjoy the best of farm-to-table, affordably.";
 
 // FOOTER
 
@@ -239,7 +262,8 @@ export const FOOTER_DISCLAIMERS = [
 
 // What is the slogan you want to show in the Footer?
 
-export const FOOTER_SLOGAN = 'The ultimate resource directory for XYZs';
+export const FOOTER_SLOGAN =
+	"We revolutionize meat by offering an alternative to the impersonal factory farm model. We connect you directly with farmers, fostering appreciation for your food's journey from pasture to plate.";
 
 // What are the external links you want to show in the Footer? (e.g. to your other projects)
 
@@ -301,6 +325,37 @@ export const DEFAULT_IMAGE_OPTIONS = [
  * If you want to add a new sort direction, add it here.
  */
 export const SORT_DIRECTIONS: SortDirectionObject[] = [
+	{
+		label: 'Most Popular',
+		value: 'mostPopular',
+		sortKey: 'likes',
+		sortDir: 'desc',
+	},
+	{
+		label: 'Least Popular',
+		value: 'leastPopular',
+		sortKey: 'likes',
+		sortDir: 'asc',
+	},
+	{
+		label: 'Most Views',
+		value: 'mostViews',
+		sortKey: 'views',
+		sortDir: 'desc',
+	},
+	{
+		label: 'Least Views',
+		value: 'leastViews',
+		sortKey: 'views',
+		sortDir: 'asc',
+	},
+	{ label: 'Newest', value: 'newest', sortKey: 'created_at', sortDir: 'desc' },
+	{ label: 'Oldest', value: 'oldest', sortKey: 'created_at', sortDir: 'asc' },
+	{ label: 'A-Z', value: 'az', sortKey: 'title', sortDir: 'asc' },
+	{ label: 'Z-A', value: 'za', sortKey: 'title', sortDir: 'desc' },
+];
+
+export const SUBLISTING_SORT_DIRECTIONS: SublistingSortDirectionObject[] = [
 	{
 		label: 'Most Popular',
 		value: 'mostPopular',

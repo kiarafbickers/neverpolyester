@@ -4,10 +4,11 @@ import { Metadata } from 'next/types';
 // Import Components
 import { SortDirectionBox } from '@/components/SortDirectionBox';
 import ListingOverview from '@/components/listings/ListingOverview';
-import { TagSearchBox } from '@/components/tags/TagSearchBox';
-import CategoryBar from '@/components/categories/CategoryBar';
+import {
+	TagSearchBox,
+	TagSearchBoxMobile,
+} from '@/components/tags/TagSearchBox';
 import AdSlot from '@/components/ads/AdSlot';
-import Hero from '@/components/Hero';
 import {
 	SectionOuterContainer,
 	SubSectionInnerContainer,
@@ -20,6 +21,8 @@ import {
 	ImageCardImageContainer,
 	ImageCardTitle,
 } from '@/ui/ImageCard';
+import NewsletterBox_BeeHiiv from '@/components/NewsletterSection';
+import Breadcrumps from '@/components/_ui/Breadcrumps';
 // Import Functions & Actions & Hooks & State
 import getPartialTags from '@/actions/tags/getPartialTags';
 import createMetaData from '@/lib/createMetaData';
@@ -60,51 +63,56 @@ function OverviewLoading(params: {
 	);
 }
 
-async function FilterBar() {
-	const tagData = await getPartialTags('active');
-	return (
-		<SubSectionOuterContainer>
-			<SubSectionInnerContainer>
-				<div className="flex flex-wrap md:flex-nowrap items-start justify-between w-full align-top md:h-24 space-y-4 md:space-y-0">
-					<Suspense fallback={null}>
-						<SortDirectionBox />
-					</Suspense>
-					<TagSearchBox tags={tagData.data} />
-				</div>
-			</SubSectionInnerContainer>
-		</SubSectionOuterContainer>
-	);
-}
-
 // Dynamic Page because of searchParams. Could be changed to static if we push the searchParams to the client by using useSearchParams in the next best client component. However, this would require a lot of changes in the codebase.
-export default function Page({
+export default async function Page({
 	searchParams,
 }: {
 	searchParams: { [key: string]: string | undefined };
 }) {
+	const tagData = await getPartialTags('active');
 	return (
-		<SectionOuterContainer className="max-w-5xl mx-auto py-0 pb-12">
-			<CategoryBar
-				hrefPrefix="/category/"
-				text="Trending Categories"
-				className="self-start"
-				badgeClassName="hover:bg-muted/60"
-			/>
-			<Hero />
-			<Suspense fallback={null}>
-				<FilterBar />
-			</Suspense>
-			<Suspense fallback={<OverviewLoading limit={6} maxCols={3} />}>
-				<ListingOverview
-					categoryNavigation={false}
-					filterAndSortParams={searchParams}
-					maxNumListings={1000}
-					maxCols={3}
-					preferPromoted
-					itemsPerPage={12}
-				/>
-			</Suspense>
-			<AdSlot slot={`explore-2`} />
+		<SectionOuterContainer className="bg-background-secondary">
+			<SubSectionOuterContainer className="md:py-10">
+				<SubSectionInnerContainer className="max-w-7xl">
+					<Breadcrumps />
+					<div className="flex gap-4 pt-4">
+						<Suspense fallback={null}>
+							<TagSearchBox tags={tagData.data} className="hidden lg:block" />
+						</Suspense>
+						<div className="flex-grow">
+							<div className="flex flex-wrap sm:flex-nowrap justify-between">
+								<h1 className="text-3xl font-semibold whitespace-nowrap">
+									All Farms
+								</h1>
+								<div className="flex justify-between w-full  sm:w-fit pt-4 sm:pt-0">
+									<TagSearchBoxMobile
+										tags={tagData.data}
+										className="lg:hidden"
+									/>
+									<Suspense fallback={null}>
+										<SortDirectionBox />
+									</Suspense>
+								</div>
+							</div>
+							<Suspense fallback={<OverviewLoading limit={6} maxCols={3} />}>
+								<ListingOverview
+									categoryNavigation={false}
+									filterAndSortParams={searchParams}
+									maxNumListings={1000}
+									maxCols={3}
+									preferPromoted
+									itemsPerPage={12}
+									showSearch={false}
+									className="py-0 md:py-0"
+								/>
+							</Suspense>
+						</div>
+					</div>
+
+					<AdSlot slot={`explore-2`} />
+				</SubSectionInnerContainer>
+			</SubSectionOuterContainer>
+			<NewsletterBox_BeeHiiv className="bg-white dark:bg-background-secondary" />
 		</SectionOuterContainer>
 	);
 }

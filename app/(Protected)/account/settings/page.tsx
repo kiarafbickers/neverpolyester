@@ -29,7 +29,9 @@ export default async function AccountPage() {
 		<SectionOuterContainer className="max-w-5xl">
 			<Card className="w-full">
 				<CardHeader>
-					<SectionTitle>Account Settings</SectionTitle>
+					<SectionTitle className="mx-0 max-w-none text-left">
+						Account Settings
+					</SectionTitle>
 					<CardDescription>
 						Please contact us at {COMPANY_BASIC_INFORMATION.SUPPORT_EMAIL} if
 						you need any support or want to change your email.

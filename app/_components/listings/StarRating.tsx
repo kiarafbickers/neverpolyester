@@ -6,7 +6,7 @@ import { useId } from 'react';
 import { useState } from 'react';
 // Import Components
 // Import Functions & Actions & Hooks & State
-import incrementStarRating from '@/app/_actions/listings/incrementStarRating';
+import incrementStarRating from '@/actions/listings/incrementStarRating';
 import { toast } from '@/lib/useToaster';
 // Import Data
 // Import Assets & Icons

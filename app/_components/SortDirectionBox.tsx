@@ -18,7 +18,7 @@ import {
 // Import Data
 import { SORT_DIRECTIONS } from '@/constants';
 // Import Assets & Icons
-import { SortDescIcon } from 'lucide-react';
+import { ChevronDown, SortDescIcon } from 'lucide-react';
 
 /**
  * Renders a component for sorting direction selection.
@@ -64,29 +64,21 @@ export function SortDirectionBox() {
 	};
 
 	return (
-		<div className="overflow-visible relative w-full md:w-96 flex flex-col items-start">
-			<div className="w-full flex justify-between items-end">
-				<p className="text-sm font-semibold py-2">Sort by...</p>
-				<Button
-					variant="link"
-					className="self-end text-xs text-black"
-					onClick={() => handleSelect('')}
-				>
-					clear
-				</Button>
-			</div>
-
+		<div className="overflow-visible relative w-52 flex flex-col items-start">
 			<Select
 				value={value}
 				onValueChange={(value) => {
 					handleSelect(value);
 				}}
 			>
-				<SelectTrigger>
-					<SelectValue placeholder="Popular" />
-					<SortDescIcon className="h-4 w-4 opacity-50" />
+				<SelectTrigger className="rounded-full">
+					<div className="flex gap-x-2">
+						<p className="text-muted-foreground">Sorted by:</p>
+						<SelectValue placeholder="Popular" />
+					</div>
+					<ChevronDown className="h-4 w-4 opacity-50" />
 				</SelectTrigger>
-				<SelectContent className="bg-white text-black dark:bg-black dark:text-white">
+				<SelectContent className="bg-white text-foreground dark:bg-black dark:text-white">
 					<SelectGroup>
 						{SORT_DIRECTIONS.map((direction) => (
 							<SelectItem

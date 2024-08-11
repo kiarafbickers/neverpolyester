@@ -81,6 +81,7 @@ export default function SocialShareBar({
 									trusted
 									className={cn(
 										asButton && buttonVariants({ variant: 'outline' }),
+										'px-1 py-0.5 mx-1 h-fit',
 
 										className
 									)}

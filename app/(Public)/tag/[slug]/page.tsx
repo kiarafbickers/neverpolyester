@@ -85,9 +85,6 @@ export default async function Page({ params, searchParams }: Props) {
 			</Suspense>
 
 			<Suspense fallback={null}>
-				<FilterBar />
-			</Suspense>
-			<Suspense fallback={null}>
 				<ListingOverview
 					categoryNavigation={false}
 					filterAndSortParams={{
@@ -96,6 +93,7 @@ export default async function Page({ params, searchParams }: Props) {
 					}}
 					maxNumListings={100}
 					maxCols={3}
+					className="py-0 md:py-0"
 				/>
 			</Suspense>
 		</SectionOuterContainer>

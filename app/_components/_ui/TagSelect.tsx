@@ -23,10 +23,24 @@ export function TagSelect({
 	possibleTags,
 	selectedTags,
 	updaterFunction,
+	label = 'Tag Select',
+	placeholder = 'Choose some tags',
+	whatIsSelected = 'Tags',
+	description = '',
+	code = '',
 }: {
 	possibleTags: { name: string }[];
 	selectedTags: { name: string }[] | null;
-	updaterFunction: (value: { name: string }[], config?: Object) => void;
+	updaterFunction: (
+		value: { name: string }[],
+		code?: string,
+		config?: Object
+	) => void;
+	label?: string;
+	placeholder?: string;
+	whatIsSelected?: string;
+	description?: string;
+	code?: string;
 }) {
 	const [allTags, setAllTags] = useState<{ name: string }[]>([]);
 	const [selected, setSelected] = useState<{ name: string }[]>([]);
@@ -60,7 +74,7 @@ export function TagSelect({
 			newTagArray = selected.concat(newTag);
 			setSelected((prev) => prev.concat(newTag));
 		}
-		updaterFunction(newTagArray);
+		updaterFunction(newTagArray, code);
 	};
 
 	const selectables = allTags.filter(
@@ -69,9 +83,12 @@ export function TagSelect({
 
 	return (
 		<div className="overflow-visible relative w-full flex flex-col items-start">
-			<div className="w-full flex justify-between items-center">
+			<div className="w-full grid justify-between items-center">
 				<p className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 pb-3">
-					Tag Select
+					{label}
+				</p>
+				<p className="text-[0.8rem] text-muted-foreground py-1">
+					{description}
 				</p>
 			</div>
 
@@ -82,18 +99,20 @@ export function TagSelect({
 				value={''}
 			>
 				<SelectTrigger className="text-muted-foreground">
-					Choose some Tags
+					{placeholder}
 				</SelectTrigger>
-				<SelectContent className="bg-white text-black dark:bg-black dark:text-white">
+				<SelectContent className="bg-white text-foreground dark:bg-black dark:text-white">
 					<SelectGroup>
 						<SelectLabel>
-							{selectables.length > 0 ? 'Tags' : 'You selected all tags!'}
+							{selectables.length > 0
+								? whatIsSelected
+								: `You selected all ${whatIsSelected}!`}
 						</SelectLabel>
 						{selectables.map((tag) => (
 							<SelectItem
 								key={tag.name}
 								value={tag.name!}
-								className="hover:bg-neutral-100 hover:dark:text-black cursor-pointer"
+								className="hover:bg-neutral-100 hover:dark:text-foreground cursor-pointer"
 							>
 								{tag.name}
 							</SelectItem>

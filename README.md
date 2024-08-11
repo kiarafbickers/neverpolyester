@@ -37,7 +37,7 @@ Follow the official documentation here: [DirectoryStack Docs](https://directorys
   - Open feedback via a custom feedback box.
   - Listing proposals through a dedicated form.
   - Listing-specific feedback like "Report this listing."
-- ✨ **Custom Authoring Environment:** A secure, customizable authoring environment accessible at `YOUR_DOMAIN.com/account/secret-admin`.
+- ✨ **Custom Authoring Environment:** A secure, customizable authoring environment accessible at `YOUR_DOMAIN.com/secret-admin`.
 - 🌐 **SEO Optimization:** Built-in SEO features for better visibility on search engines.
 - 🗺️ **Automated Sitemap Creation:** Ensure your site is always up-to-date with search engines.
 - 🔒 **Best Practices:** Adherence to Next.js best practices, including global error management.
@@ -307,3 +307,24 @@ To deploy your local project to Vercel, push it to [GitHub](https://docs.github.
 
 - It should be clear: I am not a lawyer, so I am not warranting or guaranteeing the correctness of the provided legal documents, which serve only as a guide. Talk to an actual lawyer to be on the safe-side.
 - Make sure you have set up a company if you want to make money with the directory.
+
+## NEW
+
+### Google Maps
+
+- Go to https://console.cloud.google.com/projectselector2/home/dashboard
+- Create a new project, give it a Project Name
+- Go to https://console.cloud.google.com/apis/library/maps-embed-backend.googleapis.com Maps Embed API to enable the api key (its free for unlimited usage), click on 'Enable'
+- Follow the onboarding flow. You will need a credit card - but the usage of the Maps Embed API is free (see here: https://mapsplatform.google.com/pricing/).
+- Check all data and click "Start Free".
+- You might need to have your credit card details verified.
+- Once done: Copy your API KEY (and uncheck the checkbox for "Enable all Google Maps API for this account" and leave the other checkbox checked to get budget alerts (in case anything goes wrong - you will have $200 credits every month though))
+- Paste the API Key to your env.local as `GOOGLE_MAPS_API_KEY`
+- In the next window at google, it will ask you to protect your API key. For type, select "API restrictions" and for the API select "Maps Embed API". And confirm by clicking 'Rectrict Key'
+- For me, there came an error message that the API is not valid or has not been enabled. Check here again to make sure Maps Embed Api is enabled: https://console.cloud.google.com/apis/library/maps-embed-backend.googleapis.com or check here under your api dashboard (https://console.cloud.google.com/apis/dashboard)
+
+### Beehiiv
+
+- Go to https://beehiiv.com
+- Follow the instructions here to obtain the api key (https://support.beehiiv.com/hc/en-us/articles/13091918395799-Where-to-find-your-Publication-ID-or-API-keys)
+- Paste the API Key to your env.local as `NEXT_PUBLIC_BEEHIIV_EMBED_URL`

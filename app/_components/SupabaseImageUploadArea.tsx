@@ -8,6 +8,8 @@ import { Input } from '@/ui/Input';
 import { Label } from '@/ui/Label';
 // Import Functions & Actions & Hooks & State
 import createSupabaseBrowserClient from '@/lib/createSupabaseBrowserClient';
+import { cn } from '@/utils';
+import { Button } from './_ui/Button';
 // Import Data
 // Import Assets & Icons
 
@@ -34,11 +36,18 @@ export default function SupabaseImageUploadArea({
 	width: number;
 	height: number;
 	onUpload: (url: string) => void;
-	database: 'avatars' | 'listing_images' | 'blog_images' | 'ad_images';
+	database:
+		| 'avatars'
+		| 'listing_images'
+		| 'sublisting_images'
+		| 'blog_images'
+		| 'ad_images'
+		| 'cattag_images';
 }) {
 	const supabase = createSupabaseBrowserClient();
 	const [imageURL, setImageURL] = useState<string | null | undefined>(null);
 	const [uploading, setUploading] = useState(false);
+	const [fetchURL, setFetchURL] = useState('');
 
 	useEffect(() => {
 		async function downloadImage(path: string) {
@@ -92,6 +101,38 @@ export default function SupabaseImageUploadArea({
 		}
 	};
 
+	const fetchImageFromUrl = async (url: string) => {
+		if (!url) return;
+
+		try {
+			setUploading(true);
+
+			const response = await fetch(url);
+			const arrayBuffer = await response.arrayBuffer();
+			const file = new File([arrayBuffer], 'image.jpg', {
+				type: 'image/jpeg',
+			});
+
+			const fileExt = file.name.split('.').pop();
+			const filePath = `${uid}-${Math.random()}.${fileExt}`;
+
+			const { error: uploadError } = await supabase.storage
+				.from(database)
+				.upload(filePath, file);
+
+			if (uploadError) {
+				throw uploadError;
+			}
+
+			onUpload(filePath);
+		} catch (error) {
+			console.error('Error fetching image: ', error);
+			alert('Error fetching image. Please try again.');
+		} finally {
+			setUploading(false);
+		}
+	};
+
 	return (
 		<div>
 			<Image
@@ -99,6 +140,7 @@ export default function SupabaseImageUploadArea({
 				height={height}
 				src={imageURL || '/img/placeholder.png'}
 				alt="Image"
+				className={cn(width === height && 'aspect-square')}
 			/>
 			<div className="grid w-full gap-1.5 mt-4">
 				<Label htmlFor="picture" className="text-xs italic">
@@ -112,6 +154,28 @@ export default function SupabaseImageUploadArea({
 					onChange={uploadImage}
 					disabled={uploading}
 				/>
+			</div>
+
+			<div className="grid w-full gap-1.5 mt-4">
+				<Label htmlFor="url" className="text-xs italic">
+					Or enter img url including https://
+				</Label>
+				<div className="flex gap-2">
+					<Input
+						type="text"
+						placeholder="https://PATH_TO_IMAGE.com/IMAGE_NAME.jpg"
+						name="url"
+						onChange={(e) => setFetchURL(e.target.value)}
+						disabled={uploading}
+					/>
+					<Button
+						variant="outline"
+						type="button"
+						onClick={() => fetchImageFromUrl(fetchURL)}
+					>
+						Fetch
+					</Button>
+				</div>
 			</div>
 		</div>
 	);

@@ -203,26 +203,16 @@ export default async function ListingActionBar({
 	listing: ListingType;
 	className?: string;
 }) {
-	const supabase = createSupabaseRLSClient();
-
-	const {
-		data: { user },
-	} = await supabase.auth.getUser();
-
 	if (!listing) return null;
 	return (
 		<div
 			className={cn(
-				'flex flex-wrap max-w-56 sm:max-w-none mx-auto items-center justify-center md:justify-start gap-4 md:py-4 dark:text-white',
+				'flex flex-wrap max-w-56 sm:max-w-none mx-auto items-center justify-center md:justify-center gap-4 md:py-4 dark:text-white',
 				className
 			)}
 		>
-			{GENERAL_SETTINGS.USE_LIKE && (
-				<LikeButton listing={listing} user={user} />
-			)}
-			{GENERAL_SETTINGS.USE_RATE && (
-				<RatingDialog listing={listing} user={user} />
-			)}
+			{GENERAL_SETTINGS.USE_LIKE && <LikeButton listing={listing} />}
+			{GENERAL_SETTINGS.USE_RATE && <RatingDialog listing={listing} />}
 			{GENERAL_SETTINGS.USE_CLAIM && <ClaimDialog listing={listing} />}
 			{GENERAL_SETTINGS.USE_REPORT && (
 				<Suspense>

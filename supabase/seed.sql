@@ -25,5 +25,6 @@ SET row_security = on;
 INSERT INTO "storage"."buckets" ("id", "name", "owner", "created_at", "updated_at", "public", "avif_autodetection", "file_size_limit", "allowed_mime_types", "owner_id") VALUES
 	('avatars', 'avatars', NULL, '2024-05-15 17:15:33.949923+00', '2024-05-15 17:15:33.949923+00', true, false, NULL, NULL, NULL),
 	('listing_images', 'listing_images', NULL, '2024-05-16 09:08:39.524497+00', '2024-05-16 09:08:39.524497+00', true, false, NULL, NULL, NULL),
+	('sublisting_images', 'sublisting_images', NULL, '2024-05-16 09:08:39.524497+00', '2024-05-16 09:08:39.524497+00', true, false, NULL, NULL, NULL),
 	('blog_images', 'blog_images', NULL, '2024-05-30 07:45:38.436556+00', '2024-05-30 07:45:38.436556+00', true, false, NULL, NULL, NULL),
-	('ad_images', 'ad_images', NULL, '2024-06-13 14:28:01.183241+00', '2024-06-13 14:28:01.183241+00', true, false, NULL, NULL, NULL);
+	('ad_images', 'ad_images', NULL, '2024-06-13 14:28:01.183241+00', '2024-06-13 14:28:01.183241+00', true, false, NULL, NULL, NULL), ('cattag_images', 'cattag_images', NULL, '2024-06-13 14:28:01.183241+00', '2024-06-13 14:28:01.183241+00', true, false, NULL, NULL, NULL);

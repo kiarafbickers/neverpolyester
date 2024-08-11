@@ -8,7 +8,7 @@ import ListingEditor from '@/components/listings/ListingEditor';
 // Import Functions & Actions & Hooks & State
 import getListingByListingId from '@/actions/listings/getListingByListingId';
 import serverAuth from '@/actions/auth/serverAuth';
-import getPartialTags from '@/actions/tags/getPartialTags';
+import getFullTags from '@/actions/tags/getFullTags';
 import getPartialCategories from '@/actions/categories/getPartialCategories';
 // Import Data
 import { COMPANY_BASIC_INFORMATION } from '@/constants'; // Import Assets & Icons
@@ -51,12 +51,14 @@ export default async function ListingEditorPage({
 		);
 	}
 
-	const tagData = await getPartialTags('all');
+	const tagData = await getFullTags('all');
 	const categoryData = await getPartialCategories('all');
 
 	return (
 		<SectionOuterContainer>
-			<SectionTitle>Update Listing</SectionTitle>
+			<SectionTitle className="mx-0 max-w-none text-left">
+				Update Listing
+			</SectionTitle>
 			<ListingEditor
 				listing={listingData.data}
 				tagChoices={tagData.data}

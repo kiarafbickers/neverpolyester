@@ -25,13 +25,7 @@ import {
 // Import Assets & Icons
 import { StarIcon } from 'lucide-react';
 
-export default function RatingDialog({
-	listing,
-	user,
-}: {
-	listing: ListingType;
-	user: any;
-}) {
+export default function RatingDialog({ listing }: { listing: ListingType }) {
 	const [rating, setRating] = useState(0);
 
 	if (!listing) {
@@ -51,9 +45,7 @@ export default function RatingDialog({
 							</div>
 						</DialogTrigger>
 					</TooltipTrigger>
-					<TooltipContent>
-						<p>{user ? 'Rate it!' : 'Sign in to rate!'}</p>
-					</TooltipContent>
+					<TooltipContent>Rate it!</TooltipContent>
 				</Tooltip>
 			</TooltipProvider>
 			<DialogContent className="sm:max-w-[425px]">
@@ -82,22 +74,18 @@ export default function RatingDialog({
 					</div>
 					<p>Your Rating</p>
 					<div className="flex items-center">
-						{user ? (
-							rating === 0 ? (
-								<HoverRating
-									numberOfStars={5}
-									listingId={listing.id}
-									rating={rating}
-									ratingUpdate={setRating}
-								/>
-							) : (
-								<>
-									<span className="w-10">{rating ?? 0}</span>
-									<StarRating rating={rating} maxRating={5} numberOfStars={5} />
-								</>
-							)
+						{rating === 0 ? (
+							<HoverRating
+								numberOfStars={5}
+								listingId={listing.id}
+								rating={rating}
+								ratingUpdate={setRating}
+							/>
 						) : (
-							<p className="text-sm italic">Please sign in to rate!</p>
+							<>
+								<span className="w-10">{rating ?? 0}</span>
+								<StarRating rating={rating} maxRating={5} numberOfStars={5} />
+							</>
 						)}
 					</div>
 				</div>

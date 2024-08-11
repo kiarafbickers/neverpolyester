@@ -29,7 +29,7 @@ const ImageCard = React.forwardRef<
 	<div
 		ref={ref}
 		className={cn(
-			'group relative rounded-xl border shadow-md border-transparent bg-card dark:bg-black text-card-foreground ',
+			'group relative rounded-xl border shadow-md border-transparent bg-card text-card-foreground ',
 			linkHover &&
 				'transition-colors ease-in hover:border-neutral-400 dark:hover:border-neutral-500',
 			className
@@ -59,19 +59,19 @@ const ImageCardPrice = React.forwardRef<
 		>
 			<div className="flex p-2 bg-white bg-opacity-20 dark:bg-opacity-50 backdrop-blur-lg rounded-full">
 				{priceText ? (
-					<p className="text-foreground dark:text-black font-semibold text-lg">
+					<p className="text-foreground dark:text-foreground font-semibold text-lg">
 						{priceText}
 					</p>
 				) : (
 					<>
 						{priceWas && (
-							<p className="line-through text-sm mr-2 dark:text-black">
+							<p className="line-through text-sm mr-2 dark:text-foreground">
 								{currencySymbol || '$'}
 								{priceWas}
 							</p>
 						)}
 
-						<p className="text-foreground dark:text-black font-semibold text-lg">
+						<p className="text-foreground dark:text-foreground font-semibold text-lg">
 							{currencySymbol || '$'}
 							{priceNow}
 						</p>
@@ -90,7 +90,7 @@ const ImageCardTitle = React.forwardRef<
 	<h3
 		ref={ref}
 		className={cn(
-			'text-xl font-semibold leading-none tracking-tight',
+			'text-base md:text-xl font-semibold leading-none tracking-tight',
 			className
 		)}
 		{...props}
@@ -117,7 +117,7 @@ const ImageCardFooter = React.forwardRef<
 	HTMLDivElement,
 	React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-	<div ref={ref} className={cn('grid space-y-2 p-4 ', className)} {...props} />
+	<div ref={ref} className={cn('p-4 ', className)} {...props} />
 ));
 ImageCardFooter.displayName = 'ImageCardFooter';
 

@@ -12,6 +12,7 @@ export default {
 		...Array.from({ length: 11 }, (_, i) => `sm:grid-cols-${i + 1}`),
 		...Array.from({ length: 11 }, (_, i) => `md:grid-cols-${i + 1}`),
 		...Array.from({ length: 11 }, (_, i) => `lg:grid-cols-${i + 1}`),
+		...Array.from({ length: 11 }, (_, i) => `xl:grid-cols-${i + 1}`),
 		...Array.from(
 			{ length: 6 },
 			(_, i) => `group-hover:-translate-x-${(i + 1) * 12}`
@@ -32,11 +33,16 @@ export default {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['var(--font-inter)'],
+				sans: ['var(--font-manrope)'],
 			},
 			colors: {
 				'dark-gray': '#302f36',
 				background: 'hsl(var(--background))',
+				'background-secondary': 'hsl(var(--background-secondary))',
+				'search-background': 'hsl(var(--search-background))',
+				'light-red-bg': 'hsl(var(--light-red-bg))',
+				'text-on-light-red': 'hsl(var(--text-on-light-red))',
+				'dark-foreground': 'hsl(var(--dark-foreground))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',

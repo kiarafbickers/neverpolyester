@@ -23,7 +23,7 @@ export default async function getComments_ALL_ADMIN() {
 		const { data, error } = await supabase
 			.from('comments')
 			.select(
-				`*, author:users(username, avatar_url), blog_post_name: blog_posts!blog_post_id(title), listing_name:listings!listing_id(title)`
+				`*, author:users(username, avatar_url), blog_post_name: blog_posts!blog_post_id(title), listing_name:listings!listing_id(title), sublisting_name:sublistings!sublisting_id(title)`
 			);
 
 		if (error) {

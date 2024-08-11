@@ -6,6 +6,7 @@
 // Import Functions & Actions & Hooks & State
 import createSupabaseBrowserClient from '@/lib/createSupabaseBrowserClient';
 import insertActivity from '@/actions/activites/insertActivity';
+import { listingParams } from '@/lib/supabaseQueries';
 // Import Data
 // Import Assets & Icons
 // Import Error Handling
@@ -37,20 +38,10 @@ export default async function getPublishedListings(
 		let results;
 		const supabase = createSupabaseBrowserClient();
 
-		let query = supabase
-			.from('listings')
-			.select(
-				`
-			id, created_at, default_image_url, is_promoted, owner_id, slug, title, category_id, excerpt, average_rating, ratings_count, likes, views,updated_at, click_url, clicks, description, is_admin_published, is_user_published, is_promoted,
-				category:categories!inner(id, name, slug),
-				tags ( id, name, slug ),
-				owner:users!owner_id(id, username, avatar_url)
-			`
-			)
-			.match({
-				is_user_published: true,
-				is_admin_published: true,
-			});
+		let query = supabase.from('listings').select(listingParams).match({
+			is_user_published: true,
+			is_admin_published: true,
+		});
 
 		// For Category Search in DB - instead of here in the file - add to match():  , ...(categoryFilter ? { 'category.slug': categoryFilter } : {})
 

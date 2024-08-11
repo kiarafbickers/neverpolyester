@@ -213,7 +213,7 @@ export default function BlogPostEditor({
 								type="button"
 								onClick={() => Router.push('/account/posts')}
 								variant="outline"
-								disabled={!isDirty || isSubmitting}
+								disabled={isSubmitting}
 							>
 								Discard
 							</Button>
@@ -277,12 +277,17 @@ export default function BlogPostEditor({
 														handleAiButton(watch('title'));
 													}}
 													variant="outline"
-													disabled={isSubmitting || aiGenerated}
+													disabled={
+														isSubmitting ||
+														aiGenerated ||
+														!watch('title') ||
+														watch('title').length < 10
+													}
 													data-umami-event="Button AI Content"
 													data-umami-event-userid={userId}
 												>
 													<span className="text-wrap">
-														Generate Content with AI
+														Generate Content with AI (based on title)
 													</span>{' '}
 													{aiGenerated && (
 														<LoaderCircleIcon className="ml-1 animate-spin" />

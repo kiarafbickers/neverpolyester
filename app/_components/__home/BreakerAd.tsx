@@ -19,13 +19,13 @@ export default function BreakerAd() {
 			<div className="relative grid md:grid-cols-3 bg-neutral-100 dark:bg-neutral-100/50 rounded-xl">
 				<div className="flex align-middle mx-auto col-span-2 self-center">
 					<div className="p-6 mx-auto h-fit">
-						<h2 className="text-base font-semibold leading-7 text-black">
+						<h2 className="text-base font-semibold leading-7 text-foreground">
 							Thinking about starting your own business?
 						</h2>
-						<p className="mt-2 text-3xl font-bold tracking-tight text-black sm:text-4xl">
+						<p className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
 							Become a Directory-Entrepreneur!
 						</p>
-						<p className="mt-6 text-base leading-7 text-black">
+						<p className="mt-6 text-base leading-7 text-foreground">
 							Are you intered in starting your own directory business? Our
 							partners at BoilerplateHQ are working on a new project that will
 							help you get started. Sign up for their newsletter to be notified

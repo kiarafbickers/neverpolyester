@@ -28,7 +28,9 @@ export default async function NewPostPage() {
 
 	return (
 		<SectionOuterContainer>
-			<SectionTitle>New Blog Post</SectionTitle>
+			<SectionTitle className="mx-0 max-w-none text-left">
+				New Blog Post
+			</SectionTitle>
 			<BlogPostEditor
 				post={undefined}
 				topicChoices={topicData}

@@ -6,6 +6,7 @@
 // Import Functions & Actions & Hooks & State
 import createSupabaseRLSClient from '@/lib/createSupabaseRLSClient';
 import serverAuth from '@/actions/auth/serverAuth';
+import { listingParams } from '@/lib/supabaseQueries';
 // Import Data
 // Import Assets & Icons
 // Import Error Handling
@@ -33,14 +34,7 @@ export default async function getListings_ALL_ADMIN() {
 
 		const { data, error } = await supabase
 			.from('listings')
-			.select(
-				`
-				id, created_at, default_image_url, is_promoted, owner_id, slug, title, category_id, excerpt, average_rating, ratings_count, likes, views,updated_at, click_url, clicks, description, is_admin_published, is_user_published, is_promoted,
-				category:categories!inner(id, name, slug),
-				tags ( id, name, slug ),
-				owner:users!owner_id(id, username, avatar_url)
-				`
-			)
+			.select(listingParams)
 			.order('is_admin_published', { ascending: true });
 		if (error) {
 			console.error('Error getting all listings (admin protected):', error);

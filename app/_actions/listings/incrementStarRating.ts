@@ -41,8 +41,8 @@ export default async function incrementStarRating(
 		});
 
 		if (error) {
-			console.error('Error handling feedback:', error);
-			throw new InternalServerError('Error storing feedback');
+			console.error('Error handling rating:', error);
+			throw new InternalServerError('Error storing rating');
 		}
 
 		return handleServerSuccess();

@@ -53,8 +53,14 @@ const ACCOUNT_NAV_LINKS = [
 		needSuperAdmin: false,
 	},
 	{
-		label: 'Listings',
+		label: 'Farms',
 		href: '/account/listings',
+		icon: LayoutTemplateIcon,
+		needSuperAdmin: false,
+	},
+	{
+		label: 'Products',
+		href: '/account/sublistings',
 		icon: LayoutTemplateIcon,
 		needSuperAdmin: false,
 	},
@@ -78,7 +84,7 @@ const ACCOUNT_NAV_LINKS = [
 	},
 	{
 		label: 'Admin',
-		href: '/account/secret-admin',
+		href: '/secret-admin',
 		icon: LockIcon,
 		needSuperAdmin: true,
 	},

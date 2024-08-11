@@ -11,6 +11,7 @@ import {
 	SubSectionOuterContainer,
 	SubSectionInnerContainer,
 	SubSectionTitle,
+	SubSectionContentContainer,
 } from '@/ui/Section';
 import {
 	ImageCard,
@@ -24,7 +25,7 @@ import publishedListingsByAi from '@/actions/listings/getPublishedListingsByAi';
 import getPublishedListings from '@/actions/listings/getPublishedListings';
 import { cn, stringToSlug } from '@/lib/utils';
 // Import Data
-import { GENERAL_SETTINGS, SORT_DIRECTIONS } from '@/constants';
+import { SORT_DIRECTIONS } from '@/constants';
 // Import Assets & Icons
 
 function OverviewLoading(params: {
@@ -63,6 +64,7 @@ async function OverviewGrid({
 	preferPromoted,
 	showPagination,
 	itemsPerPage,
+	showSearch,
 }: {
 	limit?: number;
 	tagArray?: string[] | undefined;
@@ -73,6 +75,7 @@ async function OverviewGrid({
 	preferPromoted?: boolean;
 	showPagination?: boolean;
 	itemsPerPage: number;
+	showSearch: boolean;
 }) {
 	let listingData: ListingType[] = [];
 
@@ -162,6 +165,7 @@ async function OverviewGrid({
 			maxCols={maxCols}
 			showPagination={showPagination}
 			initialItemsPerPage={itemsPerPage}
+			showSearch={showSearch}
 		/>
 	);
 }
@@ -192,6 +196,7 @@ export default function ListingOverview({
 	preferPromoted = false,
 	showPagination = true,
 	itemsPerPage,
+	showSearch = true,
 }: {
 	title?: string;
 	buttonText?: string;
@@ -204,6 +209,7 @@ export default function ListingOverview({
 	preferPromoted?: boolean;
 	showPagination?: boolean;
 	itemsPerPage?: number;
+	showSearch?: boolean;
 }) {
 	const tagArray = filterAndSortParams?.tags
 		? filterAndSortParams?.tags.split(',').map((tagName) => tagName)
@@ -219,37 +225,46 @@ export default function ListingOverview({
 		) || SORT_DIRECTIONS[0];
 
 	return (
-		<SubSectionOuterContainer id={stringToSlug(title)} className={className}>
-			<SubSectionInnerContainer>
+		<SubSectionOuterContainer
+			id={stringToSlug(title)}
+			className={cn('w-full', className)}
+		>
+			<SubSectionInnerContainer className="w-full max-w-5xl mx-auto">
 				{categoryNavigation && <SubSectionTitle>{title}</SubSectionTitle>}
 
-				<Suspense fallback={<OverviewLoading limit={6} maxCols={maxCols} />}>
-					<OverviewGrid
-						limit={maxNumListings}
-						tagArray={tagArray}
-						sortBy={sortBy}
-						maxCols={maxCols}
-						preferPromoted={preferPromoted}
-						categoryFilter={categoryFilter}
-						searchQuery={searchFilter}
-						showPagination={showPagination}
-						itemsPerPage={itemsPerPage || maxCols * 2}
-					/>
-				</Suspense>
+				<SubSectionContentContainer className="mt-6">
+					<Suspense fallback={<OverviewLoading limit={6} maxCols={maxCols} />}>
+						<OverviewGrid
+							limit={maxNumListings}
+							tagArray={tagArray}
+							sortBy={sortBy}
+							maxCols={maxCols}
+							preferPromoted={preferPromoted}
+							categoryFilter={categoryFilter}
+							searchQuery={searchFilter}
+							showPagination={showPagination}
+							itemsPerPage={itemsPerPage || maxCols * 2}
+							showSearch={showSearch}
+						/>
+					</Suspense>
 
-				{categoryNavigation && (
-					<div className="flex items-center mt-12 mb-6 dark:text-white justify-center">
-						<Link
-							href={buttonHref}
-							className={cn(
-								buttonVariants({ variant: 'outline' }),
-								'border-2 border-neutral-300 text-muted-foreground bg-white dark:text-black hover:border-gray-400'
-							)}
+					{categoryNavigation && (
+						<div
+							className="flex items-center mt-10
+						 dark:text-white justify-center"
 						>
-							{buttonText}
-						</Link>
-					</div>
-				)}
+							<Link
+								href={buttonHref}
+								className={cn(
+									buttonVariants({ variant: 'outline' }),
+									'border-2 text-muted-foreground text-white bg-dark-foreground hover:border-gray-400 rounded-full'
+								)}
+							>
+								{buttonText}
+							</Link>
+						</div>
+					)}
+				</SubSectionContentContainer>
 			</SubSectionInnerContainer>
 		</SubSectionOuterContainer>
 	);

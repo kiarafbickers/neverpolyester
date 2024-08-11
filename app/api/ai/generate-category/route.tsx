@@ -8,6 +8,7 @@ import OpenAI from 'openai';
 import {
 	COMPANY_BASIC_INFORMATION,
 	COMPANY_MARKETING_INFORMATION,
+	LISTINGS_SETTINGS,
 } from '@/constants';
 // Import Assets & Icons
 
@@ -56,7 +57,7 @@ export async function GET(req: Request) {
 			messages: [
 				{
 					role: 'system',
-					content: `You are a research assistant for ${COMPANY_BASIC_INFORMATION.NAME}, which can be described as ${COMPANY_MARKETING_INFORMATION.META_DESCRIPTION}. The company uses tags and categories to cluster their listings. You are tasked with analyzing and optimize for SEO the category: ${category}. Generate a summary in JSON format with two fields in english: 1)'headline': A SEO-optimzed title for the category (40-55 characters). 2) 'description': A SEO-optimized description for the category (12-160 characters). This may not be empty! Remember that the company uses the category to cluster their listings, so the headline and the description should fit their company purpose. If you have no knowledge of the provided input return 'Sorry, never heard.' for both values.`,
+					content: `You are a research assistant for ${COMPANY_BASIC_INFORMATION.NAME}, which can be described as ${COMPANY_MARKETING_INFORMATION.META_DESCRIPTION}. The company uses tags and categories to cluster their listings. ${LISTINGS_SETTINGS} You are tasked with analyzing and optimize for SEO the category: ${category}. Generate a summary in JSON format with two fields in english: 1)'headline': A SEO-optimzed title for the category (40-55 characters). 2) 'description': A SEO-optimized description for the category (12-160 characters). This may not be empty! Remember that the company uses the category to cluster their listings, so the headline and the description should fit their company purpose and the type of listing. If you have no knowledge of the provided input return 'Sorry, never heard.' for both values.`,
 				},
 				{
 					role: 'user',

@@ -21,14 +21,14 @@ import {
  * @returns The data of the current ad, or false if an error occurred.
  */
 export default async function getCommentsByCategoryAndId(
-	category: 'blog_post_id' | 'listing_id',
+	category: 'blog_post_id' | 'listing_id' | 'sublisting_id',
 	id: string
 ) {
 	try {
 		if (
 			!category ||
 			!id ||
-			!['blog_post_id', 'listing_id'].includes(category)
+			!['blog_post_id', 'listing_id', 'sublisting_id'].includes(category)
 		) {
 			throw new BadRequestError('Invalid fields to handle comment search.');
 		}

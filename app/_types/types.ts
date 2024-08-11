@@ -1,4 +1,4 @@
-import { ListingType } from './supabase-queries';
+import { ListingType, SublistingType } from './supabase-queries-types';
 
 export type LinkListItem = {
 	href: string;
@@ -52,5 +52,12 @@ export type SortDirectionObject = {
 	label: string;
 	value: string;
 	sortKey: keyof ListingType;
+	sortDir: 'asc' | 'desc';
+};
+
+export type SublistingSortDirectionObject = {
+	label: string;
+	value: string;
+	sortKey: keyof SublistingType;
 	sortDir: 'asc' | 'desc';
 };

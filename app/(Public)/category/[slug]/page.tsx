@@ -1,21 +1,13 @@
 // Import Types
 import { Metadata } from 'next/types';
 // Import External Packages
-import { Suspense } from 'react';
 // Import Components
-import { SortDirectionBox } from '@/components/SortDirectionBox';
 import ListingOverview from '@/components/listings/ListingOverview';
-import { TagSearchBox } from '@/components/tags/TagSearchBox';
 import CategoryBar from '@/components/categories/CategoryBar';
 import AdSlot from '@/components/ads/AdSlot';
 import Hero from '@/components/Hero';
-import {
-	SectionOuterContainer,
-	SubSectionInnerContainer,
-	SubSectionOuterContainer,
-} from '@/ui/Section';
+import { SectionOuterContainer } from '@/ui/Section';
 // Import Functions & Actions & Hooks & State
-import getPartialTags from '@/actions/tags/getPartialTags';
 import getFullCategories from '@/actions/categories/getFullCategories';
 import createMetaData from '@/lib/createMetaData';
 import createSupabaseBrowserClient from '@/lib/createSupabaseBrowserClient';
@@ -60,20 +52,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	});
 }
 
-async function FilterBar() {
-	const tagData = await getPartialTags('active');
-	return (
-		<SubSectionOuterContainer>
-			<SubSectionInnerContainer>
-				<div className="flex flex-wrap md:flex-nowrap items-start justify-between w-full align-top md:h-24 space-y-4 md:space-y-0">
-					<SortDirectionBox />
-					<TagSearchBox tags={tagData.data} />
-				</div>
-			</SubSectionInnerContainer>
-		</SubSectionOuterContainer>
-	);
-}
-
 export default async function Page({ params, searchParams }: Props) {
 	const categoriesData = await getFullCategories('active');
 
@@ -87,32 +65,29 @@ export default async function Page({ params, searchParams }: Props) {
 				className="self-start"
 				badgeClassName="hover:bg-muted/60"
 			/>
-			<Suspense fallback={null}>
-				<Hero
-					keyword={category?.name}
-					headline={category?.headline ?? `All ${category?.name} Listings`}
-					description={
-						category?.description ??
-						`All listings with the category ${category?.name}.`
-					}
-				/>
-			</Suspense>
-			<Suspense fallback={null}>
-				<FilterBar />
-			</Suspense>
-			<Suspense fallback={null}>
-				<ListingOverview
-					categoryNavigation={false}
-					filterAndSortParams={{
-						category: params.slug,
-						sort: searchParams.sort ?? 'newest',
-						tags: searchParams.tags ?? '',
-					}}
-					maxNumListings={100}
-					maxCols={3}
-					preferPromoted
-				/>
-			</Suspense>
+
+			<Hero
+				keyword={category?.name}
+				headline={category?.headline ?? `All ${category?.name} Listings`}
+				description={
+					category?.description ??
+					`All listings with the category ${category?.name}.`
+				}
+			/>
+
+			<ListingOverview
+				categoryNavigation={false}
+				filterAndSortParams={{
+					category: params.slug,
+					sort: searchParams.sort ?? 'newest',
+					tags: searchParams.tags ?? '',
+				}}
+				maxNumListings={100}
+				maxCols={3}
+				preferPromoted
+				className="py-0 md:py-0"
+			/>
+
 			<AdSlot slot={`${params.slug}-2`} />
 		</SectionOuterContainer>
 	);

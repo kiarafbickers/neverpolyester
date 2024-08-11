@@ -13,12 +13,22 @@ import { cn } from '@/lib/utils';
 // Import Data
 import { COMPANY_BASIC_INFORMATION, GENERAL_SETTINGS } from '@/constants';
 // Import Assets & Icons
-import { MenuIcon, MoonIcon, XIcon, SunIcon, PlusIcon } from 'lucide-react';
+import {
+	MenuIcon,
+	MoonIcon,
+	XIcon,
+	SunIcon,
+	UserCircleIcon,
+} from 'lucide-react';
 
 export const NAVBAR_ADD_LINKS = [
 	{
-		name: 'Explore',
+		name: 'Farms',
 		href: '/explore',
+	},
+	{
+		name: 'Products',
+		href: '/products',
 	},
 	{
 		name: 'Advertise',
@@ -75,35 +85,23 @@ export default function Navbar_Public() {
 	return (
 		<Disclosure
 			as="nav"
-			className="w-full sticky top-0 z-50 border-b dark:bg-black bg-white"
+			className="w-full sticky top-0 z-50  dark:bg-black bg-white px-4 py-2 xl:px-0"
 		>
 			{({ open }) => (
 				<>
-					<div className="max-w-5xl mx-auto h-full grid px-2 py-2 lg:px-0">
-						<div className="flex items-center justify-between">
+					<div className="max-w-7xl mx-auto h-full grid grid-rows-2 md:grid-rows-1">
+						<div className="flex items-center justify-between  py-2">
 							<div className="flex items-center">
-								<div className="-ml-2 mr-2 flex items-center lg:hidden">
-									{/* Mobile menu button */}
-									<Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-black dark:hover:bg-neutral-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-										<span className="absolute -inset-0.5" />
-										<span className="sr-only">Open main menu</span>
-										{open ? (
-											<XIcon className="block h-6 w-6" aria-hidden="true" />
-										) : (
-											<MenuIcon className="block h-6 w-6" aria-hidden="true" />
-										)}
-									</Disclosure.Button>
-								</div>
 								{/* Desktop Nav */}
 								{/* Logo */}
-								<div className="flex flex-shrink-0 items-center mr-8">
+								<div className="items-center h-auto w-32 md:w-48">
 									<Link href="/">
 										<Image
 											src="/logos/logo_for_light.png"
 											alt={`${COMPANY_BASIC_INFORMATION.NAME} Logo Light Mode`}
 											width={640}
 											height={107}
-											className="h-auto w-48 dark:hidden"
+											className="h-auto dark:hidden"
 											priority
 										/>
 										<Image
@@ -111,18 +109,21 @@ export default function Navbar_Public() {
 											alt={`${COMPANY_BASIC_INFORMATION.NAME} Logo Dark Mode`}
 											width={640}
 											height={107}
-											className="hidden h-auto w-48 dark:inline"
+											className="hidden  dark:inline"
 											priority
 										/>
 									</Link>
 								</div>
 								{/* Navbar_PublicItems */}
-								<Searchbar
-									placeholder="Search: A tool that..."
-									className="hidden sm:block"
-									id="nav_search"
-								/>
 							</div>
+							<div className="w-full flex-grow" />
+
+							<Searchbar
+								placeholder="Food, Cut, State, etc."
+								className="hidden md:block w-full px-4"
+								id="nav_search"
+								rootPage="/products"
+							/>
 
 							<div className="flex items-center justify-end lg:max-w-fit whitespace-nowrap ">
 								<div className="hidden items-center lg:flex lg:gap-x-1">
@@ -141,53 +142,71 @@ export default function Navbar_Public() {
 											</div>
 										</div>
 									))}
+								</div>
 
+								<Link
+									href={'/sign-up'}
+									className={cn(
+										buttonVariants({ variant: 'outline', size: 'sm' }),
+										'bg-dark-foreground hover:bg-dark-foreground/80 rounded-full text-white hover:text-white py-4'
+									)}
+									prefetch={false}
+									data-umami-event="Navbar: Become A Seller"
+								>
+									Become a Seller
+								</Link>
+
+								<div className="pointer-events-auto border-gray-500 flex flex-nowrap items-center justify-end">
+									<ModeToggle />
 									{GENERAL_SETTINGS.USE_PUBLISH && (
 										<>
-											<div className="hidden md:flex items-center space-x-2 mx-2">
+											<Link
+												href={'/account'}
+												className="hover:underline text-muted-foreground text-sm"
+												prefetch={false}
+												data-umami-event="Navbar: Account"
+											>
+												<UserCircleIcon size={22} />
+												<span className="sr-only">Account</span>
+											</Link>
+											{process.env.NODE_ENV === 'development' && (
 												<Link
-													href={'/account'}
-													className="hover:underline text-muted-foreground text-sm"
+													href={'/secret-admin'}
+													className={cn(
+														buttonVariants({
+															variant: 'default',
+															size: 'sm',
+														}),
+														'absolute top-40 md:top-20 right-4'
+													)}
 													prefetch={false}
-													data-umami-event="Navbar: Account"
 												>
-													Account
+													Admin
 												</Link>
-												{process.env.NODE_ENV === 'development' && (
-													<Link
-														href={'/account/secret-admin'}
-														className={cn(
-															buttonVariants({
-																variant: 'default',
-																size: 'sm',
-															}),
-															''
-														)}
-														prefetch={false}
-													>
-														Admin
-													</Link>
-												)}
-											</div>
+											)}
 										</>
 									)}
-									<Link
-										href={'/propose'}
-										className={cn(
-											buttonVariants({ variant: 'outline', size: 'sm' }),
-											''
-										)}
-										prefetch={false}
-										data-umami-event="Navbar: Propose new listing"
-									>
-										<PlusIcon size={14} /> Submit
-									</Link>
-								</div>
-
-								<div className="pointer-events-auto border-gray-500">
-									<ModeToggle />
 								</div>
 							</div>
+						</div>
+						<div className="md:hidden flex justify-between items-center py-2">
+							<div className="-ml-2 mr-2 flex items-center lg:hidden">
+								{/* Mobile menu button */}
+								<Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-black dark:hover:bg-neutral-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+									<span className="absolute -inset-0.5" />
+									<span className="sr-only">Open main menu</span>
+									{open ? (
+										<XIcon className="block h-6 w-6" aria-hidden="true" />
+									) : (
+										<MenuIcon className="block h-6 w-6" aria-hidden="true" />
+									)}
+								</Disclosure.Button>
+							</div>
+							<Searchbar
+								placeholder="Food, Farm, etc."
+								className="w-full"
+								id="nav_search_mobile"
+							/>
 						</div>
 					</div>
 
@@ -208,16 +227,6 @@ export default function Navbar_Public() {
 								))}
 								{GENERAL_SETTINGS.USE_PUBLISH && (
 									<Disclosure.Button className="block w-full">
-										{process.env.NODE_ENV === 'development' && (
-											<Link
-												href={'/studio/structure'}
-												className="hover:bg-black dark:hover:bg-neutral-800 hover:text-white dark:text-white block rounded-md px-3 py-2 text-base font-medium"
-												onClick={() => close()}
-												prefetch={false}
-											>
-												Admin
-											</Link>
-										)}
 										<Link
 											href={'/account/new-listing'}
 											className="hover:bg-black dark:hover:bg-neutral-800 hover:text-white dark:text-white block rounded-md px-3 py-2 text-base font-medium"

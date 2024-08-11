@@ -1,7 +1,11 @@
 // Import Types
 // Import External Packages
 import { NextResponse } from 'next/server';
+import fetch from 'node-fetch';
+import { JSDOM } from 'jsdom';
+import { Readability } from '@mozilla/readability';
 import OpenAI from 'openai';
+import { LISTINGS_SETTINGS } from '@/constants';
 // Import Components
 // Import Functions & Actions & Hooks & State
 // Import Data
@@ -13,6 +17,48 @@ const openai = new OpenAI({
 
 // Secure Password Like Secret key
 const secretKey = process.env.API_SECRET_KEY;
+
+const cleanText = (text: string): string => {
+	return text.replace(/\s+/g, ' ').trim();
+};
+
+async function summarizeText(text: string) {
+	const slicedText = text.slice(0, 2000);
+	return await openai.chat.completions.create({
+		model: 'gpt-4o-mini',
+		messages: [
+			{
+				role: 'system',
+				content: `You are a research assistant tasked with creating product listings for a directory focusing on direct-to-consumer farm products. ${LISTINGS_SETTINGS} You will be provided with unstructured text data related to these products. Your task is to generate a listing entry in JSON format with two fields in English: 1. 'excerpt': An SEO-optimized, concise description (100-160 characters). 2. 'description': A high-level markdown-formatted analysis, structured into two h2 sections (About and Highlights), no h1 tag, no links (250-350 words). This description will serve as the body of a listing to market the farm. Guidelines: - Focus on writing a positive and appealing listing entry.  - Extract and use relevant information from the text provided, maintaining a tone similar to the original text. - Do not mention unavailable features or technical details (e.g., JavaScript requirements) unless the content is completely unreadable. - Ensure the 'excerpt' is optimized for Google SEO.`,
+			},
+			{
+				role: 'user',
+				content: `${slicedText}`,
+			},
+		],
+		temperature: 1,
+		max_tokens: 512,
+		top_p: 1,
+		frequency_penalty: 0,
+		presence_penalty: 0,
+		response_format: { type: 'json_object' },
+	});
+}
+
+const fetchContentFromUrl = async (url: string) => {
+	const response = await fetch(url);
+	const html = await response.text();
+
+	const dom = new JSDOM(html, { url });
+	const reader = new Readability(dom.window.document);
+	const article = reader.parse();
+
+	if (article && article.textContent) {
+		return cleanText(article.textContent);
+	}
+
+	return null;
+};
 
 /**
  * Handles the GET request to generate DESCRIPTION & EXCERPRT FOR A LISTING based on the URL.
@@ -47,28 +93,17 @@ export async function GET(req: Request) {
 	}
 
 	try {
-		const response = await openai.chat.completions.create({
-			model: 'gpt-4o-mini',
-			messages: [
-				{
-					role: 'system',
-					content:
-						"You are a research assistant tasked with analyzing companies based on their URL. For each URL provided, based on your knowledge, generate a summary in JSON format with two fields in english: 1)'excerpt': A neutral, concise description (100-160 characters). 2) 'description': A high-level markdown-formatted analysis, structured into two h2 sections (Overview and Features), no h1 tag, no links (250-350 words). This may not be empty! If you have no knowledge of the company return 'Sorry, never heard.' for both values.",
-				},
-				{
-					role: 'user',
-					content: `${url}`,
-				},
-			],
-			temperature: 1,
-			max_tokens: 512,
-			top_p: 1,
-			frequency_penalty: 0,
-			presence_penalty: 0,
-			response_format: { type: 'json_object' },
-		});
+		const content = await fetchContentFromUrl(url);
+		if (!content) {
+			return NextResponse.json(
+				{ error: 'Error in fetching content', description: '', excerpt: '' },
+				{ status: 400 }
+			);
+		}
 
-		const jsonAnswer = response.choices[0].message.content;
+		const summary = await summarizeText(content);
+
+		const jsonAnswer = summary.choices[0].message.content;
 
 		if (!jsonAnswer || jsonAnswer.includes('error')) {
 			return NextResponse.json(

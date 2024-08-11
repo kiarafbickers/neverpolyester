@@ -13,6 +13,7 @@ import {
 import createSupabaseRLSClient from '@/lib/createSupabaseRLSClient';
 import getListingStats from '@/actions/listings/getListingStats';
 import serverAuth from '@/actions/auth/serverAuth';
+import getSublistingStats from '@/actions/sublistings/getSublistingStats';
 // Import Data
 // Import Assets & Icons
 
@@ -38,11 +39,21 @@ export default async function Dashboard() {
 	const sumOfAllViews = stats.total_views;
 	const sumOfAllClicks = stats.total_clicks;
 
+	const { data: sublistingStats } = await getSublistingStats(user.id);
+
+	const sumOfAllSublistings = sublistingStats.total_sublistings;
+	const sumOfAllSublistingLikes = sublistingStats.total_likes;
+	const sumOfAllSublistingViews = sublistingStats.total_views;
+	const sumOfAllSublistingClicks = sublistingStats.total_clicks;
+
 	return (
 		<SectionOuterContainer>
-			<SectionTitle>Dashboard</SectionTitle>
+			<SectionTitle className="mx-0 max-w-none text-left">
+				Dashboard
+			</SectionTitle>
 			{!user && <>You Are not Logged In!</>}
 			<SubSectionInnerContainer>
+				<h2 className="text-lg text-foregroung py-4">Listings</h2>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
 					<div className="flex flex-col items-center justify-center bg-white rounded-lg shadow-md p-4">
 						<p className="text-2xl text-muted-foreground">
@@ -65,6 +76,35 @@ export default async function Dashboard() {
 					<div className="flex flex-col items-center justify-center bg-white rounded-lg shadow-md p-4">
 						<p className="text-2xl text-muted-foreground">
 							{formatter.format(sumOfAllClicks).toLocaleString()}
+						</p>
+						<h3 className="text-lg font-bold tracking-tight">Total Clicks</h3>
+					</div>
+				</div>
+
+				<h2 className="text-lg text-foregroung py-4">Sublistings</h2>
+
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+					<div className="flex flex-col items-center justify-center bg-white rounded-lg shadow-md p-4">
+						<p className="text-2xl text-muted-foreground">
+							{formatter.format(sumOfAllSublistings).toLocaleString()}
+						</p>
+						<h3 className="text-lg font-bold tracking-tight">Total Listings</h3>
+					</div>
+					<div className="flex flex-col items-center justify-center bg-white rounded-lg shadow-md p-4">
+						<p className="text-2xl text-muted-foreground">
+							{formatter.format(sumOfAllSublistingViews).toLocaleString()}
+						</p>
+						<h3 className="text-lg font-bold tracking-tight">Total Views</h3>
+					</div>
+					<div className="flex flex-col items-center justify-center bg-white rounded-lg shadow-md p-4">
+						<p className="text-2xl text-muted-foreground">
+							{formatter.format(sumOfAllSublistingLikes).toLocaleString()}
+						</p>
+						<h3 className="text-lg font-bold tracking-tight">Total Likes</h3>
+					</div>
+					<div className="flex flex-col items-center justify-center bg-white rounded-lg shadow-md p-4">
+						<p className="text-2xl text-muted-foreground">
+							{formatter.format(sumOfAllSublistingClicks).toLocaleString()}
 						</p>
 						<h3 className="text-lg font-bold tracking-tight">Total Clicks</h3>
 					</div>

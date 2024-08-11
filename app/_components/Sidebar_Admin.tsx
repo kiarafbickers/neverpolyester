@@ -24,58 +24,73 @@ import {
 const ADMIN_NAV_LINKS = [
 	{
 		label: 'Dashboard',
-		href: '/account/secret-admin',
+		href: '/secret-admin',
 		icon: GaugeIcon,
 	},
 	{
 		label: 'Activities',
-		href: '/account/secret-admin/activity-manager',
+		href: '/secret-admin/activity-manager',
 		icon: MessageCircleHeartIcon,
 	},
 	{
-		label: 'Listings',
-		href: '/account/secret-admin/listing-manager',
+		label: 'Farms',
+		href: '/secret-admin/listing-manager',
 		icon: LayoutTemplateIcon,
 	},
 	{
+		label: 'Farm Categories',
+		href: '/secret-admin/category-manager',
+		icon: TagIcon,
+	},
+	{
+		label: 'Farm Tags',
+		href: '/secret-admin/tag-manager',
+		icon: TagsIcon,
+	},
+	{
+		label: 'Products',
+		href: '/secret-admin/sublisting-manager',
+		icon: LayoutTemplateIcon,
+	},
+	{
+		label: 'Product Categories',
+		href: '/secret-admin/subcategory-manager',
+		icon: TagIcon,
+	},
+	{
+		label: 'Product Tags',
+		href: '/secret-admin/subtag-manager',
+		icon: TagsIcon,
+	},
+	{
 		label: 'Blog Posts',
-		href: '/account/secret-admin/blog-manager',
+		href: '/secret-admin/blog-manager',
 		icon: NewspaperIcon,
 	},
 	{
 		label: 'Users',
-		href: '/account/secret-admin/user-manager',
+		href: '/secret-admin/user-manager',
 		icon: User2Icon,
 	},
 	{
 		label: 'Ads',
-		href: '/account/secret-admin/ad-manager',
+		href: '/secret-admin/ad-manager',
 		icon: GemIcon,
 	},
 	{
 		label: 'Promotions',
-		href: '/account/secret-admin/promotion-manager',
+		href: '/secret-admin/promotion-manager',
 		icon: MegaphoneIcon,
 	},
 	{
 		label: 'Feedback',
-		href: '/account/secret-admin/feedback-manager',
+		href: '/secret-admin/feedback-manager',
 		icon: MessageCircleHeartIcon,
 	},
 	{
 		label: 'Comments',
-		href: '/account/secret-admin/comment-manager',
+		href: '/secret-admin/comment-manager',
 		icon: MessageCircleMoreIcon,
-	},
-	{
-		label: 'Categories',
-		href: '/account/secret-admin/category-manager',
-		icon: TagIcon,
-	},
-	{
-		label: 'Tags',
-		href: '/account/secret-admin/tag-manager',
-		icon: TagsIcon,
 	},
 ];
 

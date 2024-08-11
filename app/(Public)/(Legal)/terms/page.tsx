@@ -8,6 +8,7 @@ import {
 	SectionDescription,
 	SubSectionOuterContainer,
 	SubSectionInnerContainer,
+	SectionHeaderContainer,
 } from '@/ui/Section';
 // Import Functions & Actions & Hooks & State
 // Import Data
@@ -22,12 +23,15 @@ export const metadata: Metadata = {
 export default function TermsPage() {
 	return (
 		<SectionOuterContainer id="ToS">
-			<SectionTitle>
-				Terms and Conditions of Use for {COMPANY_BASIC_INFORMATION.NAME}
-			</SectionTitle>
-			<SectionDescription>Last updated June 21, 2024</SectionDescription>
+			<SectionHeaderContainer>
+				<SectionTitle>
+					Terms and Conditions of Use for {COMPANY_BASIC_INFORMATION.NAME}
+				</SectionTitle>
+
+				<SectionDescription>Last updated June 21, 2024</SectionDescription>
+			</SectionHeaderContainer>
 			<SubSectionOuterContainer className="max-w-3xl">
-				<SubSectionInnerContainer className="items-start prose">
+				<SubSectionInnerContainer className="items-start prose text-justify dark:prose-invert">
 					<p>
 						Welcome to {COMPANY_BASIC_INFORMATION.NAME}. By accessing our
 						website and using our services, you agree to be bound by the

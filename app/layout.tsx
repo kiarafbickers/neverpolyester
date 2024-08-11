@@ -9,15 +9,16 @@ import Footer from '@/components/Footer';
 // Import Functions & Actions & Hooks & State
 import createMetaData from '@/lib/createMetaData';
 import FeedbackDialog from '@/components/feedback/Dialog_Feedback';
+import CookieConsentBanner from '@/components/CookieConsentBanner';
 // Import Data
 // Import Assets & Icons
 import './globals.css';
-import { Inter } from 'next/font/google';
+import { Manrope } from 'next/font/google';
 
-const inter = Inter({
-	variable: '--font-inter',
+const manrope = Manrope({
 	subsets: ['latin'],
 	display: 'swap',
+	variable: '--font-manrope',
 });
 
 export const metadata: Metadata = createMetaData({});
@@ -32,19 +33,20 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="en" className={`${inter.variable}`}>
+		<html lang="en" className={`${manrope.variable}`}>
 			<Script
 				defer
 				src="https://analytics.eu.umami.is/script.js"
 				data-website-id={process.env.NEXT_PUBLIC_UMAMI_ID}
 			></Script>
-			<body className="bg-white text-black dark:bg-black dark:text-white">
+			<body className="bg-white text-foreground dark:bg-black dark:text-white">
 				<section className="min-h-screen">
 					<main>{children}</main>
 					<Toaster />
 					<Suspense fallback={null}>
 						<FeedbackDialog />
 					</Suspense>
+					<CookieConsentBanner />
 					<Footer />
 				</section>
 			</body>

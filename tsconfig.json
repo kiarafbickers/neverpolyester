@@ -33,7 +33,7 @@
       "@/actions/*": ["app/_actions/*"],
       "@/types": ["app/_types/types"],
       "@/supabase-types": ["app/_types/supabase"],
-      "@/supabase-special-types": ["app/_types/supabase-queries"],
+      "@/supabase-special-types": ["app/_types/supabase-queries-types"],
       "@/constants": ["app/_constants/constants"],
     }
   },

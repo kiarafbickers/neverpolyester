@@ -15,6 +15,19 @@ import {
 	handleServerSuccess,
 } from '@/lib/handlingServerResponses';
 
+type fullTag = {
+	id: string;
+	name: string;
+	slug: string;
+	headline: string | null;
+	description: string | null;
+	image_url_hero: string | null;
+	image_url_small: string | null;
+	tag_groups: {
+		id: string;
+		name: string;
+	}[];
+};
 /**
  * Retrieves full tags based on the provided modifier.
  * @param modifier - The modifier to determine which tags to retrieve. Can be either 'active' or 'all'.
@@ -30,7 +43,9 @@ export default async function getFullTags(modifier: 'active' | 'all') {
 		} else if (modifier === 'all') {
 			results = await supabase
 				.from('tags')
-				.select(`id, name, slug, headline, description`);
+				.select(
+					`id, name, slug, headline, description, image_url_hero, image_url_small, tag_groups(id, name)`
+				);
 		} else {
 			throw new BadRequestError('Invalid modifier.');
 		}
@@ -42,7 +57,7 @@ export default async function getFullTags(modifier: 'active' | 'all') {
 			throw new InternalServerError('Error getting partial tags');
 		}
 
-		return handleServerSuccess(data);
+		return handleServerSuccess(data as fullTag[]);
 	} catch (error) {
 		return handleServerError(error, []);
 	}

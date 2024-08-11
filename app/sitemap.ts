@@ -94,6 +94,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		  }))
 		: [];
 
+	// Level 2: /products/[slug] => website.com/products/[slug]
+
+	const sublistingsArray = await supabase
+		.from('sublistings')
+		.select('slug')
+		.match({ is_user_published: true, is_admin_published: true });
+	const sublistingSlugs = sublistingsArray?.data?.map(({ slug }) => ({
+		slug: slug,
+	}));
+
+	const LEVEL2_SUBLISTING_SLUGS: URL_Object[] = sublistingSlugs
+		? sublistingSlugs.flatMap((listing) => ({
+				url: `${COMPANY_BASIC_INFORMATION.URL}/products/${listing.slug}`,
+		  }))
+		: [];
+
 	// Level 2: /blog => website.com/blog/{slug}
 
 	const { data: blogSlugs } = await getAllSlugsFromPublishedPosts();
@@ -114,6 +130,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		  }))
 		: [];
 
+	// Tag level 2: /subtag => website.com/subtag/{slug}
+
+	const { data: subtagData } = await supabase.rpc('get_active_subtags');
+
+	const LEVEL2_SUBTAG_SLUGS = subtagData
+		? subtagData.flatMap((tag) => ({
+				url: `${COMPANY_BASIC_INFORMATION.URL}/subtag/${tag.slug}`,
+		  }))
+		: [];
+
 	// Category Level 2: /category => website.com/category/{slug}
 
 	const { data: categoryData } = await supabase.rpc('get_active_categories');
@@ -124,12 +150,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		  }))
 		: [];
 
-	// Owners Level 2: /user => website.com/user/{slug}
-	const { data: userData } = await supabase.rpc('get_user_usernames');
+	// Category Level 2: /subcategory => website.com/subcategory/{slug}
 
-	const LEVEL2_OWNER_SLUGS = userData
-		? userData.flatMap((userProfile) => ({
-				url: `${COMPANY_BASIC_INFORMATION.URL}/user/${userProfile.username}`,
+	const { data: subcategoryData } = await supabase.rpc(
+		'get_active_subcategories'
+	);
+
+	const LEVEL2_SUBCATEGORY_SLUGS = subcategoryData
+		? subcategoryData.flatMap((tag) => ({
+				url: `${COMPANY_BASIC_INFORMATION.URL}/subcategory/${tag.slug}`,
 		  }))
 		: [];
 
@@ -138,8 +167,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		...LEVEL1_PAGES,
 		...LEVEL2_BLOG_SLUGS,
 		...LEVEL2_LISTING_SLUGS,
+		...LEVEL2_SUBLISTING_SLUGS,
 		...LEVEL2_TAG_SLUGS,
+		...LEVEL2_SUBTAG_SLUGS,
 		...LEVEL2_CATEGORY_SLUGS,
-		...LEVEL2_OWNER_SLUGS,
+		...LEVEL2_SUBCATEGORY_SLUGS,
 	];
 }

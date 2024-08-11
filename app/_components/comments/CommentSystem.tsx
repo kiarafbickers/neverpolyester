@@ -48,13 +48,17 @@ function Comment({
 				</Avatar>
 				<div className="space-y-2 w-full">
 					<div className="flex items-center justify-between">
-						<Link
-							className="font-medium"
-							href={`/user/${commentObject.author?.username}`}
-							prefetch={false}
-						>
-							{commentObject.author?.username}
-						</Link>
+						{!!commentObject.author?.username ? (
+							<Link
+								className="font-medium"
+								href={`/user/${commentObject.author?.username}`}
+								prefetch={false}
+							>
+								{commentObject.author?.username}
+							</Link>
+						) : (
+							<span className="font-medium text-foreground">Anonymous</span>
+						)}
 
 						<time className="text-sm text-gray-500 dark:text-gray-400">
 							{formatPassedTime(commentObject.created_at)}
@@ -99,7 +103,7 @@ export default function CommentSystem({
 }: {
 	comments: CommentType[];
 	blog_or_listing_id: string;
-	blog_or_listing: 'blog_post_id' | 'listing_id';
+	blog_or_listing: 'blog_post_id' | 'listing_id' | 'sublisting_id';
 }) {
 	const [replyingTo, setReplyingTo] = useState<CommentType | null>(null);
 	const [disabledSubmit, setDisabledSubmit] = useState(false);

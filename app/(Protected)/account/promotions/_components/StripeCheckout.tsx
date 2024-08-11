@@ -2,12 +2,8 @@
 
 // Import Types
 // Import External Packages
-import { useRouter } from 'next/navigation';
 //@ts-ignore
 import { loadStripe } from '@stripe/stripe-js';
-const stripePromise = loadStripe(
-	process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-);
 import {
 	EmbeddedCheckoutProvider,
 	EmbeddedCheckout,
@@ -18,6 +14,7 @@ import { Card } from '@/ui/Card';
 import { Button } from '@/ui/Button';
 // Import Functions & Actions & Hooks & State
 // Import Data
+import { COMPANY_BASIC_INFORMATION } from '@/constants';
 // Import Assets & Icons
 
 export default function StripeCheckout({
@@ -27,10 +24,15 @@ export default function StripeCheckout({
 	stripeClientSecret: string;
 	abortFunction: (arg0: null) => void;
 }) {
-	const router = useRouter();
+	const stripePromise = loadStripe(
+		process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
+	);
 
-	if (!stripeClientSecret) {
-		<p>Error. Please refresh the page.</p>;
+	if (!stripeClientSecret || !stripePromise) {
+		<p>
+			Error. Please refresh the page or contact support:{' '}
+			{COMPANY_BASIC_INFORMATION.SUPPORT_EMAIL}.
+		</p>;
 	}
 	return (
 		<Card className="py-8">

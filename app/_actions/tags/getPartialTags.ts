@@ -28,7 +28,9 @@ export default async function getPartialTags(modifier: 'active' | 'all') {
 		if (modifier === 'active') {
 			results = await supabase.rpc('get_active_tags');
 		} else if (modifier === 'all') {
-			results = await supabase.from('tags').select(`id, name, slug`);
+			results = await supabase
+				.from('tags')
+				.select(`id, name, slug, tag_groups(id, name)`);
 		} else {
 			throw new BadRequestError('Invalid modifier.');
 		}
@@ -40,7 +42,17 @@ export default async function getPartialTags(modifier: 'active' | 'all') {
 			throw new InternalServerError('Error getting tags. Contact Support.');
 		}
 
-		return handleServerSuccess(data);
+		return handleServerSuccess(
+			data as {
+				id: string;
+				name: string;
+				slug: string;
+				tag_groups: {
+					id: string;
+					name: string;
+				}[];
+			}[]
+		);
 	} catch (error) {
 		return handleServerError(error, []);
 	}

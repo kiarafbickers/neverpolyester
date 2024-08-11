@@ -19,11 +19,13 @@ export default function ListingGrid({
 	maxCols,
 	showPagination,
 	initialItemsPerPage,
+	showSearch = true,
 }: {
 	listings: ListingType[];
 	maxCols: number;
 	showPagination?: boolean;
 	initialItemsPerPage: number;
+	showSearch?: boolean;
 }) {
 	const {
 		currentData,
@@ -58,8 +60,8 @@ export default function ListingGrid({
 				</Alert>
 			) : (
 				<>
-					{showPagination && (
-						<div className="w-full flex justify-end -mt-8 mb-4">
+					{showSearch && (
+						<div className="w-full flex justify-end mt-8 mb-4">
 							<Input
 								className="w-58"
 								placeholder="Filter by name..."
@@ -67,22 +69,27 @@ export default function ListingGrid({
 							/>
 						</div>
 					)}
-					<div
-						className={`grid grid-cols-1 md:grid-cols-3 gap-y-10 gap-x-8 lg:grid-cols-${maxCols.toString()} w-full`}
-					>
-						{currentData.map((listing) => (
-							<ListingCard
-								key={listing.slug}
-								listing={listing}
-								settings={{
-									size: 'lg',
-									type: 'col',
-									showImage: true,
-									priority: true,
-								}}
-							/>
-						))}
-					</div>
+					{currentData.length === 0 ? (
+						<Alert
+							variant="destructive"
+							className="bg-white w-fit h-fit mx-auto col-span-full"
+						>
+							<AlertCircle className="h-4 w-4" />
+							<AlertTitle>Ohh!</AlertTitle>
+							<AlertDescription>
+								It seems like we did not find any listings given search
+								parameters. <br /> Please change your filters. Thank you!
+							</AlertDescription>
+						</Alert>
+					) : (
+						<div
+							className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-10 gap-x-8 lg:grid-cols-${maxCols.toString()} w-full`}
+						>
+							{currentData.map((listing) => (
+								<ListingCard key={listing.slug} listing={listing} />
+							))}
+						</div>
+					)}
 					{showPagination && (
 						<Pagination
 							itemsPerPage={itemsPerPage}

@@ -15,6 +15,20 @@ import {
 	handleServerSuccess,
 } from '@/lib/handlingServerResponses';
 
+type fullCategory = {
+	id: string;
+	name: string;
+	slug: string;
+	headline: string | null;
+	description: string | null;
+	image_url_hero: string | null;
+	image_url_small: string | null;
+	category_groups: {
+		id: string;
+		name: string;
+	}[];
+};
+
 /**
  * Retrieves full categories based on the provided modifier.
  * @param modifier - The modifier to determine the type of categories to retrieve. Can be either 'active' or 'all'.
@@ -30,7 +44,9 @@ export default async function getFullCategories(modifier: 'active' | 'all') {
 		} else if (modifier === 'all') {
 			results = await supabase
 				.from('categories')
-				.select(`id, name, slug, headline, description`);
+				.select(
+					`id, name, slug, headline, description, image_url_hero, image_url_small, category_groups(id, name)`
+				);
 		} else {
 			throw new BadRequestError('Invalid modifier.');
 		}
@@ -43,7 +59,7 @@ export default async function getFullCategories(modifier: 'active' | 'all') {
 			);
 		}
 
-		return handleServerSuccess(data);
+		return handleServerSuccess(data as fullCategory[]);
 	} catch (error) {
 		return handleServerError(error, []);
 	}

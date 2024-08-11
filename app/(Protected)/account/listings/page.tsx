@@ -53,7 +53,9 @@ export default async function ListingPage() {
 			</div>
 			<Card>
 				<CardHeader>
-					<SectionTitle>Your Listings</SectionTitle>
+					<SectionTitle className="mx-0 max-w-none text-left">
+						Your Listings
+					</SectionTitle>
 
 					<CardDescription>
 						Here, you&apos;ll find an overview of all your listings. You can

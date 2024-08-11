@@ -89,7 +89,9 @@ export default async function PromotionPage({
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 				<Card className="p-6">
 					<CardHeader>
-						<SectionTitle>Promote Your Listing</SectionTitle>
+						<SectionTitle className="mx-0 max-w-none text-left">
+							Promote Your Listing
+						</SectionTitle>
 						<CardDescription>
 							Boost your visibility and attract more customers with a paid
 							promotion on our directory.
@@ -103,13 +105,20 @@ export default async function PromotionPage({
 								payment.
 							</p>
 						)}
-
-						<FeeCalculator
-							listings={listingData}
-							categories={categoryData}
-							disabledDates={disabledDates}
-							paymentObject={paymentObject}
-						/>
+						{process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ? (
+							<FeeCalculator
+								listings={listingData}
+								categories={categoryData}
+								disabledDates={disabledDates}
+								paymentObject={paymentObject}
+							/>
+						) : (
+							<p>
+								We currently have self-service promotions deactivated. Please
+								write {COMPANY_BASIC_INFORMATION.SUPPORT_EMAIL} and let us know
+								which listing you want to promote.
+							</p>
+						)}
 					</CardContent>
 				</Card>
 
@@ -178,7 +187,7 @@ export default async function PromotionPage({
 			<div className="mt-12 space-y-6">
 				<h2 className="text-2xl font-bold">Why Promote Your Listing?</h2>
 				<div className="grid md:grid-cols-2 gap-6">
-					<div className="bg-muted rounded-lg p-6 space-y-4">
+					<div className="bg-white dark:bg-background-secondary rounded-lg p-6 space-y-4">
 						<MegaphoneIcon className="w-8 h-8 text-primary" />
 						<h3 className="text-xl font-semibold">Increased Visibility</h3>
 						<p className="text-muted-foreground">
@@ -186,7 +195,7 @@ export default async function PromotionPage({
 							potential customers discover your services.
 						</p>
 					</div>
-					<div className="bg-muted rounded-lg p-6 space-y-4">
+					<div className="bg-white dark:bg-background-secondary rounded-lg p-6 space-y-4">
 						<TargetIcon className="w-8 h-8 text-primary" />
 						<h3 className="text-xl font-semibold">Targeted Audience</h3>
 						<p className="text-muted-foreground">
@@ -194,7 +203,7 @@ export default async function PromotionPage({
 							services in your category.
 						</p>
 					</div>
-					<div className="bg-muted rounded-lg p-6 space-y-4">
+					<div className="bg-white dark:bg-background-secondary rounded-lg p-6 space-y-4">
 						<RocketIcon className="w-8 h-8 text-primary" />
 						<h3 className="text-xl font-semibold">Boost Your Leads</h3>
 						<p className="text-muted-foreground">
@@ -202,7 +211,7 @@ export default async function PromotionPage({
 							business with a paid promotion.
 						</p>
 					</div>
-					<div className="bg-muted rounded-lg p-6 space-y-4">
+					<div className="bg-white dark:bg-background-secondary rounded-lg p-6 space-y-4">
 						<WalletIcon className="w-8 h-8 text-primary" />
 						<h3 className="text-xl font-semibold">Cost-Effective</h3>
 						<p className="text-muted-foreground">

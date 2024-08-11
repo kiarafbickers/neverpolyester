@@ -9,11 +9,12 @@ import {
 	SubSectionInnerContainer,
 	SubSectionTitle,
 	SubSectionDescription,
+	SubSectionContentContainer,
 } from '@/ui/Section';
 // Import Functions & Actions & Hooks & State
 // Import Data
 // Import Assets & Icons
-import { MinusSquareIcon, PlusSquareIcon } from 'lucide-react';
+import { MinusSquareIcon, PlusIcon, PlusSquareIcon } from 'lucide-react';
 
 // What are the FAQs you want to show on the front page?
 
@@ -59,48 +60,53 @@ export default function FAQ({
 }) {
 	return (
 		<SubSectionOuterContainer id="faq" className={className}>
-			<SubSectionTitle>{title}</SubSectionTitle>
-			<SubSectionDescription>{description}</SubSectionDescription>
 			<SubSectionInnerContainer>
-				<dl className="mt-10 space-y-6 divide-y divide-black dark:divide-white max-w-4xl w-full mx-auto px-2 md:px-0">
-					{GENERAL_FAQS.map(
-						(faq) =>
-							faq.question &&
-							faq.answer && (
-								<Disclosure as="div" key={faq.question} className="pt-6">
-									{({ open }) => (
-										<>
-											<dt>
-												<Disclosure.Button className="flex w-full items-start justify-between text-left ">
-													<span className="text-base font-semibold leading-7 dark:text-white">
-														{faq.question}
-													</span>
-													<span className="ml-6 flex h-7 items-center text-black dark:text-white">
-														{open ? (
-															<MinusSquareIcon
-																className="h-6 w-6"
-																aria-hidden="true"
-															/>
-														) : (
-															<PlusSquareIcon
-																className="h-6 w-6"
-																aria-hidden="true"
-															/>
-														)}
-													</span>
-												</Disclosure.Button>
-											</dt>
-											<Disclosure.Panel as="dd" className="mt-2 pr-12">
-												<p className="text-base text-justify leading-7 dark:text-white">
-													{faq.answer}
-												</p>
-											</Disclosure.Panel>
-										</>
-									)}
-								</Disclosure>
-							)
-					)}
-				</dl>
+				<SubSectionTitle>{title}</SubSectionTitle>
+				{description && (
+					<SubSectionDescription>{description}</SubSectionDescription>
+				)}
+
+				<SubSectionContentContainer className=" mt-6">
+					<dl className="space-y-6 divide-y divide-neutral-200 dark:divide-white">
+						{GENERAL_FAQS.map(
+							(faq) =>
+								faq.question &&
+								faq.answer && (
+									<Disclosure as="div" key={faq.question} className="pt-6">
+										{({ open }) => (
+											<>
+												<dt>
+													<Disclosure.Button className="flex w-full items-start justify-between text-left ">
+														<span className="text-base font-semibold leading-7 dark:text-white">
+															{faq.question}
+														</span>
+														<span className="ml-6 flex h-7 items-center text-foreground dark:text-white">
+															{open ? (
+																<MinusSquareIcon
+																	className="h-6 w-6"
+																	aria-hidden="true"
+																/>
+															) : (
+																<PlusIcon
+																	className="h-6 w-6"
+																	aria-hidden="true"
+																/>
+															)}
+														</span>
+													</Disclosure.Button>
+												</dt>
+												<Disclosure.Panel as="dd" className="mt-2 pr-12">
+													<p className="text-base text-justify leading-7 dark:text-white">
+														{faq.answer}
+													</p>
+												</Disclosure.Panel>
+											</>
+										)}
+									</Disclosure>
+								)
+						)}
+					</dl>
+				</SubSectionContentContainer>
 			</SubSectionInnerContainer>
 		</SubSectionOuterContainer>
 	);

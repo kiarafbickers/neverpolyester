@@ -46,7 +46,9 @@ export default async function PostPage() {
 			</div>
 			<Card>
 				<CardHeader>
-					<SectionTitle>Your Blog Posts</SectionTitle>
+					<SectionTitle className="mx-0 max-w-none text-left">
+						Your Blog Posts
+					</SectionTitle>
 
 					<CardDescription>
 						Here, you&apos;ll find an overview of all your blog posts. You can

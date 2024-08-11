@@ -14,7 +14,7 @@ import { backgroundPattern } from '@/lib/utils';
  * @param description - The description to display.
  */
 export default function Hero({
-	keyword = 'Explore',
+	keyword = 'Farms',
 	headline = 'Explore everything we have to offer',
 	description = 'Find inspiration. Use the tags to filter and sort through our listings.',
 }: {

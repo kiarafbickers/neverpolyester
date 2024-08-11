@@ -23,6 +23,7 @@ import {
 	UnauthorizedError,
 	BadRequestError,
 } from '@/lib/handlingServerResponses';
+import { add } from 'date-fns';
 
 const ListingFormSchema = z.object({
 	id: z.optional(z.string()),
@@ -47,6 +48,13 @@ const ListingFormSchema = z.object({
 	is_user_published: z.boolean().nullable(),
 	is_admin_published: z.optional(z.boolean().nullable()),
 	click_url: z.string().url(),
+	farmer_names: z.string().optional(),
+	address: z.string().optional(),
+	founding_year: z.string().optional(),
+	discount_code_text: z.string().optional(),
+	discount_code_percentage: z.string().optional(),
+	discount_code: z.string().optional(),
+	logo_image_url: z.string().optional(),
 });
 
 const ListingTagsSchema = z.array(z.string());

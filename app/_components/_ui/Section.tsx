@@ -13,10 +13,7 @@ const SectionOuterContainer = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<div
 		ref={ref}
-		className={cn(
-			'max-w-screen stretch mx-auto flex flex-col max-w-5xl py-12 px-2 lg:px-0',
-			className
-		)}
+		className={cn('max-w-screen stretch mx-auto flex flex-col', className)}
 		{...props}
 	/>
 ));
@@ -29,7 +26,7 @@ const SectionTitle = React.forwardRef<
 	<h1
 		ref={ref}
 		className={cn(
-			'font-semibold tracking-tight text-4xl dark:text-white',
+			'font-semibold tracking-tight text-4xl text-foreground dark:text-white',
 			className
 		)}
 		{...props}
@@ -43,23 +40,33 @@ const SectionDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<p
 		ref={ref}
-		className={cn('mt-2 text-muted-foreground', className)}
+		className={cn('mt-2 text-muted-foreground dark:text-white', className)}
 		{...props}
 	/>
 ));
 SectionDescription.displayName = 'SectionDescription';
 
+const SectionHeaderContainer = React.forwardRef<
+	HTMLParagraphElement,
+	React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+	<div
+		ref={ref}
+		className={cn('pt-10 text-center max-w-2xl mx-auto', className)}
+		{...props}
+	/>
+));
+SectionHeaderContainer.displayName = 'SectionHeaderContainer';
+
 const SubSectionOuterContainer = React.forwardRef<
 	HTMLDivElement,
 	React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-	<div>
-		<div
-			ref={ref}
-			className={cn('mx-auto w-full pb-4', className)}
-			{...props}
-		/>
-	</div>
+	<div
+		ref={ref}
+		className={cn('mx-auto w-full py-10 md:py-20 px-4 xl:px-0', className)}
+		{...props}
+	/>
 ));
 SubSectionOuterContainer.displayName = 'SubSectionOuterContainer';
 
@@ -69,11 +76,22 @@ const SubSectionInnerContainer = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<div
 		ref={ref}
-		className={cn('flex flex-col w-full pt-4', className)}
+		className={cn(
+			'flex flex-col w-full max-w-5xl xl:max-w-7xl mx-auto',
+			className
+		)}
 		{...props}
 	/>
 ));
 SubSectionInnerContainer.displayName = 'SubSectionInnerContainer';
+
+const SubSectionContentContainer = React.forwardRef<
+	HTMLDivElement,
+	React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+	<div ref={ref} className={cn('w-full mt-12', className)} {...props} />
+));
+SubSectionContentContainer.displayName = 'SubSectionContentContainer';
 
 const SubSectionTitle = React.forwardRef<
 	HTMLParagraphElement,
@@ -82,7 +100,7 @@ const SubSectionTitle = React.forwardRef<
 	<h2
 		ref={ref}
 		className={cn(
-			'my-8 text-4xl font-bold leading-tight tracking-tighter  dark:text-white',
+			'mb-2 text-2xl md:text-4xl font-bold leading-tight text-foreground dark:text-white uppercase',
 			className
 		)}
 		{...props}
@@ -96,7 +114,7 @@ const SubSectionDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<p
 		ref={ref}
-		className={cn('mt-6 text-muted-foreground', className)}
+		className={cn('text-sm text-muted-foreground', className)}
 		{...props}
 	/>
 ));
@@ -108,6 +126,8 @@ export {
 	SectionDescription,
 	SubSectionOuterContainer,
 	SubSectionInnerContainer,
+	SubSectionContentContainer,
 	SubSectionTitle,
 	SubSectionDescription,
+	SectionHeaderContainer,
 };

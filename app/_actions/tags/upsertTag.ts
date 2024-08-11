@@ -7,7 +7,7 @@ import { z } from 'zod';
 // Import Components
 // Import Functions & Actions & Hooks & State
 import createSupabaseRLSClient from '@/lib/createSupabaseRLSClient';
-import { formDataToObject, stringToSlug } from '@/lib/utils';
+import { stringToSlug } from '@/utils';
 // Import Data
 // Import Assets & Icons
 // Import Error Handling
@@ -33,8 +33,7 @@ type TagFormState =
 	| undefined;
 
 const TagFormSchema = z.object({
-	id: z.string().nullable(),
-	slug: z.string().nullable(),
+	id: z.optional(z.string()),
 	name: z.string().min(2, { message: 'Be at least 2 characters long' }),
 	headline: z
 		.string()
@@ -44,7 +43,11 @@ const TagFormSchema = z.object({
 		.string()
 		.min(10, { message: 'Be at least 10 characters long' })
 		.max(160, { message: 'Be at most 160 characters long' }),
+	image_url_hero: z.optional(z.string()),
+	image_url_small: z.optional(z.string()),
 });
+
+const TagGroupIdsSchema = z.array(z.string());
 
 /**
  * Upserts a tag in the database.
@@ -54,12 +57,11 @@ const TagFormSchema = z.object({
  * @returns A promise that resolves to a server response.
  */
 export default async function upsertTag(
-	state: TagFormState,
-	formData: FormData
+	formData: z.infer<typeof TagFormSchema>,
+	tagGroupIds: z.infer<typeof TagGroupIdsSchema>
 ): Promise<ServerResponse<any, Record<string, string[]>>> {
 	try {
-		const formatedFormData = formDataToObject(formData);
-		const validatedFields = TagFormSchema.safeParse(formatedFormData);
+		const validatedFields = TagFormSchema.safeParse(formData);
 		if (!validatedFields.success) {
 			throw new HookFormError(
 				validatedFields.error.flatten().fieldErrors as TagFormState
@@ -67,32 +69,91 @@ export default async function upsertTag(
 		}
 		const supabase = createSupabaseRLSClient();
 
-		if (!formData.get('id') || formData.get('id') === '') {
-			const { error } = await supabase.from('tags').insert({
-				description: formData.get('description') as string,
-				headline: formData.get('headline') as string,
-				name: formData.get('name') as string,
-				slug: stringToSlug(formData.get('name') as string),
-			});
-			if (error) {
+		if (!validatedFields.data.id || validatedFields.data.id === '') {
+			delete validatedFields.data.id;
+			const { data: newTag, error } = await supabase
+				.from('tags')
+				.insert({
+					...validatedFields.data,
+					slug: stringToSlug(validatedFields.data.name),
+				})
+				.select('id')
+				.single();
+
+			if (error || !newTag.id) {
 				console.error('Error inserting tag:', error);
 				throw new InternalServerError('Error storing tag');
 			}
+
+			const { error: deleteError } = await supabase
+				.from('tag_groups_tags_association')
+				.delete()
+				.eq('tag_id', newTag.id);
+
+			if (deleteError) {
+				console.error('Error deleting tag groups:', deleteError);
+				throw new InternalServerError(
+					'Error with tag group deletion. Contact Support.'
+				);
+			}
+
+			const tagGroups = tagGroupIds.map((tagGroupId) => ({
+				tag_id: newTag.id,
+				tag_group_id: tagGroupId,
+			}));
+
+			const { error: tagsError } = await supabase
+				.from('tag_groups_tags_association')
+				.insert(tagGroups);
+
+			if (tagsError) {
+				console.error('Error adding tag groups:', tagsError);
+				throw new InternalServerError(
+					'Error with tag group addition. Contact Support.'
+				);
+			}
 		} else {
-			const { error } = await supabase
+			const { data: updatedTag, error } = await supabase
 				.from('tags')
 				.update({
-					description: formData.get('description') as string,
-					headline: formData.get('headline') as string,
-					name: formData.get('name') as string,
-					slug: stringToSlug(formData.get('name') as string),
-					updated_at: new Date().toISOString(),
+					...validatedFields.data,
+					slug: stringToSlug(validatedFields.data.name),
 				})
-				.eq('id', formData.get('id') as string);
+				.eq('id', validatedFields.data.id)
+				.select('id')
+				.single();
 
-			if (error) {
+			if (error || !updatedTag.id) {
 				console.error('Error updating tag:', error);
 				throw new InternalServerError('Error updating tag.');
+			}
+
+			const { error: deleteError } = await supabase
+				.from('tag_groups_tags_association')
+				.delete()
+				.eq('tag_id', updatedTag.id);
+
+			if (deleteError) {
+				console.error('Error updating tag groups:', deleteError);
+				throw new InternalServerError(
+					'Error while updating tag groups. Contact Support.'
+				);
+			}
+
+			const tagGroups = tagGroupIds.map((tagGroupId) => ({
+				tag_id: updatedTag.id,
+				tag_group_id: tagGroupId,
+			}));
+
+			const { error: tagsError } = await supabase
+				.from('tag_groups_tags_association')
+				.insert(tagGroups);
+
+			if (tagsError) {
+				console.error('Error updating tag groups:', tagsError);
+				throw new InternalServerError(
+					'Error while updating tag groups. Contact Support.'
+				);
 			}
 		}
 

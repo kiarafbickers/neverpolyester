@@ -20,13 +20,7 @@ import { cn } from '@/lib/utils';
 // Import Assets & Icons
 import { HeartIcon } from 'lucide-react';
 
-export default function LikeButton({
-	listing,
-	user,
-}: {
-	listing: ListingType;
-	user: any;
-}) {
+export default function LikeButton({ listing }: { listing: ListingType }) {
 	const [isLiked, setIsLiked] = useState(false);
 
 	if (!listing) {
@@ -53,16 +47,14 @@ export default function LikeButton({
 									});
 								});
 							}}
-							disabled={isLiked || !user}
+							disabled={isLiked}
 						>
 							<HeartIcon size="20" fill={isLiked ? 'red' : 'white'} />
 							<span className="sr-only">Like this listing.</span>
 						</Button>
 					</div>
 				</TooltipTrigger>
-				<TooltipContent>
-					<p>{user ? 'Like it!' : 'Sign in to like!'}</p>
-				</TooltipContent>
+				<TooltipContent>Like it!</TooltipContent>
 			</Tooltip>
 		</TooltipProvider>
 	);

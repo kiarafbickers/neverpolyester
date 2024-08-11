@@ -27,7 +27,7 @@ const CommentFormSchema = z.object({
 		.optional(),
 	parent_comment_id: z.string().optional(),
 	blog_or_listing_id: z.string(),
-	blog_or_listing: z.enum(['blog_post_id', 'listing_id']),
+	blog_or_listing: z.enum(['blog_post_id', 'listing_id', 'sublisting_id']),
 });
 
 export default async function upsertComment(
@@ -66,7 +66,7 @@ export default async function upsertComment(
 			console.error('Error handling comment:', commentError);
 			throw new InternalServerError('Error storing comment');
 		}
-		revalidatePath('/account/secret-admin/comment-manager');
+		revalidatePath('/secret-admin/comment-manager');
 		return handleServerSuccess();
 	} catch (error) {
 		return handleServerError(error, {});
