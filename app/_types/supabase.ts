@@ -660,7 +660,7 @@ export type Database = {
       }
       sublistings: {
         Row: {
-          availability: boolean
+          availability: boolean | null
           average_rating: number | null
           click_url: string
           clicks: number | null
@@ -676,7 +676,7 @@ export type Database = {
           is_promoted: boolean | null
           is_user_published: boolean | null
           likes: number | null
-          listing_id: string | null
+          listing_id: string
           owner_id: string | null
           price_promotional_in_cents: number | null
           price_regular_in_cents: number | null
@@ -689,7 +689,7 @@ export type Database = {
           views: number | null
         }
         Insert: {
-          availability?: boolean
+          availability?: boolean | null
           average_rating?: number | null
           click_url: string
           clicks?: number | null
@@ -705,7 +705,7 @@ export type Database = {
           is_promoted?: boolean | null
           is_user_published?: boolean | null
           likes?: number | null
-          listing_id?: string | null
+          listing_id: string
           owner_id?: string | null
           price_promotional_in_cents?: number | null
           price_regular_in_cents?: number | null
@@ -718,7 +718,7 @@ export type Database = {
           views?: number | null
         }
         Update: {
-          availability?: boolean
+          availability?: boolean | null
           average_rating?: number | null
           click_url?: string
           clicks?: number | null
@@ -734,7 +734,7 @@ export type Database = {
           is_promoted?: boolean | null
           is_user_published?: boolean | null
           likes?: number | null
-          listing_id?: string | null
+          listing_id?: string
           owner_id?: string | null
           price_promotional_in_cents?: number | null
           price_regular_in_cents?: number | null
