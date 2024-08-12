@@ -951,7 +951,6 @@ CREATE OR REPLACE FUNCTION public.match_listings(embedding vector, match_thresho
  RETURNS TABLE(id uuid, title text, similarity double precision)
  LANGUAGE plpgsql
  STABLE
-  SET search_path = ''
 AS $function$
 #variable_conflict use_variable
 begin
@@ -981,7 +980,6 @@ CREATE OR REPLACE FUNCTION public.match_sublistings(embedding vector, match_thre
  RETURNS TABLE(id uuid, title text, similarity double precision)
  LANGUAGE plpgsql
  STABLE
-  SET search_path = ''
 AS $function$
 #variable_conflict use_variable
 begin
@@ -989,7 +987,7 @@ begin
   select
     sublistings.id,
     sublistings.title,
-    (sublistings.embedding <#> embedding) * -1 as similarity
+(sublistings.embedding <#> embedding) * -1 as similarity
   from public.sublistings
 
   -- The dot product is negative because of a Postgres limitation, so we negate it
