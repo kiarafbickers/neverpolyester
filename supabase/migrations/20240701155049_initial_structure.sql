@@ -1,6 +1,4 @@
-CREATE SCHEMA IF NOT EXISTS extensions;
-
-create extension if not exists "vector" with schema extensions version '0.7.0';
+CREATE EXTENSION IF NOT EXISTS "vector" WITH SCHEMA "public";
 
 create table "public"."activities" (
     "id" uuid not null default gen_random_uuid(),
@@ -141,7 +139,7 @@ create table "public"."listings" (
     "discount_code_text" text,
     "discount_code_percentage" text,
     "discount_code" text,
-    "embedding" extensions.vector(1536),
+    "embedding" vector(1536),
     "fts" tsvector generated always as (to_tsvector('english'::regconfig, ((((COALESCE(title, ''::text) || ' '::text) || COALESCE(description, ''::text)) || ' '::text) || COALESCE(excerpt, ''::text)))) stored
 );
 
@@ -185,7 +183,7 @@ create table "public"."sublistings" (
     "subcategory_id" uuid,
     "default_image_url" text,
         "availability" boolean default true,
-    "embedding" extensions.vector(1536),
+    "embedding" vector(1536),
     "fts" tsvector generated always as (to_tsvector('english'::regconfig, ((((COALESCE(title, ''::text) || ' '::text) || COALESCE(description, ''::text)) || ' '::text) || COALESCE(excerpt, ''::text)))) stored
 );
 
@@ -949,7 +947,7 @@ END;
 $function$
 ;
 
-CREATE OR REPLACE FUNCTION public.match_listings(embedding extensions.vector, match_threshold double precision, match_count integer)
+CREATE OR REPLACE FUNCTION public.match_listings(embedding vector, match_threshold double precision, match_count integer)
  RETURNS TABLE(id uuid, title text, similarity double precision)
  LANGUAGE plpgsql
  STABLE
@@ -979,7 +977,7 @@ end;
 $function$
 ;
 
-CREATE OR REPLACE FUNCTION public.match_sublistings(embedding extensions.vector, match_threshold double precision, match_count integer)
+CREATE OR REPLACE FUNCTION public.match_sublistings(embedding vector, match_threshold double precision, match_count integer)
  RETURNS TABLE(id uuid, title text, similarity double precision)
  LANGUAGE plpgsql
  STABLE
