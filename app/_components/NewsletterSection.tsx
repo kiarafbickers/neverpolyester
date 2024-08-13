@@ -2,7 +2,8 @@
 
 // Import Types
 // Import External Packages
-import Iframe from 'react-iframe';
+import { useEffect } from 'react';
+import Script from 'next/script';
 import Link from 'next/link';
 import Image from 'next/image';
 // Import Components
@@ -62,10 +63,16 @@ export default function NewsletterBox_BeeHiiv({
 		return (
 			<div id="newsletter" className={className}>
 				{hasCookieConsent === true ? (
-					<Iframe
-						url={process.env.NEXT_PUBLIC_BEEHIIV_EMBED_URL as string}
-						data-test-id="beehiiv-embed"
-					/>
+					<>
+						<div id="beehiiv-recommendations-widget" />
+						<Script
+							src="https://embeds.beehiiv.com/recommendations.js?_bhpid=2f5a4c1d-82e1-4c43-be73-9df0a894f2bd&v=1"
+							data-beehiiv-recommendations-widget
+							defer
+							onLoad={() => console.log('Beehiiv script loaded successfully')}
+							onError={() => console.log('Failed to load the Beehiiv script')}
+						/>
+					</>
 				) : (
 					<CookieConsentButton_Accept buttonText="Accept Cookies to display" />
 				)}
@@ -110,12 +117,16 @@ export default function NewsletterBox_BeeHiiv({
 									</label>
 								</div>
 								{hasCookieConsent === true ? (
-									<Iframe
-										title="Newsletter Signup"
-										url={process.env.NEXT_PUBLIC_BEEHIIV_EMBED_URL as string}
-										data-test-id="beehiiv-embed"
-										className="h-auto overflow-y-hidden w-full"
-									/>
+									<>
+										<div id="beehiiv-recommendations-widget" />
+										<Script
+											src="https://embeds.beehiiv.com/recommendations.js?_bhpid=2f5a4c1d-82e1-4c43-be73-9df0a894f2bd&v=1"
+											data-beehiiv-recommendations-widget
+											defer
+											onLoad={() => console.log('Beehiiv script loaded successfully')}
+											onError={() => console.log('Failed to load the Beehiiv script')}
+										/>
+									</>
 								) : (
 									<CookieConsentButton_Accept
 										buttonText="Accept Cookies to display Newsletter Signup"
