@@ -327,4 +327,4 @@ To deploy your local project to Vercel, push it to [GitHub](https://docs.github.
 
 - Go to https://beehiiv.com
 - Follow the instructions here to obtain the api key (https://support.beehiiv.com/hc/en-us/articles/13091918395799-Where-to-find-your-Publication-ID-or-API-keys)
-- Paste the API Key to your env.local as `NEXT_PUBLIC_BEEHIIV_EMBED_URL`
+- Paste the API Key to your env.local as `NEXT_PUBLIC_BEEHIIV_EMBED_URL` 
