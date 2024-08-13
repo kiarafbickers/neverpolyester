@@ -38,7 +38,7 @@ export const COMPANY_BASIC_INFORMATION = {
 	/**
 	 * The URL of the company's website.
 	 */
-	URL: 'https://SOME_URL.com',
+	URL: 'https://breakupwiththegrocery.com/',
 
 	/**
 	 * The support email of the company.
@@ -63,7 +63,7 @@ export const COMPANY_BASIC_INFORMATION = {
 	/**
 	 * The name of the responsible person for the website. This is the person who is responsible for the content of the website, e.g. for the Cookie Policy.
 	 */
-	RESPONSIBLE_PERSON: 'YOUR NAME',
+	RESPONSIBLE_PERSON: 'Kiara Bickers',
 };
 
 /**
@@ -84,7 +84,7 @@ export const COMPANY_MARKETING_INFORMATION = {
 	/**
 	 * The meta keywords for the resource directory. Max 10 keywords.
 	 */
-	META_KEYWORDS: ['some', 'keywords', 'your', 'target audience', 'googles'],
+	META_KEYWORDS: ['beef', 'wagyu', 'wagyu steak', 'grass fed beef', 'grass fed beef near me', 'best cut of steak', 'organic beef', 'buy meat online'],
 
 	/**
 	 * The social links for the resource directory.
@@ -107,7 +107,7 @@ export const COMPANY_MARKETING_INFORMATION = {
 			/**
 			 * The username for the social channel.
 			 */
-			USERNAME: '@domainerskit',
+			USERNAME: '@kiarabickers',
 
 			/**
 			 * The icon for the social channel.
@@ -246,12 +246,12 @@ export const CREATOR_INFORMATION = {
 	/**
 	 * The name of the creator.
 	 */
-	NAME: 'YOUR NAME',
+	NAME: 'Kiara Bickers',
 
 	/**
 	 * The URL of the creator's website.
 	 */
-	HREF: 'https://x.com/@YOUR_HANDLE',
+	HREF: 'https://x.com/@kiarabickers',
 };
 
 // What are disclaimers you want to show in the Footer?
