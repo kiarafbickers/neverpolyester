@@ -26,10 +26,14 @@ export const NAVBAR_ADD_LINKS = [
 		name: 'Farms',
 		href: '/explore',
 	},
+	/*
+	// Temporarily commented out the Products link.
+	// Will revisit and include this functionality after addressing other components.
 	{
 		name: 'Products',
 		href: '/products',
 	},
+	*/
 	{
 		name: 'Advertise',
 		href: '/advertise',

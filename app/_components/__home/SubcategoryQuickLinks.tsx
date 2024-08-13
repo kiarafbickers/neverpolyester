@@ -16,6 +16,10 @@ import getFullSubcategories from '@/actions/subcategories/getFullSubcategories';
 // Import Assets & Icons
 
 export default async function SubategoryQuickLinks() {
+	// Temporarily commented out the SubategoryQuickLinks component functionality.
+	// Will revisit and include this functionality after addressing other components.
+
+	/*
 	const { data: subcategoryData } = await getFullSubcategories('active');
 
 	return (
@@ -60,4 +64,8 @@ export default async function SubategoryQuickLinks() {
 			</SubSectionInnerContainer>
 		</SubSectionOuterContainer>
 	);
+	*/
+
+	// Return null to render nothing temporarily
+	return null;
 }

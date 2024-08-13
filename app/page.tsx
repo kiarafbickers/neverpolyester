@@ -74,6 +74,8 @@ export default async function Page() {
 					</div>
 				</div>
 
+				{/* Temporarily commented out the featured products section.
+				    Will add all the farms first before bringing in products.
 				<SublistingOverview
 					title="FEATURED PRODUCTS"
 					buttonText="View All Products"
@@ -87,6 +89,7 @@ export default async function Page() {
 					className="bg-background-secondary pt-32"
 					showAsRow
 				/>
+				*/}
 
 				<div className="w-full relative">
 					<Image
