@@ -96,19 +96,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 	// Level 2: /products/[slug] => website.com/products/[slug]
 
-	// const sublistingsArray = await supabase
-	// 	.from('sublistings')
-	// 	.select('slug')
-	// 	.match({ is_user_published: true, is_admin_published: true });
-	// const sublistingSlugs = sublistingsArray?.data?.map(({ slug }) => ({
-	// 	slug: slug,
-	// }));
-	//
-	// const LEVEL2_SUBLISTING_SLUGS: URL_Object[] = sublistingSlugs
-	// 	? sublistingSlugs.flatMap((listing) => ({
-	// 			url: `${COMPANY_BASIC_INFORMATION.URL}/products/${listing.slug}`,
-	// 	  }))
-	// 	: [];
+	const sublistingsArray = await supabase
+		.from('sublistings')
+		.select('slug')
+		.match({ is_user_published: true, is_admin_published: true });
+	const sublistingSlugs = sublistingsArray?.data?.map(({ slug }) => ({
+		slug: slug,
+	}));
+
+	const LEVEL2_SUBLISTING_SLUGS: URL_Object[] = sublistingSlugs
+		? sublistingSlugs.flatMap((listing) => ({
+				url: `${COMPANY_BASIC_INFORMATION.URL}/products/${listing.slug}`,
+		  }))
+		: [];
 
 	// Level 2: /blog => website.com/blog/{slug}
 
