@@ -38,7 +38,7 @@ export default function VideoBreaker({ className }: { className?: string }) {
 								</div>
 								<div className="mx-auto w-full">
 									<p className="text-base font-medium">
-										We're putting power back in the hands of independent
+										We&apos;re putting power back in the hands of independent
 										food producers - and changing the food system for the
 										better.
 									</p>
