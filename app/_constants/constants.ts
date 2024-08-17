@@ -234,7 +234,7 @@ export const SUBLISTINGS_SETTINGS = {
 
 // HERO
 
-export const HERO_TITLE = 'Break up with the grocery store';
+export const HERO_TITLE = 'Break up with the grocery';
 export const HERO_SLOGAN =
 	"Say goodbye to grocery stores and hello to farm-fresh, top-quality foods. We're a community hub connecting you with farmers and artisan producers who harvest and deliver unique specialty ingredients right to your door. Enjoy the best of farm-to-table, affordably.";
 
