@@ -23,7 +23,7 @@ export const COMPANY_BASIC_INFORMATION = {
 	/**
 	 * The legal name of the company. If no legal name is available, use the name of the company.
 	 */
-	LEGAL_NAME: 'Company Name LLC',
+	LEGAL_NAME: 'Breakup With The Grocery',
 
 	/**
 	 * The OTHER_INFO_TEXT will only be shown in the imprint. It can be used to show additional information, e.g. the VAT-ID of your business. It is an array of strings, where each string will be shown as a separate line.
@@ -33,7 +33,7 @@ export const COMPANY_BASIC_INFORMATION = {
 	/**
 	 * The address of the company. Leave as '' if you do not want to display an address.
 	 */
-	ADDRESS: 'Example Street 123, 12345 Example City, Example Country',
+	ADDRESS: '',
 
 	/**
 	 * The URL of the company's website.
@@ -43,12 +43,12 @@ export const COMPANY_BASIC_INFORMATION = {
 	/**
 	 * The support email of the company.
 	 */
-	SUPPORT_EMAIL: 'support@SOME_URL.com',
+	SUPPORT_EMAIL: 'contact@breakupwiththegrocery.com',
 
 	/**
 	 * The support phone number of the company. (This is needed in certain countries for the imprint.)
 	 */
-	SUPPORT_PHONE: '+1 234 567 890',
+	SUPPORT_PHONE: '',
 
 	/**
 	 * The founding year of the company. For auto-updating the age of the company in the footer.
@@ -58,7 +58,7 @@ export const COMPANY_BASIC_INFORMATION = {
 	/**
 	 * The URL of the parent company's website. If you have a holding or a personal portfolio website, you can link it here.
 	 */
-	PARENT_COMPANY_URL: 'https://SOME_ORTHER_URL.com',
+	PARENT_COMPANY_URL: '',
 
 	/**
 	 * The name of the responsible person for the website. This is the person who is responsible for the content of the website, e.g. for the Cookie Policy.
@@ -102,7 +102,7 @@ export const COMPANY_MARKETING_INFORMATION = {
 			/**
 			 * The URL of the social channel.
 			 */
-			CHANNEL_HREF: 'https://x.com/domainerskit',
+			CHANNEL_HREF: 'https://x.com/kiarabickers',
 
 			/**
 			 * The username for the social channel.
@@ -273,8 +273,8 @@ export const FOOTER_EXTERNAL_LINK_LIST: { label: string; href: string }[] = [
 		href: 'Link 1',
 	},
 	{
-		label: 'Directory Boilerplate @ DirectoryStack.com',
-		href: 'https://directorystack.com',
+		label: 'Label 2',
+		href: 'Label 2',
 	},
 	{
 		label: 'Label 3',
