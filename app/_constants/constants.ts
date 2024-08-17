@@ -234,9 +234,9 @@ export const SUBLISTINGS_SETTINGS = {
 
 // HERO
 
-export const HERO_TITLE = 'Break up with the grocery';
+export const HERO_TITLE = 'Eat better, live better.';
 export const HERO_SLOGAN =
-	"Say goodbye to grocery stores and hello to farm-fresh, top-quality foods. We're a community hub connecting you with farmers and artisan producers who harvest and deliver unique specialty ingredients right to your door. Enjoy the best of farm-to-table, affordably.";
+	"Your hub for the farmers and artisan food producers—fresh, affordable, and delivered. Get to know your rancher’s name!";
 
 // FOOTER
 
