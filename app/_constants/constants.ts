@@ -290,7 +290,7 @@ export const ADDITIONAL_AD_SLOTS = [
 	'blog-1',
 	'blog-2',
 	'blog-3',
-	'other-1',
+	'texas-1',
 ];
 
 // What are the image options you want to show in the Content Editor?
