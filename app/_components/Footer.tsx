@@ -23,7 +23,6 @@ const FOOTER_NAVIGATION_LINKS: {
 } = {
 	resources: [
 		{ label: 'All Farms', href: '/explore' },
-		{ label: 'All Products', href: '/products' },
 		{ label: 'Blog', href: '/blog' },
 		{ label: 'Advertise', href: '/advertise' },
 	],
