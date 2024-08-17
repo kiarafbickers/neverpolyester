@@ -25,7 +25,7 @@ function readFolderStructure(
 	previousFolder = ''
 ) {
 	const urls: URL_Object[] = [];
-	const disabledIncludes = ['(Protected)', 'api', 'thank-you', 'checkout', 'products'];
+	const disabledIncludes = ['(Protected)', 'api', 'thank-you', 'checkout'];
 	const disabledStartsWith = ['_', '['];
 	fs.readdirSync(dirPath, { withFileTypes: true }).forEach((dirent) => {
 		if (dirent.isDirectory()) {
