@@ -123,10 +123,10 @@ export default function Navbar_Public() {
 							<div className="w-full flex-grow" />
 
 							<Searchbar
-								placeholder="Food, Cut, State, etc."
+								placeholder="Explore Farms in Your State"
 								className="hidden md:block w-full px-4"
 								id="nav_search"
-								rootPage="/products"
+								rootPage="/explore"
 							/>
 
 							<div className="flex items-center justify-end lg:max-w-fit whitespace-nowrap ">
