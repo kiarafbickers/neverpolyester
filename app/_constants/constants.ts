@@ -18,12 +18,12 @@ export const COMPANY_BASIC_INFORMATION = {
 	/**
 	 * The name of the company.
 	 */
-	NAME: 'Breakup With The Grocery',
+	NAME: 'Ranchers List',
 
 	/**
 	 * The legal name of the company. If no legal name is available, use the name of the company.
 	 */
-	LEGAL_NAME: 'Breakup With The Grocery',
+	LEGAL_NAME: 'Ranchers List',
 
 	/**
 	 * The OTHER_INFO_TEXT will only be shown in the imprint. It can be used to show additional information, e.g. the VAT-ID of your business. It is an array of strings, where each string will be shown as a separate line.
@@ -38,12 +38,12 @@ export const COMPANY_BASIC_INFORMATION = {
 	/**
 	 * The URL of the company's website.
 	 */
-	URL: 'https://breakupwiththegrocery.com/',
+	URL: 'https://rancherslist.com/',
 
 	/**
 	 * The support email of the company.
 	 */
-	SUPPORT_EMAIL: 'contact@breakupwiththegrocery.com',
+	SUPPORT_EMAIL: 'contact@rancherslist.com',
 
 	/**
 	 * The support phone number of the company. (This is needed in certain countries for the imprint.)
@@ -73,7 +73,7 @@ export const COMPANY_MARKETING_INFORMATION = {
 	/**
 	 * The meta title for the resource directory. Maximum 60-70 characters.
 	 */
-	META_TITLE: 'Breakup With The Grocery Store - Farm-Fresh, Top-Quality Foods',
+	META_TITLE: 'Ranchers List - Farm-Fresh, Top-Quality Foods',
 
 	/**
 	 * The meta description for the resource directory. Maximum 160 characters.

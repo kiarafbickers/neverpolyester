@@ -20,7 +20,7 @@ import { MinusSquareIcon, PlusIcon, PlusSquareIcon } from 'lucide-react';
 
 export const GENERAL_FAQS: { question: string; answer: string }[] = [
 	{
-		question: 'What is BreakUpWithYourGrocery.com?',
+		question: 'What is RanchersList.com?',
 		answer:
 			"Our platform connects you directly with local farmers and artisan food producers for fresh, high-quality food that will deliver to you or can be picked up locally. Sign up to our mailing list to get deals on  pasture-raised meats, fresh fruits and vegetables, dairy, eggs, and artisanal products products nationwide.",
 	},
