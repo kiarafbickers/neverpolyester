@@ -73,7 +73,7 @@ export const COMPANY_MARKETING_INFORMATION = {
 	/**
 	 * The meta title for the resource directory. Maximum 60-70 characters.
 	 */
-	META_TITLE: 'Ranchers List - Farm-Fresh, Top-Quality Foods',
+	META_TITLE: 'Know Your Rancher, Get Quality Meat',
 
 	/**
 	 * The meta description for the resource directory. Maximum 160 characters.
@@ -234,7 +234,7 @@ export const SUBLISTINGS_SETTINGS = {
 
 // HERO
 
-export const HERO_TITLE = 'Eat better, live better.';
+export const HERO_TITLE = 'Know Your Rancher, Get Quality Meat.';
 export const HERO_SLOGAN =
 	"Your hub for the farmers and artisan food producers—fresh, affordable, and delivered. Get to know your rancher’s name!";
 
