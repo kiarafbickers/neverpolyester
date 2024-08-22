@@ -234,9 +234,9 @@ export const SUBLISTINGS_SETTINGS = {
 
 // HERO
 
-export const HERO_TITLE = 'Know Your Rancher, Get Quality Meat.';
+export const HERO_TITLE = 'Know Your Rancher, Love Your Meat.';
 export const HERO_SLOGAN =
-	"Your hub for the farmers and artisan food producers—fresh, affordable, and delivered. Get to know your rancher’s name!";
+	"Ranchers List is your a direct connection to the best independent ranchers, making it easier than ever to buy high-quality meat with confidence.";
 
 // FOOTER
 
