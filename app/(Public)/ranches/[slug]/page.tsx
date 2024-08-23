@@ -250,7 +250,7 @@ export default async function ListingPage({ params }: Props) {
 									{listing.farmer_names && (
 										<div className="flex justify-between">
 											<div className="font-semibold text-base">
-												Farmer Name(s):
+												Rancher Name(s):
 											</div>
 											<div className="text-base">{listing.farmer_names}</div>
 										</div>

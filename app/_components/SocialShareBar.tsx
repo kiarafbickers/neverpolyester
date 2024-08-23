@@ -31,13 +31,13 @@ export const SOCIAL_SHARE_LINKS = [
 		channelName: 'X',
 		channelHref: 'https://twitter.com/intent/tweet?text=',
 		Icon: Icons.X,
-		shareTextInFrontOfURL: `I found this on ${COMPANY_BASIC_INFORMATION.NAME}: `,
+		shareTextInFrontOfURL: `Just found this on ${COMPANY_BASIC_INFORMATION.NAME}—check it out: `,
 	},
 	{
 		channelName: 'facebook',
 		channelHref: 'https://www.facebook.com/sharer/sharer.php?u=',
 		Icon: Icons.Facebook,
-		shareTextInFrontOfURL: '',
+		shareTextInFrontOfURL: 'Just found this on ${COMPANY_BASIC_INFORMATION.NAME}—check it out: ',
 	},
 ];
 

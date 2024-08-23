@@ -591,7 +591,7 @@ export default function ListingEditor({
 									name="farmer_names"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Farmer Names</FormLabel>
+											<FormLabel>Ranchers Names</FormLabel>
 											<FormDescription>
 												Enter the names of your farmers. Will be displayed on
 												the product page.{' '}
