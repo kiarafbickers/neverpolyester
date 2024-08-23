@@ -132,11 +132,11 @@ export const PROMOTIONS_DATA = {
 	// The price of the promotion in USD per DAY. 1 = 1 USD.
 	FIXED_FEE_PER_DAY: 1,
 	// The PRICE_ID for the promotion product in Stripe.
-	STRIPE_PRICE_ID: 'price_...',
+	STRIPE_PRICE_ID: 'price_1Pr5hpCOsJxKgomzJ7UOkRPL',
 	// The discount for the 30 day promotion. 0.1 = 10% discount.
 	THIRTY_DAY_DISCOUNT: 0.1,
 	// The COUPON_ID for the promotion product in Stripe. This coupong should give the same discount as the THIRTY_DAY_DISCOUNT.
-	STRIPE_COUPON_ID: '......',
+	STRIPE_COUPON_ID: 'rCqUF9Cl',
 };
 
 /**
@@ -196,7 +196,7 @@ export const GENERAL_SETTINGS = {
 	// Do you - as an Admin - want to pre-approve each user-approved SUBlisting before it is published?
 	// Set 'false' if you want to manually review and approve sublistings before they are published. This is advisable, if you allow users to publish sublistings.
 	// If you set 'true', all sublistings will be published immediately after you or the user have published them.
-	PRE_ADMIN_APPROVE_SUBLISTINGS: true,
+	PRE_ADMIN_APPROVE_SUBLISTINGS: false,
 
 	// Do you - as an Admin - want to pre-approve each user-approved blog post before it is published?
 	// Set 'false' if you want to manually review and approve blog posts before they are published. This is advisable, if you allow users to publish blog posts.
@@ -207,7 +207,7 @@ export const GENERAL_SETTINGS = {
 	USE_AI_CONTENT_CREATION: true,
 
 	// Do you want to show the 'New' badge on listings that are younger than X DAYS? Enter 0 to disable the 'New' badge.
-	MAX_NUM_DAY_AGE_FOR_NEW_BADGE: 7,
+	MAX_NUM_DAY_AGE_FOR_NEW_BADGE: 0,
 };
 
 /* *
