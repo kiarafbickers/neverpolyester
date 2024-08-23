@@ -180,13 +180,13 @@ export const GENERAL_SETTINGS = {
 
 	// Shall users be allowed to listings stats through the 'See Stats' Button on the listing page and on the bottom bar on each listing card?
 	// The listings stats are Likes, Views and Ratings. If you disable them, you should also disable the Stats Button.
-	USE_STATS: false,
+	USE_STATS: true,
 
 	// Shall users be allowed to share listings through social media?
 	USE_SOCIAL_SHARE: true,
 
 	// Shall Ads and Ad Slots be shown on the website?
-	USE_ADS: false,
+	USE_ADS: true,
 
 	// Do you - as an Admin - want to pre-approve each user-approved listing before it is published?
 	// Set 'false' if you want to manually review and approve listings before they are published. This is advisable, if you allow users to publish listings.
