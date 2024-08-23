@@ -229,7 +229,7 @@ export default async function ListingPage({ params }: Props) {
 					<div className="grid grid-cols-1 md:grid-cols-5 md:gap-8 space-y-2 md:space-y-4">
 						<div className="col-span-2">
 							<div className="bg-white dark:bg-transparent text-dark-foreground dark:text-white rounded-xl  col-span-1 space-y-4 p-4">
-								<h2 className="text-xl font-semibold">FARMER INFORMATION</h2>
+								<h2 className="text-xl font-semibold">RANCH INFORMATION</h2>
 								<div className="grid gap-y-4">
 									{listing.category.name && (
 										<div className="flex justify-between">
