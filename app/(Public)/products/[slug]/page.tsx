@@ -168,7 +168,7 @@ export default async function SublistingPage({ params }: Props) {
 								{sublisting &&
 									sublisting?.subtags?.map((tag) => (
 										<Link
-											href={`/explore?tags=${stringToSlug(tag.name!)}`}
+											href={`/ranches?tags=${stringToSlug(tag.name!)}`}
 											key={tag.name}
 										>
 											<Badge
@@ -226,7 +226,7 @@ export default async function SublistingPage({ params }: Props) {
 								{listingData &&
 									listingData?.tags?.map((tag) => (
 										<Link
-											href={`/explore?tags=${stringToSlug(tag.name!)}`}
+											href={`/ranches?tags=${stringToSlug(tag.name!)}`}
 											key={tag.name}
 										>
 											<Badge
@@ -312,7 +312,7 @@ export default async function SublistingPage({ params }: Props) {
 												</p>
 											)}
 											<Link
-												href={`/explore/${listingData.slug}`}
+												href={`/ranches/${listingData.slug}`}
 												className="text-xs text-primary underline"
 											>
 												Visit Store {'->'}

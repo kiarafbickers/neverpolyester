@@ -80,7 +80,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 	const LEVEL1_PAGES: URL_Object[] = readFolderStructure();
 
-	// Level 2: /explore/[slug] => website.com/explore/[slug]
+	// Level 2: /ranches/[slug] => website.com/ranches/[slug]
 
 	const listingSlugs = await supabase
 		.from('listings')
@@ -90,7 +90,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 	const LEVEL2_LISTING_SLUGS: URL_Object[] = slugs
 		? slugs.flatMap((listing) => ({
-				url: `${COMPANY_BASIC_INFORMATION.URL}/explore/${listing.slug}`,
+				url: `${COMPANY_BASIC_INFORMATION.URL}/ranches/${listing.slug}`,
 		  }))
 		: [];
 

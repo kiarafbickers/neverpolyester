@@ -31,7 +31,7 @@ import { Suspense } from 'react';
 export const metadata: Metadata = createMetaData({
     customTitle: 'Explore Texas Listings',
     customDescription: `See, filter, and sort all listings in Texas on ${COMPANY_BASIC_INFORMATION.NAME}. Find the best creators in Texas. Get inspired by their work and hire them for your next project.`,
-    customSlug: `explore-texas`,
+    customSlug: `texas-ranches`,
 });
 
 function OverviewLoading(params: {
@@ -105,7 +105,7 @@ export default async function Page({
                             />
                         </Suspense>
                     </div>
-                    <AdSlot slot={`explore-2`} />
+                    <AdSlot slot={`ranch-2`} />
                 </SubSectionInnerContainer>
             </SubSectionOuterContainer>
             <NewsletterBox_BeeHiiv className="bg-white dark:bg-background-secondary" />

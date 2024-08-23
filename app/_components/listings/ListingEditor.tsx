@@ -842,7 +842,7 @@ export default function ListingEditor({
 										<CardDescription>
 											Download our Badge and show that you are featured on our
 											website! You can link to: <br /> <br />
-											<span className="italic">{`${COMPANY_BASIC_INFORMATION.URL}/explore/${listing.slug}`}</span>
+											<span className="italic">{`${COMPANY_BASIC_INFORMATION.URL}/ranches/${listing.slug}`}</span>
 										</CardDescription>
 										<Image
 											src="/img/featured_badge.png"

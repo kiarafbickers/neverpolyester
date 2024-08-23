@@ -39,7 +39,7 @@ import { COMPANY_BASIC_INFORMATION } from '@/constants';
 export const metadata: Metadata = createMetaData({
 	customTitle: 'Products',
 	customDescription: `See, filter and sort all listings on ${COMPANY_BASIC_INFORMATION.NAME}. Find the best creators in the world. Get inspired by their work and hire them for your next project`,
-	customSlug: `explore`,
+	customSlug: `ranches`,
 });
 
 function OverviewLoading(params: {

@@ -113,7 +113,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 						},
 				  ]
 				: undefined,
-		customSlug: `explore/${params.slug}`,
+		customSlug: `ranches/${params.slug}`,
 	});
 }
 
@@ -236,7 +236,7 @@ export default async function ListingPage({ params }: Props) {
 											<div className="font-semibold text-base">State</div>
 											<div className="text-base">
 												<Link
-													href={`/explore?category=${stringToSlug(
+													href={`/ranches?category=${stringToSlug(
 														listing.category.name
 													)}`}
 													key={listing.category.name}
@@ -274,7 +274,7 @@ export default async function ListingPage({ params }: Props) {
 												{tagGroups[tagGroupName].map((tag) => (
 													<div key={tag.name} className="text-right">
 														<Link
-															href={`/explore?tags=${stringToSlug(tag.name!)}`}
+															href={`/ranches?tags=${stringToSlug(tag.name!)}`}
 															key={tag.name}
 															className="hover:underline"
 														>

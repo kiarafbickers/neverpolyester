@@ -228,7 +228,7 @@ export default async function ListingActionBar({
 					size="sm"
 					currentSiteLink={`${
 						COMPANY_BASIC_INFORMATION.URL
-					}/explore/${listing.slug!}`}
+					}/ranches/${listing.slug!}`}
 				/>
 			)}
 		</div>

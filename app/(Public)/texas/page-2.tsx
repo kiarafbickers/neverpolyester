@@ -65,15 +65,15 @@ export default function AdvertisePage() {
 								</span>
 							</li>
 							<li>
-								Explore - Above the Fold: Your ad will appear at the top of the
-								most frequented page &apos;Explore&apos;.{' '}
+								Ranch - Above the Fold: Your ad will appear at the top of the
+								most frequented page &apos;Ranch&apos;.{' '}
 								<span className="font-semibold">
 									Current fix price per month: USD XXX (incl. tax).
 								</span>
 							</li>
 							<li>
-								Explore - Below the Fold: Your ad will appear at the bottom of
-								the most frequented page &apos;Explore&apos;.{' '}
+								Ranch - Below the Fold: Your ad will appear at the bottom of
+								the most frequented page &apos;Ranch&apos;.{' '}
 								<span className="font-semibold">
 									Current fix price per month: USD XXX (incl. tax).
 								</span>

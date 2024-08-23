@@ -209,7 +209,7 @@ async function OverviewGrid({
 export default function SublistingOverview({
 	title = 'Most Recent',
 	buttonText = 'View All',
-	buttonHref = '/explore',
+	buttonHref = '/ranches',
 	categoryNavigation = true,
 	className,
 	maxNumSublistings = 3,

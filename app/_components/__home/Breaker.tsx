@@ -37,7 +37,7 @@ export default function Breaker({ className }: { className?: string }) {
 						<div className="flex align-middle mx-auto col-span-2 self-center">
 							<div className="p-6 xl:p-8 mx-auto h-fit">
 								<h2 className="text-base font-semibold leading-7 text-muted-foreground">
-									Have Your Own Farm?
+									Have Your Own Working Ranch?
 								</h2>
 								<p className="my-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl uppercase">
 									Claim Your Listing Today

@@ -187,7 +187,7 @@ async function OverviewGrid({
 export default function ListingOverview({
 	title = 'Most Recent',
 	buttonText = 'View All',
-	buttonHref = '/explore',
+	buttonHref = '/ranches',
 	categoryNavigation = true,
 	className,
 	maxNumListings = 3,

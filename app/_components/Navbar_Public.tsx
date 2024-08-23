@@ -23,8 +23,8 @@ import {
 
 export const NAVBAR_ADD_LINKS = [
 	{
-		name: 'Farms',
-		href: '/explore',
+		name: 'Ranches',
+		href: '/ranches',
 	},
 	/*
 	// Temporarily commented out the Products link.
@@ -123,10 +123,10 @@ export default function Navbar_Public() {
 							<div className="w-full flex-grow" />
 
 							<Searchbar
-								placeholder="Explore Farms in Your State"
+								placeholder="Explore Farms in Texas"
 								className="hidden md:block w-full px-4"
 								id="nav_search"
-								rootPage="/explore"
+								rootPage="/ranches"
 							/>
 
 							<div className="flex items-center justify-end lg:max-w-fit whitespace-nowrap ">

@@ -30,7 +30,7 @@ export default function Searchbar({
 	placeholder,
 	className,
 	id,
-	rootPage = '/explore',
+	rootPage = '/ranches',
 }: {
 	placeholder?: string;
 	className?: string;

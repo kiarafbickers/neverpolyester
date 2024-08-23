@@ -32,9 +32,9 @@ import { Suspense } from 'react';
 // Import Assets & Icons
 
 export const metadata: Metadata = createMetaData({
-	customTitle: 'Explore',
+	customTitle: 'Ranches',
 	customDescription: `See, filter and sort all listings on ${COMPANY_BASIC_INFORMATION.NAME}. Find the best creators in the world. Get inspired by their work and hire them for your next project`,
-	customSlug: `explore`,
+	customSlug: `ranches`,
 });
 
 function OverviewLoading(params: {
@@ -109,7 +109,7 @@ export default async function Page({
 						</div>
 					</div>
 
-					<AdSlot slot={`explore-2`} />
+					<AdSlot slot={`ranch-2`} />
 				</SubSectionInnerContainer>
 			</SubSectionOuterContainer>
 			<NewsletterBox_BeeHiiv className="bg-white dark:bg-background-secondary" />

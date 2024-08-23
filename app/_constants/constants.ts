@@ -285,8 +285,8 @@ export const FOOTER_EXTERNAL_LINK_LIST: { label: string; href: string }[] = [
 // Ad slots are the slots where ads can be displayed. You can add as many as you want. Each slot must have a unique name and must be accompanied by a corresponding AdSlot. Per default, each CATEGORY has two ad slots - top of the page and bottom of the page. You can add more ad slots names here. If you want to add a new ad slot, add it here. Otherwise, do not change this. The default options are: Explore is the main page, Blog is the blog page, and Other is all other pages (e.g. tag pages).
 
 export const ADDITIONAL_AD_SLOTS = [
-	'explore-1',
-	'explore-2',
+	'ranch-1',
+	'ranch-2',
 	'blog-1',
 	'blog-2',
 	'blog-3',

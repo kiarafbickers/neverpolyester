@@ -22,7 +22,7 @@ import getPartialCategories from '@/actions/categories/getPartialCategories';
  */
 export default async function CategoryBar({
 	text = 'Trending Categories',
-	hrefPrefix = '/explore?categories=',
+	hrefPrefix = '/ranches?categories=',
 	className,
 	badgeClassName,
 	variant = 'outline',

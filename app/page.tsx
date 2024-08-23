@@ -111,7 +111,7 @@ export default async function Page() {
 					<ListingOverview
 						title="FEATURED FARMS"
 						buttonText="View All Farms"
-						buttonHref="/explore?sort=mostPopular"
+						buttonHref="/ranches?sort=mostPopular"
 						filterAndSortParams={{ sort: 'mostPopular' }}
 						maxNumListings={3}
 						maxCols={3}

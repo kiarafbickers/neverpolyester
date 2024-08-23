@@ -22,7 +22,7 @@ const FOOTER_NAVIGATION_LINKS: {
 	[key: string]: { label: string; href: string }[];
 } = {
 	resources: [
-		{ label: 'All Farms', href: '/explore' },
+		{ label: 'All Ranches', href: '/ranches' },
 		{ label: 'Blog', href: '/blog' },
 		{ label: 'Advertise', href: '/advertise' },
 	],

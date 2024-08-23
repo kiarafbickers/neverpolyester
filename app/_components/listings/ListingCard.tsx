@@ -68,7 +68,7 @@ export default function ListingCard({ listing }: { listing: ListingType }) {
 				</ImageCardBanner>
 
 				<ImageCardLink
-					href={`/explore/${listing.slug}`}
+					href={`/ranches/${listing.slug}`}
 					data-umami-event="Listing Card"
 					data-umami-event-listing={listing.slug}
 				/>
@@ -76,7 +76,7 @@ export default function ListingCard({ listing }: { listing: ListingType }) {
 
 			<ImageCardFooter className="flex flex-col relative w-full overflow-hidden bg-transparent p-0 pt-2">
 				<ImageCardLink
-					href={`/explore/${listing.slug}`}
+					href={`/ranches/${listing.slug}`}
 					data-umami-event="Listing Card"
 					data-umami-event-listing={listing.slug}
 				/>
