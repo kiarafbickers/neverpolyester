@@ -38,7 +38,7 @@ export const COMPANY_BASIC_INFORMATION = {
 	/**
 	 * The URL of the company's website.
 	 */
-	URL: 'https://rancherslist.com/',
+	URL: 'https://rancherslist.com',
 
 	/**
 	 * The support email of the company.
