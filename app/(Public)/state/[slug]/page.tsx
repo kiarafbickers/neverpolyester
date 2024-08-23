@@ -60,8 +60,8 @@ export default async function Page({ params, searchParams }: Props) {
 	return (
 		<SectionOuterContainer className="max-w-5xl mx-auto py-0 pb-12">
 			<CategoryBar
-				hrefPrefix="/category/"
-				text="Other Categories"
+				hrefPrefix="/state/"
+				text="Other States"
 				className="self-start"
 				badgeClassName="hover:bg-muted/60"
 			/>

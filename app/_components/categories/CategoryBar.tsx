@@ -67,7 +67,7 @@ export default async function CategoryBar({
 						</Link>
 					))}
 					<Link
-						href="/category"
+						href="/state"
 						className="px-1"
 						data-umami-event="Badge Clicked"
 						data-umami-event-item="All"

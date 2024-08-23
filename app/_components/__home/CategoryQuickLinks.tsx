@@ -59,10 +59,10 @@ export default async function CategoryQuickLinks() {
 									className="group-hover:scale-150 duration-200 transition-all opacity-20 absolute right-2 bottom-2"
 								/>
 								<Link
-									href={`/category/${category.slug}`}
+									href={`/state/${category.slug}`}
 									className="absolute inset-0"
 								>
-									<span className="sr-only">Category {category.slug} Link</span>
+									<span className="sr-only">State {category.slug} Link</span>
 								</Link>
 							</div>
 						</div>

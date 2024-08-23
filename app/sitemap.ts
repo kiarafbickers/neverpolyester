@@ -140,13 +140,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		  }))
 		: [];
 
-	// Category Level 2: /category => website.com/category/{slug}
+	// Category Level 2: /state => website.com/state/{slug}
 
 	const { data: categoryData } = await supabase.rpc('get_active_categories');
 
 	const LEVEL2_CATEGORY_SLUGS = categoryData
 		? categoryData.flatMap((tag) => ({
-				url: `${COMPANY_BASIC_INFORMATION.URL}/category/${tag.slug}`,
+				url: `${COMPANY_BASIC_INFORMATION.URL}/state/${tag.slug}`,
 		  }))
 		: [];
 

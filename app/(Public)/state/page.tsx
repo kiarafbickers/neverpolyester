@@ -55,7 +55,7 @@ export default async function Page() {
 									<tr key={category.id} className="h-20">
 										<td className="p-2 text-lg font-semibold whitespace-nowrap">
 											<Link
-												href={`/category/${category.slug}`}
+												href={`/state/${category.slug}`}
 												className="underline"
 											>
 												{category.name}
