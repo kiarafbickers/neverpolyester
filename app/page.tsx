@@ -75,7 +75,7 @@ export default async function Page() {
 				</div>
 
 				{/* Temporarily commented out the featured products section.
-				    Will add all the farms first before bringing in products.
+				    Will add all the ranches first before bringing in products.
 				<SublistingOverview
 					title="FEATURED PRODUCTS"
 					buttonText="View All Products"
@@ -109,8 +109,8 @@ export default async function Page() {
 					/>
 
 					<ListingOverview
-						title="FEATURED FARMS"
-						buttonText="View All Farms"
+						title="FEATURED RANCHES"
+						buttonText="View All Ranches"
 						buttonHref="/ranches?sort=mostPopular"
 						filterAndSortParams={{ sort: 'mostPopular' }}
 						maxNumListings={3}

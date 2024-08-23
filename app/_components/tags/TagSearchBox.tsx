@@ -56,7 +56,7 @@ export function TagSearchBoxMobile({
 					<span className="sr-only">Filter menu</span>
 				</SheetTitle>
 				<SheetDescription>
-					<span className="sr-only">Filter through all farms</span>
+					<span className="sr-only">Filter through all ranches</span>
 				</SheetDescription>
 
 				<TagSearchBox tags={tags} className="w-full" />

@@ -82,7 +82,7 @@ export default async function Page({
 						<div className="flex-grow">
 							<div className="flex flex-wrap sm:flex-nowrap justify-between">
 								<h1 className="text-3xl font-semibold whitespace-nowrap">
-									All Farms
+									All Ranches
 								</h1>
 								<div className="flex justify-between w-full  sm:w-fit pt-4 sm:pt-0">
 									<TagSearchBoxMobile

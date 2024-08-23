@@ -33,7 +33,7 @@ const ADMIN_NAV_LINKS = [
 		icon: MessageCircleHeartIcon,
 	},
 	{
-		label: 'Farms',
+		label: 'Ranchers',
 		href: '/secret-admin/listing-manager',
 		icon: LayoutTemplateIcon,
 	},

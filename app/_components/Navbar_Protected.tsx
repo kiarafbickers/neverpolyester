@@ -53,7 +53,7 @@ const ACCOUNT_NAV_LINKS = [
 		needSuperAdmin: false,
 	},
 	{
-		label: 'Farms',
+		label: 'Ranchers',
 		href: '/account/listings',
 		icon: LayoutTemplateIcon,
 		needSuperAdmin: false,

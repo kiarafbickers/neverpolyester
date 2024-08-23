@@ -219,10 +219,10 @@ export const GENERAL_SETTINGS = {
 // Listings & Sublistings
 
 export const LISTINGS_SETTINGS = {
-	singularName: 'Farm',
-	pluralName: 'Farms',
+	singularName: 'Ranch',
+	pluralName: 'Ranches',
 	explanationForAiContentCreation:
-		'Each such listing provides detailed information about one farm or producer.',
+		'Each such listing provides detailed information about one rancher or producer.',
 };
 
 export const SUBLISTINGS_SETTINGS = {

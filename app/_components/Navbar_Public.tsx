@@ -123,7 +123,7 @@ export default function Navbar_Public() {
 							<div className="w-full flex-grow" />
 
 							<Searchbar
-								placeholder="Explore Farms in Texas"
+								placeholder="Explore Ranchers in Texas"
 								className="hidden md:block w-full px-4"
 								id="nav_search"
 								rootPage="/ranches"
