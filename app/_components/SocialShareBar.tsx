@@ -37,7 +37,7 @@ export const SOCIAL_SHARE_LINKS = [
 		channelName: 'facebook',
 		channelHref: 'https://www.facebook.com/sharer/sharer.php?u=',
 		Icon: Icons.Facebook,
-		shareTextInFrontOfURL: 'Just found this on ${COMPANY_BASIC_INFORMATION.NAME}—check it out: ',
+		shareTextInFrontOfURL: '',
 	},
 ];
 
