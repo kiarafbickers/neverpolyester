@@ -130,7 +130,7 @@ export const BOT_USER_ID = '11111111-1111-4111-1111-111111111111';
 
 export const PROMOTIONS_DATA = {
 	// The price of the promotion in USD per DAY. 1 = 1 USD.
-	FIXED_FEE_PER_DAY: 1,
+	FIXED_FEE_PER_DAY: 2,
 	// The PRICE_ID for the promotion product in Stripe.
 	STRIPE_PRICE_ID: 'price_1Pr5hpCOsJxKgomzJ7UOkRPL',
 	// The discount for the 30 day promotion. 0.1 = 10% discount.
