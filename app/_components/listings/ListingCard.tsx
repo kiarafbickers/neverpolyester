@@ -20,7 +20,12 @@ import { cn } from "@/lib/utils";
 // Import Data
 import { GENERAL_SETTINGS } from "@/constants";
 // Import Assets & Icons
-import { BadgeCheckIcon, BadgePercentIcon, MapIcon } from "lucide-react";
+import {
+  BadgeCheckIcon,
+  BadgePercentIcon,
+  MapIcon,
+  UserIcon,
+} from "lucide-react";
 
 /**
  * A card component that displays a listing.
@@ -74,7 +79,7 @@ export default function ListingCard({ listing }: { listing: ListingType }) {
         />
       </ImageCardImageContainer>
 
-      <ImageCardFooter className="flex flex-col relative w-full overflow-hidden bg-transparent p-0 pt-2">
+      <ImageCardFooter className="flex flex-col relative w-full overflow-hidden bg-transparent p-0 pt-4">
         <ImageCardLink
           href={`/ranches/${listing.slug}`}
           data-umami-event="Listing Card"
@@ -91,23 +96,14 @@ export default function ListingCard({ listing }: { listing: ListingType }) {
             </div>
           )}
         </div>
-        <div className="relative w-full gap-x-2 flex text-sm items-center text-muted-foreground">
-          <MapIcon className="h-4 w-4" />
-          {!!listing.category?.name && <p>{listing.category?.name}, USA</p>}
-        </div>
-        <div className="relative mt-8 flex items-center gap-x-4">
-          <SupabaseImage
-            dbImageUrl={listing.logo_image_url}
-            width={100}
-            height={50}
-            database="listing_images"
-            priority
-            className="h-10 w-10 rounded-full bg-gray-50"
-          />
-          <div className="text-sm leading-6">
-            <p className="font-semibold text-gray-900">
-              {listing.farmer_names}
-            </p>
+        <div className="mt-2 space-y-2">
+          <div className="relative w-full gap-x-2 flex text-sm items-center text-muted-foreground">
+            <UserIcon className="h-4 w-4" />
+            {!!listing.farmer_names && <p>{listing.farmer_names}</p>}
+          </div>
+          <div className="relative w-full gap-x-2 flex text-sm items-center text-muted-foreground">
+            <MapIcon className="h-4 w-4" />
+            {!!listing.category?.name && <p>{listing.category?.name}, USA</p>}
           </div>
         </div>
       </ImageCardFooter>
