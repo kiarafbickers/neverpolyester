@@ -18,7 +18,6 @@ import TestimonialBand from "@/components/__home/TestimonialBand";
 // Import Functions & Actions & Hooks & State
 // Import Data
 import { HERO_TITLE, HERO_SLOGAN } from "@/constants";
-import BeehiivSignupForm from "./_components/BeehiivSignupForm";
 
 // Import Assets & Icons
 
