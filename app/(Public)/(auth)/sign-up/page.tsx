@@ -86,9 +86,7 @@ export default function Page() {
                     )}
                   </div>
                   {state?.errors && (
-                    <Alert variant="destructive" className="mt-4">
-                      <AlertCircle className="mr-2 h-4 w-4" />
-                      <AlertTitle>Error</AlertTitle>
+                    <Alert variant="destructive" className="mt-2">
                       <AlertDescription>
                         There was an issue with your signup. Please fix the
                         errors above and try again.

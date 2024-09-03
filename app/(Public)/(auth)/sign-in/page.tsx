@@ -79,9 +79,7 @@ export default function SignInPage() {
                   )}
                 </div>
                 {state?.errors?.general && (
-                  <Alert variant="destructive" className="mt-4">
-                    <AlertCircle className="mr-2 h-4 w-4" />
-                    <AlertTitle>Error</AlertTitle>
+                  <Alert variant="destructive" className="mt-2">
                     <AlertDescription>{state.errors.general}</AlertDescription>
                   </Alert>
                 )}
