@@ -60,11 +60,7 @@ export default function NewsletterBox_BeeHiiv({
   if (size === "sm") {
     return (
       <div id="newsletter" className={className}>
-        {hasCookieConsent === true ? (
-          <BeehiivSignupForm />
-        ) : (
-          <CookieConsentButton_Accept buttonText="Accept Cookies to display" />
-        )}
+        <BeehiivSignupForm />
       </div>
     );
   }
@@ -93,15 +89,7 @@ export default function NewsletterBox_BeeHiiv({
               </div>
 
               <div className="m-auto mt-4 w-full max-w-lg">
-                {hasCookieConsent === true ? (
-                  <BeehiivSignupForm />
-                ) : (
-                  <CookieConsentButton_Accept
-                    buttonText="Accept Cookies to display Newsletter Signup"
-                    className="h-20 w-full"
-                    variant="default"
-                  />
-                )}
+                <BeehiivSignupForm />
                 <p className="mt-2 text-sm leading-6 text-gray-300">
                   {disclaimer}{" "}
                   <Link

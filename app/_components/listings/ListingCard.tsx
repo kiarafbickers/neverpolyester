@@ -26,6 +26,7 @@ import {
   MapIcon,
   UserIcon,
 } from "lucide-react";
+import { CustomUserIcon } from "./CustomUserIcon";
 
 /**
  * A card component that displays a listing.
@@ -98,7 +99,7 @@ export default function ListingCard({ listing }: { listing: ListingType }) {
         </div>
         <div className="mt-2 space-y-2">
           <div className="relative w-full gap-x-2 flex text-sm items-center text-muted-foreground">
-            <UserIcon className="h-4 w-4" />
+            <CustomUserIcon className="h-4 w-4" />
             {!!listing.farmer_names && <p>{listing.farmer_names}</p>}
           </div>
           <div className="relative w-full gap-x-2 flex text-sm items-center text-muted-foreground">
