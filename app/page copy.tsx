@@ -1,64 +1,33 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-import useGeolocation from "./_lib/useGeolocation";
-import TopBanner from "./_components/__home/TopBanner";
-import Navbar_Public from "./_components/Navbar_Public";
-import { SectionOuterContainer } from "./_components/_ui/Section";
-import { HERO_SLOGAN, HERO_TITLE } from "./_constants/constants";
-import NewsletterBox_BeeHiiv from "./_components/NewsletterSection";
+// Import Types
+// Import External Packages
+import { Suspense } from "react";
 import Image from "next/image";
-import Breaker from "./_components/__home/Breaker";
-import TestimonialBand from "./_components/__home/TestimonialBand";
-import FAQ from "./_components/__home/FAQ";
+// Import Components
+import TopBanner from "@/components/__home/TopBanner";
 import VideoBreaker from "./_components/__home/VideoBreaker";
-import ListingOverview from "./_components/listings/ListingOverview";
-import { allCategoriesQuery } from "./_lib/supabaseQueries";
+import SublistingOverview from "./_components/sublistings/SublistingOverview";
+import SubategoryQuickLinks from "./_components/__home/SubcategoryQuickLinks";
+import ListingOverview from "@/components/listings/ListingOverview";
+import { SectionOuterContainer } from "@/ui/Section";
+import Searchbar from "@/components/Searchbar";
+import Breaker from "@/components/__home/Breaker";
+import Navbar_Public from "@/components/Navbar_Public";
+import FAQ from "@/components/__home/FAQ";
+import NewsletterBox_BeeHiiv from "@/components/NewsletterSection";
+import TestimonialBand from "@/components/__home/TestimonialBand";
+// Import Functions & Actions & Hooks & State
+// Import Data
+import { HERO_TITLE, HERO_SLOGAN } from "@/constants";
 
-const Page = () => {
-  const { state, error: geoError } = useGeolocation();
-  const [categories, setCategories] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [catError, setCatError] = useState<string | null>(null);
+// Import Assets & Icons
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const { data, error } = await allCategoriesQuery;
-      if (error) {
-        setCatError("Error fetching categories");
-      } else {
-        setCategories(data);
-      }
-      setLoading(false);
-    };
-    fetchCategories();
-  }, []);
-
-  const matchCategory = () => {
-    const matchedCategory = categories.find(
-      (category) => category.name.toLowerCase() === state?.toLowerCase()
-    );
-    return matchedCategory
-      ? { category: matchedCategory.slug }
-      : { sort: "mostPopular" };
-  };
-
-  const generateTitle = () => {
-    const matchedCategory = categories.find(
-      (category) => category.name.toLowerCase() === state?.toLowerCase()
-    );
-    return matchedCategory
-      ? `Ranches in ${matchedCategory.name}`
-      : "Featured Ranches";
-  };
-
-  if (loading) return <p>Loading categories...</p>;
-  if (catError || geoError) return <p>{catError || geoError}</p>;
-
+export default async function Page() {
   return (
     <>
       <TopBanner />
+
       <Navbar_Public />
+
       <SectionOuterContainer className="mx-auto py-0">
         <div className="bg-primary relative">
           <div className="w-full h-fit py-6 px-4 max-w-5xl mx-auto lg:px-0">
@@ -71,7 +40,9 @@ const Page = () => {
                   {HERO_SLOGAN}
                 </p>
                 <div className="w-full pt-10">
-                  <NewsletterBox_BeeHiiv size="sm" />
+                  <Suspense fallback={null}>
+                    <NewsletterBox_BeeHiiv size="sm" />
+                  </Suspense>
                 </div>
               </div>
               <Image
@@ -102,6 +73,24 @@ const Page = () => {
             </div>
           </div>
         </div>
+
+        {/* Temporarily commented out the featured products section.
+				    Will add all the ranches first before bringing in products.
+				<SublistingOverview
+					title="FEATURED PRODUCTS"
+					buttonText="View All Products"
+					buttonHref="/products?sort=mostPopular"
+					filterAndSortParams={{ sort: 'mostPopular' }}
+					maxNumSublistings={8}
+					maxCols={4}
+					preferPromoted
+					showPagination={false}
+					showSearch={false}
+					className="bg-background-secondary pt-32"
+					showAsRow
+				/>
+				*/}
+
         <div className="w-full relative">
           <div className="hidden absolute -z-10 -left-0 top-8 md:block">
             <div className="max-w-32 h-auto">
@@ -114,6 +103,7 @@ const Page = () => {
               />
             </div>
           </div>
+
           <div className="hidden absolute -z-10 -right-0 bottom-8 md:block">
             <div className="max-w-32 h-auto">
               <Image
@@ -125,32 +115,31 @@ const Page = () => {
               />
             </div>
           </div>
-          <div>
-            {state ? (
-              <ListingOverview
-                title={generateTitle()}
-                buttonText="View All Ranches"
-                buttonHref="/ranches?sort=mostPopular"
-                filterAndSortParams={matchCategory()}
-                maxNumListings={3}
-                maxCols={3}
-                showPagination={false}
-                showSearch={false}
-              />
-            ) : (
-              <p>Detecting your location...</p>
-            )}
-          </div>
+
+          <ListingOverview
+            title="FEATURED RANCHES"
+            buttonText="View All Ranches"
+            buttonHref="/ranches?sort=mostPopular"
+            filterAndSortParams={{ categoryFilter: "Texas" }}
+            maxNumListings={3}
+            maxCols={3}
+            showPagination={false}
+            showSearch={false}
+          />
         </div>
+
         <Breaker className="bg-background-secondary" />
-        {/* <SubategoryQuickLinks /> */}
+
+        <SubategoryQuickLinks />
+
         <TestimonialBand className="bg-background-secondary" />
+
         <FAQ title="HOW IT WORKS" description="" />
+
         <VideoBreaker className="bg-background-secondary" />
+
         <NewsletterBox_BeeHiiv />
       </SectionOuterContainer>
     </>
   );
-};
-
-export default Page;
+}
