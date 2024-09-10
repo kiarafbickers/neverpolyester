@@ -1,64 +1,40 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-import useGeolocation from "./_lib/useGeolocation";
-import TopBanner from "./_components/__home/TopBanner";
-import Navbar_Public from "./_components/Navbar_Public";
-import { SectionOuterContainer } from "./_components/_ui/Section";
-import { HERO_SLOGAN, HERO_TITLE } from "./_constants/constants";
-import NewsletterBox_BeeHiiv from "./_components/NewsletterSection";
+// Import Types
+// Import External Packages
+import { Suspense } from "react";
 import Image from "next/image";
-import Breaker from "./_components/__home/Breaker";
-import TestimonialBand from "./_components/__home/TestimonialBand";
-import FAQ from "./_components/__home/FAQ";
+// Import Components
+import TopBanner from "@/components/__home/TopBanner";
 import VideoBreaker from "./_components/__home/VideoBreaker";
-import ListingOverview from "./_components/listings/ListingOverview";
+import SublistingOverview from "./_components/sublistings/SublistingOverview";
+import SubategoryQuickLinks from "./_components/__home/SubcategoryQuickLinks";
+import ListingOverview from "@/components/listings/ListingOverview";
+import { SectionOuterContainer } from "@/ui/Section";
+import Searchbar from "@/components/Searchbar";
+import Breaker from "@/components/__home/Breaker";
+import Navbar_Public from "@/components/Navbar_Public";
+import FAQ from "@/components/__home/FAQ";
+import NewsletterBox_BeeHiiv from "@/components/NewsletterSection";
+import TestimonialBand from "@/components/__home/TestimonialBand";
+// Import Functions & Actions & Hooks & State
+// Import Data
+import { HERO_TITLE, HERO_SLOGAN } from "@/constants";
 import { allCategoriesQuery } from "./_lib/supabaseQueries";
+import RanchesbyCategory from "./_components/RanchesbyCategory";
 
-const Page = () => {
-  const { state, error: geoError } = useGeolocation();
-  const [categories, setCategories] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [catError, setCatError] = useState<string | null>(null);
+// Import Assets & Icons
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const { data, error } = await allCategoriesQuery;
-      if (error) {
-        setCatError("Error fetching categories");
-      } else {
-        setCategories(data);
-      }
-      setLoading(false);
-    };
-    fetchCategories();
-  }, []);
+export default async function Page() {
+  const { data: categories, error: catError } = await allCategoriesQuery;
 
-  const matchCategory = () => {
-    const matchedCategory = categories.find(
-      (category) => category.name.toLowerCase() === state?.toLowerCase()
-    );
-    return matchedCategory
-      ? { category: matchedCategory.slug }
-      : { sort: "mostPopular" };
-  };
-
-  const generateTitle = () => {
-    const matchedCategory = categories.find(
-      (category) => category.name.toLowerCase() === state?.toLowerCase()
-    );
-    return matchedCategory
-      ? `Ranches in ${matchedCategory.name}`
-      : "Featured Ranches";
-  };
-
-  if (loading) return <p>Loading categories...</p>;
-  if (catError || geoError) return <p>{catError || geoError}</p>;
-
+  if (catError) {
+    console.error("Error fetching categories:", catError);
+    return <div>Failed to load categories.</div>;
+  }
   return (
     <>
       <TopBanner />
       <Navbar_Public />
+
       <SectionOuterContainer className="mx-auto py-0">
         <div className="bg-primary relative">
           <div className="w-full h-fit py-6 px-4 max-w-5xl mx-auto lg:px-0">
@@ -71,7 +47,9 @@ const Page = () => {
                   {HERO_SLOGAN}
                 </p>
                 <div className="w-full pt-10">
-                  <NewsletterBox_BeeHiiv size="sm" />
+                  <Suspense fallback={null}>
+                    <NewsletterBox_BeeHiiv size="sm" />
+                  </Suspense>
                 </div>
               </div>
               <Image
@@ -79,7 +57,7 @@ const Page = () => {
                 width={200}
                 height={203}
                 alt="meat box"
-                className="absolute right-[0%] lg:right-[10%] xl:right-[25%] -bottom-32 md:-bottom-28 lg:-bottom-8 scale-75 lg:scale-100 l z-10 w-[200px] h-[203px]"
+                className="hidden absolute right-[0%] sm:block lg:right-[10%] xl:right-[25%] -bottom-32 md:-bottom-28 lg:-bottom-8 scale-75 lg:scale-100 l z-10 w-[200px] h-[203px]"
                 style={{ height: "auto" }}
                 priority
               />
@@ -102,6 +80,27 @@ const Page = () => {
             </div>
           </div>
         </div>
+
+        {/* Temporarily commented out the featured products section.
+				    Will add all the ranches first before bringing in products.
+				<SublistingOverview
+					title="FEATURED PRODUCTS"
+					buttonText="View All Products"
+					buttonHref="/products?sort=mostPopular"
+					filterAndSortParams={{ sort: 'mostPopular' }}
+					maxNumSublistings={8}
+					maxCols={4}
+					preferPromoted
+					showPagination={false}
+					showSearch={false}
+					className="bg-background-secondary pt-32"
+					showAsRow
+				/>
+				*/}
+
+        {/* Conditionally show ListingOverview if location and category match */}
+        <RanchesbyCategory categories={categories} />
+
         <div className="w-full relative">
           <div className="hidden absolute -z-10 -left-0 top-8 md:block">
             <div className="max-w-32 h-auto">
@@ -114,6 +113,7 @@ const Page = () => {
               />
             </div>
           </div>
+
           <div className="hidden absolute -z-10 -right-0 bottom-8 md:block">
             <div className="max-w-32 h-auto">
               <Image
@@ -125,25 +125,21 @@ const Page = () => {
               />
             </div>
           </div>
-          <div>
-            {state ? (
-              <ListingOverview
-                title={generateTitle()}
-                buttonText="View All Ranches"
-                buttonHref="/ranches?sort=mostPopular"
-                filterAndSortParams={matchCategory()}
-                maxNumListings={3}
-                maxCols={3}
-                showPagination={false}
-                showSearch={false}
-              />
-            ) : (
-              <p>Detecting your location...</p>
-            )}
-          </div>
+
+          <ListingOverview
+            title="FEATURED RANCHES"
+            buttonText="View All Ranches"
+            buttonHref="/ranches?sort=mostPopular"
+            filterAndSortParams={{ sort: "mostPopular" }}
+            maxNumListings={3}
+            maxCols={3}
+            showPagination={false}
+            showSearch={false}
+          />
         </div>
+
         <Breaker className="bg-background-secondary" />
-        {/* <SubategoryQuickLinks /> */}
+        <SubategoryQuickLinks />
         <TestimonialBand className="bg-background-secondary" />
         <FAQ title="HOW IT WORKS" description="" />
         <VideoBreaker className="bg-background-secondary" />
@@ -151,6 +147,4 @@ const Page = () => {
       </SectionOuterContainer>
     </>
   );
-};
-
-export default Page;
+}
