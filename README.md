@@ -4,7 +4,7 @@ Welcome to our directory business template, designed to harness the full power o
 
 Follow the official documentation here: [DirectoryStack Docs](https://directorystack.com/docs)
 
-## Features
+## Features 
 
 - 🚀 **High-Performance Static Website:** Enjoy lightning-fast page loads with our optimized static site setup, powered by a custom CMS.
 - 🛠️ **Type Safety:** Leverage full type safety with TypeScript and Supabase `gen types` functionality, ensuring robust and error-free development.
