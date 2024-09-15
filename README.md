@@ -179,8 +179,6 @@ Let's connect Supabase with our local development project:
 1. Install the Supabase CLI by following the instructions here: [Supabase CLI Getting Started](https://supabase.com/docs/guides/cli/getting-started).
 2. In your IDE's terminal, run `npx supabase login`. It will say "Hello from Supabase! Press Enter to open browser and login automatically." So, press Enter. A browser window will log you in.
 3. Next, run `npx supabase link` and choose the project you created. It will ask you for your **database password** which you created a couple of minutes ago (and hopefully remembered).
-4. Next, run `npx supabase db push --linked --include-seed`. It will ask you: "Do you want to push these migrations to the remote database?
-   • 20240701155049_initial_structure.sql" Answer Y. This will set up your database structure from the migration file we created for you.
 5. Check here if your tables exist: [Table Editor](https://supabase.com/dashboard/project/_/editor).
 6. Check here if your buckets exist: [Storage Buckets](https://supabase.com/dashboard/project/_/storage/buckets).
 7. While you are in the storage buckets, drag and drop your default blog post images to `blog_images`. The default blog images are located in `public/img/blog/`. By default, there are 4 images (breaking-news, industry-news, og_1200x630, and placeholder.png). Upload your photos via the `Upload files` button or drag & drop them from your local folder (NOT from VS Code - this will not work).
