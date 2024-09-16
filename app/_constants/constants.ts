@@ -43,7 +43,7 @@ export const COMPANY_BASIC_INFORMATION = {
 	/**
 	 * The support email of the company.
 	 */
-	SUPPORT_EMAIL: 'contact@rancherslist.com',
+	SUPPORT_EMAIL: 'kiara@rancherslist.com',
 
 	/**
 	 * The support phone number of the company. (This is needed in certain countries for the imprint.)
