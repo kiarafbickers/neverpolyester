@@ -98,9 +98,11 @@ export default async function Page() {
 				/>
 				*/}
 
-        {/* Conditionally show ListingOverview if location and category match */}
-        <RanchesbyCategory categories={categories} />
-
+        {/* Conditionally show RanchesbyCategory if categories are available */}
+        {categories && (
+          <RanchesbyCategory categories={categories} />
+        )}
+        
         <div className="w-full relative">
           <div className="hidden absolute -z-10 -left-0 top-8 md:block">
             <div className="max-w-32 h-auto">
