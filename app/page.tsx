@@ -19,7 +19,9 @@ import TestimonialBand from "@/components/__home/TestimonialBand";
 // Import Data
 import { HERO_TITLE, HERO_SLOGAN } from "@/constants";
 import { allCategoriesQuery } from "./_lib/supabaseQueries";
-import RanchesbyCategory from "./_components/RanchesbyCategory";
+
+// Temporarily commented out the import for the geo-tagged section
+// import RanchesbyCategory from "./_components/RanchesbyCategory";
 
 // Import Assets & Icons
 
@@ -99,10 +101,12 @@ export default async function Page() {
 				*/}
 
         {/* Conditionally show RanchesbyCategory if categories are available */}
+        {/* Temporarily commented out the geo-tagged section
         {categories && (
           <RanchesbyCategory categories={categories} />
         )}
-        
+        */}
+
         <div className="w-full relative">
           <div className="hidden absolute -z-10 -left-0 top-8 md:block">
             <div className="max-w-32 h-auto">
