@@ -134,6 +134,13 @@ export default function AdvertisePage() {
 								{COMPANY_BASIC_INFORMATION.SUPPORT_EMAIL}
 							</span>
 						</p>
+
+						{/* Embedded Link */}
+						<a href="https://yo.directory/" target="_blank" >
+							<img src="https://cdn.prod.website-files.com/65c1546fa73ea974db789e3d/65e1e171f89ebfa7bd0129ac_yodirectory-featured.png"
+							alt="yo.directory" style={{ width: '150px', height: '54px' }} width="150" height="54"/>
+						</a>
+
 					</SubSectionContentContainer>
 				</SubSectionInnerContainer>
 			</SubSectionOuterContainer>
