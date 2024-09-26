@@ -3,11 +3,11 @@
 import { Tables } from '@/supabase-types';
 import { PostgrestError, User } from '@supabase/supabase-js';
 // Import External Packages
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 // Import Components
 // Import Functions & Actions & Hooks & State
-import createSupabaseBrowserClient from '@/lib/createSupabaseBrowserClient';
+import createSupabaseBrowserClient from './createSupabaseBrowserClient';
 // Import Data
 // Import Assets & Icons
 
@@ -109,5 +109,21 @@ export default function useClientAuth({
 		checkAuthStatus();
 	}, [checkAdmin, mustBeAdmin, mustBeSignedIn, checkUser, router]);
 
-	return { user, userObject, isSuperAdmin, loading, error };
+	const signOut = useCallback(async () => {
+		const supabase = createSupabaseBrowserClient();
+		await supabase.auth.signOut();
+		
+		// Use the current origin or fall back to the NEXT_PUBLIC_SITE_URL
+		const baseUrl = typeof window !== 'undefined' 
+			? window.location.origin 
+			: process.env.NEXT_PUBLIC_SITE_URL;
+		
+		// Construct the full sign-in URL
+		const signInUrl = `${baseUrl}/sign-in`;
+		
+		// Use router.push for client-side navigation
+		router.push(signInUrl);
+	}, [router]);
+
+	return { user, userObject, isSuperAdmin, loading, error, signOut };
 }
