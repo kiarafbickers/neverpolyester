@@ -58,6 +58,8 @@ export default async function AdSlot({
 					<ImageCardDescription>
 						Advertise here! Click this card to learn more about our advertising
 						options.
+						
+						Impact-Site-Verification: f31946c4-f3c3-4569-bc1a-a9f181080041
 					</ImageCardDescription>
 				</ImageCardFooter>
 			</ImageCard>
