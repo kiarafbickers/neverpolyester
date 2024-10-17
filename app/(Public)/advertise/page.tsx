@@ -48,6 +48,8 @@ export default function AdvertisePage() {
 						<p className="text-muted-foreground">
 							{' '}
 							We only serve image ads with links, no embedds.
+							
+							Impact-Site-Verification: f31946c4-f3c3-4569-bc1a-a9f181080041
 						</p>
 						<ol>
 							<li>
