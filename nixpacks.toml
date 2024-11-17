@@ -2,7 +2,7 @@
 engine = "nodejs@18"
 
 [phases.build]
-command = "pnpm i --frozen-lockfile && pnpm run build"
+command = "npm i --frozen-lockfile && npm run build"
 
 [phases.start]
-command = "pnpm run start"
+command = "npm run start"
