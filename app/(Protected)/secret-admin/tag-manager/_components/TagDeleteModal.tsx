@@ -42,7 +42,7 @@ export default function TagDeleteModal({
 					<DialogTitle>Are you sure you want to delete this tag?</DialogTitle>
 				</DialogHeader>
 
-				<div className="flex gap-2 mt-6">
+				<div className="flex gap-2 mt-6 flex-wrap">
 					<Button
 						variant="default"
 						type="button"
@@ -51,6 +51,7 @@ export default function TagDeleteModal({
 						onClick={async () => {
 							await deleteTag(tagId), setDialogOpen(false);
 						}}
+						className="w-full"
 					>
 						Yes, delete this tag
 					</Button>
@@ -62,6 +63,7 @@ export default function TagDeleteModal({
 						onClick={async () => {
 							setDialogOpen(false);
 						}}
+						className="w-full"
 					>
 						No, keep this tag
 					</Button>

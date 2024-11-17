@@ -26,6 +26,7 @@ import {
 	EyeIcon,
 	FileKey2Icon,
 	GemIcon,
+	LucideIcon,
 	MegaphoneIcon,
 	MousePointerClickIcon,
 	Package2Icon,
@@ -35,6 +36,7 @@ import {
 	UserCheckIcon,
 	UserCogIcon,
 } from 'lucide-react';
+import { GENERAL_SETTINGS } from '@/app/_constants/constants';
 
 const formatter = Intl.NumberFormat('en', { notation: 'compact' });
 
@@ -96,7 +98,9 @@ export default async function AccountPage() {
 			: 0
 		: 0;
 
-	const statsData = {
+	let statsData: {
+		[key: string]: { label: string; value: number; icon: LucideIcon }[];
+	} = {
 		Revenue: [
 			{
 				label: 'Lifetime Revenue',
@@ -115,14 +119,7 @@ export default async function AccountPage() {
 				icon: AlertCircleIcon,
 			},
 		],
-		Sublistings: [
-			{ label: 'Sublistings', value: sumOfAllSublistings, icon: Package2Icon },
-			{
-				label: 'Unapproved',
-				value: sumOfSublistingsThatNeedAdminApproval,
-				icon: AlertCircleIcon,
-			},
-		],
+
 		Users: [
 			{
 				label: 'Admins',
@@ -146,6 +143,19 @@ export default async function AccountPage() {
 			},
 			{ label: 'Listing Likes', value: sumOfAllLikes, icon: ThumbsUpIcon },
 			{ label: 'Listing Ratings', value: sumOfAllRatings, icon: StarIcon },
+		],
+	};
+
+	if (GENERAL_SETTINGS.USE_SUBLISTINGS) {
+		statsData.Sublistings = [
+			{ label: 'Sublistings', value: sumOfAllSublistings, icon: Package2Icon },
+			{
+				label: 'Unapproved',
+				value: sumOfSublistingsThatNeedAdminApproval,
+				icon: AlertCircleIcon,
+			},
+		];
+		statsData['User Activity'].push(
 			{
 				label: 'Sublisting Views',
 				value: sumOfAllSublistingViews,
@@ -167,9 +177,9 @@ export default async function AccountPage() {
 				label: 'Sublisting Ratings',
 				value: sumOfAllSublistingRatings,
 				icon: StarIcon,
-			},
-		],
-	};
+			}
+		);
+	}
 
 	return (
 		<SectionOuterContainer className="max-w-5xl">

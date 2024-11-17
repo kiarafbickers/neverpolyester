@@ -5,7 +5,7 @@ import fetch from 'node-fetch';
 import { JSDOM } from 'jsdom';
 import { Readability } from '@mozilla/readability';
 import OpenAI from 'openai';
-import { LISTINGS_SETTINGS } from '@/constants';
+import { LISTINGS_SETTINGS, COMPANY_MARKETING_INFORMATION } from '@/constants';
 // Import Components
 // Import Functions & Actions & Hooks & State
 // Import Data
@@ -29,7 +29,7 @@ async function summarizeText(text: string) {
 		messages: [
 			{
 				role: 'system',
-				content: `You are a research assistant tasked with creating product listings for a directory focusing on direct-to-consumer farm products. ${LISTINGS_SETTINGS} You will be provided with unstructured text data related to these products. Your task is to generate a listing entry in JSON format with two fields in English: 1. 'excerpt': An SEO-optimized, concise description (100-160 characters). 2. 'description': A high-level markdown-formatted analysis, structured into two h2 sections (About and Highlights), no h1 tag, no links (250-350 words). This description will serve as the body of a listing to market the farm. Guidelines: - Focus on writing a positive and appealing listing entry.  - Extract and use relevant information from the text provided, maintaining a tone similar to the original text. - Do not mention unavailable features or technical details (e.g., JavaScript requirements) unless the content is completely unreadable. - Ensure the 'excerpt' is optimized for Google SEO.`,
+				content: `You are a research assistant tasked with creating listings for a directory. The directory can be discribed as: ${COMPANY_MARKETING_INFORMATION.META_DESCRIPTION}. A listing can be described as: ${LISTINGS_SETTINGS}. You will be provided with unstructured text data related to these listings. Your task is to generate a listing entry in JSON format with two fields in English: 1. 'excerpt': An SEO-optimized, concise description (100-160 characters). 2. 'description': A high-level markdown-formatted analysis, structured into two h2 sections (About and Highlights), no h1 tag, no links (250-350 words). This description will serve as the body of a listing. Guidelines: - Focus on writing a positive and appealing listing entry.  - Extract and use relevant information from the text provided, maintaining a tone similar to the original text. - Do not mention unavailable features or technical details (e.g., JavaScript requirements) unless the content is completely unreadable. - Ensure the 'excerpt' is optimized for Google SEO.`,
 			},
 			{
 				role: 'user',

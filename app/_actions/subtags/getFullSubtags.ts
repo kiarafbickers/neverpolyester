@@ -27,6 +27,9 @@ type fullSubsubtag = {
 		id: string;
 		name: string;
 	}[];
+	emoji: string | null;
+	color: string | null;
+	href: string | null;
 };
 /**
  * Retrieves full subtags based on the provided modifier.
@@ -44,7 +47,7 @@ export default async function getFullSubsubtags(modifier: 'active' | 'all') {
 			results = await supabase
 				.from('subtags')
 				.select(
-					`id, name, slug, headline, description, image_url_hero, image_url_small, subtag_groups(id, name)`
+					`id, name, slug, headline, description, image_url_hero, image_url_small, subtag_groups(id, name), emoji, color, href`
 				);
 		} else {
 			throw new BadRequestError('Invalid modifier.');

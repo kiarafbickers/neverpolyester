@@ -60,7 +60,10 @@ create table "public"."categories" (
     "headline" text,
     "description" text,
     "image_url_hero" text,
-    "image_url_small" text
+    "image_url_small" text, 
+    "href" text,
+    "color" text, 
+    "emoji" text
 );
 
 
@@ -76,7 +79,10 @@ create table "public"."subcategories" (
     "headline" text,
     "description" text,
     "image_url_hero" text,
-    "image_url_small" text
+    "image_url_small" text, 
+    "href" text,
+    "color" text, 
+    "emoji" text
 );
 
 
@@ -133,9 +139,6 @@ create table "public"."listings" (
     "category_id" uuid,
     "default_image_url" text,
     "logo_image_url" text,
-    "address" text,
-    "farmer_names" text,
-    "founding_year" text,
     "discount_code_text" text,
     "discount_code_percentage" text,
     "discount_code" text,
@@ -153,9 +156,6 @@ create table "public"."listings_tags" (
 
 
 alter table "public"."listings_tags" enable row level security;
-
-
-
 
 create table "public"."sublistings" (
     "id" uuid not null default uuid_generate_v4(),
@@ -187,7 +187,6 @@ create table "public"."sublistings" (
     "fts" tsvector generated always as (to_tsvector('english'::regconfig, ((((COALESCE(title, ''::text) || ' '::text) || COALESCE(description, ''::text)) || ' '::text) || COALESCE(excerpt, ''::text)))) stored
 );
 
-
 alter table "public"."sublistings" enable row level security;
 
 create table "public"."sublistings_subtags" (
@@ -196,8 +195,6 @@ create table "public"."sublistings_subtags" (
 );
 
 alter table "public"."sublistings_subtags" enable row level security;
-
-
 
 create table "public"."promotions" (
     "id" uuid not null default gen_random_uuid(),
@@ -228,7 +225,10 @@ create table "public"."tags" (
     "headline" text,
     "description" text,
     "image_url_hero" text,
-    "image_url_small" text
+    "image_url_small" text, 
+    "href" text,
+    "color" text, 
+    "emoji" text
 );
 
 
@@ -243,9 +243,11 @@ create table "public"."subtags" (
     "headline" text,
     "description" text,
     "image_url_hero" text,
-    "image_url_small" text
+    "image_url_small" text, 
+    "href" text,
+    "color" text, 
+    "emoji" text
 );
-
 
 alter table "public"."subtags" enable row level security;
 
@@ -262,8 +264,10 @@ alter table "public"."topics" enable row level security;
 
 create table "public"."users" (
     "id" uuid not null,
+    "auth_id" uuid,
     "created_at" timestamp with time zone default now(),
     "updated_at" timestamp with time zone,
+    "deleted_at" timestamp with time zone,
     "username" text,
     "full_name" text,
     "avatar_url" text,
@@ -271,13 +275,12 @@ create table "public"."users" (
     "email" text,
     "is_super_admin" boolean default false,
     "tag_line" text,
-    "is_active" boolean default true
+    "is_active" boolean default true,
+    "role" text
 );
 
 
 alter table "public"."users" enable row level security;
-
-
 
 CREATE UNIQUE INDEX blog_posts_pkey ON public.blog_posts USING btree (id);
 
@@ -302,7 +305,6 @@ CREATE INDEX idx_categories_slug ON public.categories USING btree (slug);
 CREATE INDEX idx_listings_category_id ON public.listings USING btree (category_id);
 
 CREATE INDEX idx_subcategories_slug ON public.subcategories USING btree (slug);
-
 
 CREATE INDEX idx_listings_embedding ON public.listings USING ivfflat (embedding) WITH (lists='100');
 
@@ -345,8 +347,6 @@ CREATE INDEX listings_fts ON public.listings USING gin (fts);
 CREATE UNIQUE INDEX listings_pkey ON public.listings USING btree (id);
 
 CREATE UNIQUE INDEX listings_slug_key ON public.listings USING btree (slug);
-
-
 
 CREATE INDEX sublistings_fts ON public.sublistings USING gin (fts);
 
@@ -393,8 +393,8 @@ alter table "public"."ad_campaigns" add constraint "campaigns_pkey" PRIMARY KEY 
 alter table "public"."blog_posts" add constraint "blog_posts_pkey" PRIMARY KEY using index "blog_posts_pkey";
 
 alter table "public"."categories" add constraint "categories_pkey" PRIMARY KEY using index "categories_pkey";
-alter table "public"."subcategories" add constraint "subcategories_pkey" PRIMARY KEY using index "subcategories_pkey";
 
+alter table "public"."subcategories" add constraint "subcategories_pkey" PRIMARY KEY using index "subcategories_pkey";
 
 alter table "public"."comments" add constraint "comments_pkey" PRIMARY KEY using index "comments_pkey";
 
@@ -414,101 +414,99 @@ alter table "public"."tags" add constraint "tags_pkey" PRIMARY KEY using index "
 
 alter table "public"."subtags" add constraint "subtags_pkey" PRIMARY KEY using index "subtags_pkey";
 
-
 alter table "public"."topics" add constraint "topics_pkey" PRIMARY KEY using index "topics_pkey";
 
 alter table "public"."users" add constraint "profiles_pkey" PRIMARY KEY using index "profiles_pkey";
 
-alter table "public"."activities" add constraint "user_searches_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(id) not valid;
+alter table "public"."activities" add constraint "user_searches_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(id);
 
 alter table "public"."activities" validate constraint "user_searches_user_id_fkey";
 
 alter table "public"."blog_posts" add constraint "blog_posts_slug_key" UNIQUE using index "blog_posts_slug_key";
 
-alter table "public"."blog_posts" add constraint "blog_posts_topic_id_fkey" FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE SET NULL not valid;
+alter table "public"."blog_posts" add constraint "blog_posts_topic_id_fkey" FOREIGN KEY (topic_id) REFERENCES topics(id) ON DELETE SET NULL;
 
 alter table "public"."blog_posts" validate constraint "blog_posts_topic_id_fkey";
 
-alter table "public"."blog_posts" add constraint "blog_posts_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE not valid;
+alter table "public"."blog_posts" add constraint "blog_posts_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL;
 
 alter table "public"."blog_posts" validate constraint "blog_posts_user_id_fkey";
 
 alter table "public"."categories" add constraint "categories_slug_key" UNIQUE using index "categories_slug_key";
+
 alter table "public"."subcategories" add constraint "subcategories_slug_key" UNIQUE using index "subcategories_slug_key";
 
-
-alter table "public"."comments" add constraint "comments_blog_post_id_fkey" FOREIGN KEY (blog_post_id) REFERENCES blog_posts(id) ON DELETE CASCADE not valid;
+alter table "public"."comments" add constraint "comments_blog_post_id_fkey" FOREIGN KEY (blog_post_id) REFERENCES blog_posts(id) ON DELETE CASCADE;
 
 alter table "public"."comments" validate constraint "comments_blog_post_id_fkey";
 
-alter table "public"."comments" add constraint "comments_content_check" CHECK ((char_length(content) <= 1000)) not valid;
+alter table "public"."comments" add constraint "comments_content_check" CHECK ((char_length(content) <= 1000));
 
 alter table "public"."comments" validate constraint "comments_content_check";
 
-alter table "public"."comments" add constraint "comments_listing_id_fkey" FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE not valid;
+alter table "public"."comments" add constraint "comments_listing_id_fkey" FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE;
 
 alter table "public"."comments" validate constraint "comments_listing_id_fkey";
 
-alter table "public"."comments" add constraint "comments_sublisting_id_fkey" FOREIGN KEY (sublisting_id) REFERENCES sublistings(id) ON DELETE CASCADE not valid;
+alter table "public"."comments" add constraint "comments_sublisting_id_fkey" FOREIGN KEY (sublisting_id) REFERENCES sublistings(id) ON DELETE CASCADE;
 
 alter table "public"."comments" validate constraint "comments_sublisting_id_fkey";
 
-alter table "public"."comments" add constraint "comments_parent_comment_id_fkey" FOREIGN KEY (parent_comment_id) REFERENCES comments(id) ON DELETE CASCADE not valid;
+alter table "public"."comments" add constraint "comments_parent_comment_id_fkey" FOREIGN KEY (parent_comment_id) REFERENCES comments(id) ON DELETE CASCADE;
 
 alter table "public"."comments" validate constraint "comments_parent_comment_id_fkey";
 
-alter table "public"."comments" add constraint "comments_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE not valid;
+alter table "public"."comments" add constraint "comments_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
 
 alter table "public"."comments" validate constraint "comments_user_id_fkey";
 
-alter table "public"."listings" add constraint "listings_category_id_fkey" FOREIGN KEY (category_id) REFERENCES categories(id) not valid;
+alter table "public"."listings" add constraint "listings_category_id_fkey" FOREIGN KEY (category_id) REFERENCES categories(id);
 
 alter table "public"."listings" validate constraint "listings_category_id_fkey";
 
-alter table "public"."listings" add constraint "listings_finder_id_fkey" FOREIGN KEY (finder_id) REFERENCES users(id) not valid;
+alter table "public"."listings" add constraint "listings_finder_id_fkey" FOREIGN KEY (finder_id) REFERENCES users(id);
 
 alter table "public"."listings" validate constraint "listings_finder_id_fkey";
 
-alter table "public"."listings" add constraint "listings_owner_id_fkey" FOREIGN KEY (owner_id) REFERENCES users(id) not valid;
+alter table "public"."listings" add constraint "listings_owner_id_fkey" FOREIGN KEY (owner_id) REFERENCES users(id);
 
 alter table "public"."listings" validate constraint "listings_owner_id_fkey";
 
 alter table "public"."listings" add constraint "listings_slug_key" UNIQUE using index "listings_slug_key";
 
-alter table "public"."listings_tags" add constraint "listings_tags_listing_id_fkey" FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE not valid;
+alter table "public"."listings_tags" add constraint "listings_tags_listing_id_fkey" FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE;
 
 alter table "public"."listings_tags" validate constraint "listings_tags_listing_id_fkey";
 
-alter table "public"."listings_tags" add constraint "listings_tags_tag_id_fkey" FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE not valid;
+alter table "public"."listings_tags" add constraint "listings_tags_tag_id_fkey" FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE;
 
 alter table "public"."listings_tags" validate constraint "listings_tags_tag_id_fkey";
 
-
-alter table "public"."sublistings" add constraint "sublistings_subcategory_id_fkey" FOREIGN KEY (subcategory_id) REFERENCES subcategories(id) not valid;
+alter table "public"."sublistings" add constraint "sublistings_subcategory_id_fkey" FOREIGN KEY (subcategory_id) REFERENCES subcategories(id);
 
 alter table "public"."sublistings" validate constraint "sublistings_subcategory_id_fkey";
 
 alter table "public"."sublistings" add constraint "sublistings_slug_key" UNIQUE using index "sublistings_slug_key";
 
-alter table "public"."sublistings_subtags" add constraint "sublistings_subtags_listing_id_fkey" FOREIGN KEY (sublisting_id) REFERENCES sublistings(id) ON DELETE CASCADE not valid;
+alter table "public"."sublistings_subtags" add constraint "sublistings_subtags_listing_id_fkey" FOREIGN KEY (sublisting_id) REFERENCES sublistings(id) ON DELETE CASCADE;
 
 alter table "public"."sublistings_subtags" validate constraint "sublistings_subtags_listing_id_fkey";
 
-alter table "public"."sublistings_subtags" add constraint "sublistings_subtags_subtag_id_fkey" FOREIGN KEY (subtag_id) REFERENCES subtags(id) ON DELETE CASCADE not valid;
+alter table "public"."sublistings_subtags" add constraint "sublistings_subtags_subtag_id_fkey" FOREIGN KEY (subtag_id) REFERENCES subtags(id) ON DELETE CASCADE;
 
 alter table "public"."sublistings_subtags" validate constraint "sublistings_subtags_subtag_id_fkey";
 
-alter table "public"."sublistings" add constraint "sublistings_listing_id_fkey" FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE not valid;
+alter table "public"."sublistings" add constraint "sublistings_listing_id_fkey" FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE;
 
 alter table "public"."sublistings" validate constraint "sublistings_listing_id_fkey";
 
-alter table "public"."promotions" add constraint "promotions_category_id_fkey" FOREIGN KEY (category_id) REFERENCES categories(id) not valid;
+alter table "public"."promotions" add constraint "promotions_category_id_fkey" FOREIGN KEY (category_id) REFERENCES categories(id);
 
-alter table "public"."sublistings" add constraint "sublistings_finder_id_fkey" FOREIGN KEY (finder_id) REFERENCES users(id) not valid;
+alter table "public"."sublistings" add constraint "sublistings_finder_id_fkey" FOREIGN KEY (finder_id) REFERENCES users(id);
 
 alter table "public"."sublistings" validate constraint "sublistings_finder_id_fkey";
 
-alter table "public"."sublistings" add constraint "sublistings_owner_id_fkey" FOREIGN KEY (owner_id) REFERENCES users(id) not valid;
+alter table "public"."sublistings" add constraint "sublistings_owner_id_fkey" FOREIGN KEY (owner_id) REFERENCES users(id);
 
 alter table "public"."sublistings" validate constraint "sublistings_owner_id_fkey";
 
@@ -516,13 +514,13 @@ alter table "public"."promotions" validate constraint "promotions_category_id_fk
 
 alter table "public"."promotions" add constraint "promotions_invoice_url_key" UNIQUE using index "promotions_invoice_url_key";
 
-alter table "public"."promotions" add constraint "promotions_listing_id_fkey" FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE not valid;
+alter table "public"."promotions" add constraint "promotions_listing_id_fkey" FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE;
 
 alter table "public"."promotions" validate constraint "promotions_listing_id_fkey";
 
 alter table "public"."promotions" add constraint "promotions_payment_intent_key" UNIQUE using index "promotions_payment_intent_key";
 
-alter table "public"."promotions" add constraint "promotions_profile_id_fkey" FOREIGN KEY (profile_id) REFERENCES users(id) ON DELETE CASCADE not valid;
+alter table "public"."promotions" add constraint "promotions_profile_id_fkey" FOREIGN KEY (profile_id) REFERENCES users(id) ON DELETE CASCADE;
 
 alter table "public"."promotions" validate constraint "promotions_profile_id_fkey";
 
@@ -536,15 +534,19 @@ alter table "public"."topics" add constraint "topics_slug_key" UNIQUE using inde
 
 alter table "public"."users" add constraint "profiles_email_key" UNIQUE using index "profiles_email_key";
 
-alter table "public"."users" add constraint "profiles_id_fkey" FOREIGN KEY (id) REFERENCES auth.users(id) not valid;
+ALTER TABLE "public"."users"
+ADD CONSTRAINT "users_auth_id_fkey"
+FOREIGN KEY (auth_id)
+REFERENCES auth.users(id)
+ON DELETE SET NULL;
 
-alter table "public"."users" validate constraint "profiles_id_fkey";
+alter table "public"."users" validate constraint "users_auth_id_fkey";
 
 alter table "public"."users" add constraint "profiles_id_key" UNIQUE using index "profiles_id_key";
 
 alter table "public"."users" add constraint "profiles_username_key" UNIQUE using index "profiles_username_key";
 
-alter table "public"."users" add constraint "username_length" CHECK ((char_length(username) >= 3)) not valid;
+alter table "public"."users" add constraint "username_length" CHECK ((char_length(username) >= 3));
 
 alter table "public"."users" validate constraint "username_length";
 
@@ -578,7 +580,6 @@ AS $function$ select distinct c.id, c.name, c.slug, COALESCE(
   LEFT JOIN public.subcategory_groups cg ON cgca.subcategory_group_id = cg.id GROUP BY c.id, c.name, c.slug; $function$
 ;
 
-
 CREATE OR REPLACE FUNCTION public.get_active_topics()
  RETURNS TABLE(id uuid, name text, slug text)
   LANGUAGE sql
@@ -603,8 +604,6 @@ order by
     t.name;
 $function$
 ;
-
-
 
 CREATE OR REPLACE FUNCTION public.get_categories_with_listing_count()
  RETURNS TABLE(id uuid, name text, slug text, headline text, listing_count bigint)
@@ -659,31 +658,109 @@ $function$
 ;
 
 CREATE OR REPLACE FUNCTION public.get_full_active_categories()
- RETURNS TABLE(id uuid, name text, slug text, headline text, description text, image_url_hero text, image_url_small text, category_groups jsonb)
-  LANGUAGE sql
- STABLE
-  SET search_path = ''
-AS $function$ select  c.id, c.name, c.slug, c.headline, c.description, c.image_url_hero, c.image_url_small, COALESCE(
-      jsonb_agg(
-       distinct jsonb_build_object('id', cg.id, 'name', cg.name)
-      ) FILTER (WHERE cg.id IS NOT NULL), 
-      '[]'::jsonb
-    ) AS category_groups from public.categories c INNER JOIN public.listings l on c.id = l.category_id AND l.is_user_published = true AND l.is_admin_published = true LEFT JOIN public.category_groups_categories_association cgca ON c.id = cgca.category_id
-  LEFT JOIN public.category_groups cg ON cgca.category_group_id = cg.id GROUP BY c.id, c.name, c.slug; $function$
-;
-
-CREATE OR REPLACE FUNCTION public.get_full_active_subcategories()
- RETURNS TABLE(id uuid, name text, slug text, headline text, description text, image_url_hero text, image_url_small text, subcategory_groups jsonb)
+ RETURNS TABLE(
+   id uuid,
+   name text,
+   slug text,
+   headline text,
+   description text,
+   image_url_hero text,
+   image_url_small text,
+   href text,
+   color text,
+   emoji text,
+   category_groups jsonb
+ )
  LANGUAGE sql
  STABLE
   SET search_path = ''
-AS $function$ select  c.id, c.name, c.slug, c.headline, c.description, c.image_url_hero, c.image_url_small, COALESCE(
+AS $function$
+  SELECT
+    c.id,
+    c.name,
+    c.slug,
+    c.headline,
+    c.description,
+    c.image_url_hero,
+    c.image_url_small,
+    c.href,
+    c.color,
+    c.emoji,
+    COALESCE(
       jsonb_agg(
-       distinct jsonb_build_object('id', cg.id, 'name', cg.name)
-      ) FILTER (WHERE cg.id IS NOT NULL), 
+        DISTINCT jsonb_build_object('id', cg.id, 'name', cg.name)
+      ) FILTER (WHERE cg.id IS NOT NULL),
       '[]'::jsonb
-    ) AS subcategory_groups from public.subcategories c INNER JOIN public.sublistings l on c.id = l.subcategory_id AND l.is_user_published = true AND l.is_admin_published = true LEFT JOIN public.subcategory_groups_subcategories_association cgca ON c.id = cgca.subcategory_id
-  LEFT JOIN public.subcategory_groups cg ON cgca.subcategory_group_id = cg.id GROUP BY c.id, c.name, c.slug; $function$
+    ) AS category_groups
+  FROM public.categories c
+  INNER JOIN public.listings l ON c.id = l.category_id AND l.is_user_published = true AND l.is_admin_published = true
+  LEFT JOIN public.category_groups_categories_association cgca ON c.id = cgca.category_id
+  LEFT JOIN public.category_groups cg ON cgca.category_group_id = cg.id
+  GROUP BY
+    c.id,
+    c.name,
+    c.slug,
+    c.headline,
+    c.description,
+    c.image_url_hero,
+    c.image_url_small,
+    c.href,
+    c.color,
+    c.emoji;
+$function$
+;
+
+CREATE OR REPLACE FUNCTION public.get_full_active_subcategories()
+ RETURNS TABLE(
+   id uuid,
+   name text,
+   slug text,
+   headline text,
+   description text,
+   image_url_hero text,
+   image_url_small text,
+   href text,
+   color text,
+   emoji text,
+   subcategory_groups jsonb
+ )
+ LANGUAGE sql
+ STABLE
+  SET search_path = ''
+AS $function$
+  SELECT
+    c.id,
+    c.name,
+    c.slug,
+    c.headline,
+    c.description,
+    c.image_url_hero,
+    c.image_url_small,
+    c.href,
+    c.color,
+    c.emoji,
+    COALESCE(
+      jsonb_agg(
+        DISTINCT jsonb_build_object('id', cg.id, 'name', cg.name)
+      ) FILTER (WHERE cg.id IS NOT NULL),
+      '[]'::jsonb
+    ) AS subcategory_groups
+  FROM public.subcategories c
+  INNER JOIN public.sublistings l ON c.id = l.subcategory_id AND l.is_user_published = true AND l.is_admin_published = true
+  LEFT JOIN public.subcategory_groups_subcategories_association cgca ON c.id = cgca.subcategory_id
+  LEFT JOIN public.subcategory_groups cg ON cgca.subcategory_group_id = cg.id
+  GROUP BY
+    c.id,
+    c.name,
+    c.slug,
+    c.headline,
+    c.description,
+    c.image_url_hero,
+    c.image_url_small,
+    c.href,
+    c.color,
+    c.emoji;
+$function$
 ;
 
 CREATE OR REPLACE FUNCTION public.get_active_tags()
@@ -755,6 +832,9 @@ CREATE OR REPLACE FUNCTION public.get_full_active_subtags()
    description text, 
    image_url_hero text, 
    image_url_small text,
+   href text,
+   color text,
+   emoji text,
    subtag_groups jsonb
  )
   LANGUAGE sql
@@ -769,9 +849,12 @@ AS $function$
     t.description, 
     t.image_url_hero, 
     t.image_url_small,
+    t.href,
+    t.color,
+    t.emoji,
     COALESCE(
       jsonb_agg(
-        distinct jsonb_build_object('id', tg.id, 'name', tg.name)
+        DISTINCT jsonb_build_object('id', tg.id, 'name', tg.name)
       ) FILTER (WHERE tg.id IS NOT NULL), 
       '[]'::jsonb
     ) AS subtag_groups
@@ -779,7 +862,17 @@ AS $function$
   INNER JOIN public.sublistings_subtags lt ON t.id = lt.subtag_id
   LEFT JOIN public.subtag_groups_subtags_association tgta ON t.id = tgta.subtag_id
   LEFT JOIN public.subtag_groups tg ON tgta.subtag_group_id = tg.id
-  GROUP BY t.id, t.name, t.slug, t.headline, t.description, t.image_url_hero, t.image_url_small;
+  GROUP BY 
+    t.id, 
+    t.name, 
+    t.slug, 
+    t.headline, 
+    t.description, 
+    t.image_url_hero, 
+    t.image_url_small,
+    t.href,
+    t.color,
+    t.emoji;
 $function$
 ;
 
@@ -792,11 +885,14 @@ CREATE OR REPLACE FUNCTION public.get_full_active_tags()
    description text, 
    image_url_hero text, 
    image_url_small text,
+   href text,
+   color text,
+   emoji text,
    tag_groups jsonb
  )
-  LANGUAGE sql
+ LANGUAGE sql
  STABLE
-  SET search_path = ''
+ SET search_path = ''
 AS $function$
   SELECT 
     t.id, 
@@ -806,9 +902,12 @@ AS $function$
     t.description, 
     t.image_url_hero, 
     t.image_url_small,
+    t.href,
+    t.color,
+    t.emoji,
     COALESCE(
       jsonb_agg(
-        distinct jsonb_build_object('id', tg.id, 'name', tg.name)
+        DISTINCT jsonb_build_object('id', tg.id, 'name', tg.name)
       ) FILTER (WHERE tg.id IS NOT NULL), 
       '[]'::jsonb
     ) AS tag_groups
@@ -816,7 +915,17 @@ AS $function$
   INNER JOIN public.listings_tags lt ON t.id = lt.tag_id
   LEFT JOIN public.tag_groups_tags_association tgta ON t.id = tgta.tag_id
   LEFT JOIN public.tag_groups tg ON tgta.tag_group_id = tg.id
-  GROUP BY t.id, t.name, t.slug, t.headline, t.description, t.image_url_hero, t.image_url_small;
+  GROUP BY 
+    t.id, 
+    t.name, 
+    t.slug, 
+    t.headline, 
+    t.description, 
+    t.image_url_hero, 
+    t.image_url_small,
+    t.href,
+    t.color,
+    t.emoji;
 $function$
 ;
 
@@ -894,15 +1003,15 @@ AS $function$select distinct u.username
 ;
 
 CREATE OR REPLACE FUNCTION public.handle_new_user()
- RETURNS trigger
- LANGUAGE plpgsql
- SECURITY DEFINER
-  SET search_path = ''
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER
+ SET search_path = ''
 AS $function$
 begin
-  insert into public.users (id, email)
-  values (new.id, new.email);
-  return new;
+ insert into public.users (id, auth_id, email, role)
+ values (new.id, new.id, new.email, NEW.raw_user_meta_data ->> 'role');
+ return new;
 end;
 $function$
 ;
@@ -1672,10 +1781,6 @@ grant truncate on table "public"."topics" to "service_role";
 
 grant update on table "public"."topics" to "service_role";
 
-
-
-
-
 grant delete on table "public"."users" to "anon";
 
 grant insert on table "public"."users" to "anon";
@@ -2090,7 +2195,6 @@ as permissive
 for select
 to public
 using (true);
-
 
 
 create policy "Allow admins to delete promotions"

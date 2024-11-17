@@ -1,14 +1,13 @@
 'use server';
 
 // Import Types
-import { Tables } from '@/supabase-types';
+import { AuthUserType } from '@/supabase-special-types';
 // Import External Packages
 import { redirect } from 'next/navigation';
 // Import Components
 // Import Functions & Actions & Hooks & State
 import createSupabaseRLSClient from '@/lib/createSupabaseRLSClient';
 // Import Data
-import { User } from '@supabase/supabase-js';
 // Import Assets & Icons
 // Import Error Handling
 import { UnauthorizedError } from '@/lib/handlingServerResponses';
@@ -21,7 +20,7 @@ interface AuthParams {
 }
 
 interface Results {
-	user: User | Tables<'users'> | null;
+	user: AuthUserType | null;
 	isSuperAdmin: boolean;
 	error: any;
 }
@@ -56,9 +55,9 @@ export default async function serverAuth({
 		} = await supabase.auth.getUser();
 
 		if (authError || !user) {
-			console.error('Error with serverAuth:', authError);
 			if (mustBeSignedIn || mustBeAdmin) {
-				throw new UnauthorizedError('Auth Error.');
+				console.error('Unauthorized Access Attempted.');
+				throw new UnauthorizedError('Auth Error - unlogged or no user.');
 			} else {
 				resultObject = {
 					user: null,
@@ -67,16 +66,22 @@ export default async function serverAuth({
 				};
 			}
 		} else {
-			resultObject.user = user;
+			resultObject.user = {
+				id: user.id,
+				email: user.email ?? null,
+				is_active: true,
+				role: null,
+				avatar_url: null,
+			};
 		}
 
 		if (user && checkUser) {
 			const { data, error, status } = await supabase
 				.from('users')
-				.select('*')
-				.eq('id', user.id)
+				.select('id, email, is_active, role, avatar_url')
+				.eq('auth_id', user.id)
 				.eq('is_active', true)
-				.single();
+				.maybeSingle();
 
 			if (error && status !== 406) {
 				resultObject = {
@@ -89,7 +94,7 @@ export default async function serverAuth({
 			if (data) {
 				resultObject.user = data;
 			} else {
-				redirect('/auth-error');
+				throw new UnauthorizedError('Auth Error - logged but no user.');
 			}
 		}
 
@@ -97,9 +102,9 @@ export default async function serverAuth({
 			const { data, error, status } = await supabase
 				.from('users')
 				.select('is_super_admin')
-				.eq('id', user.id)
+				.eq('auth_id', user.id)
 				.eq('is_active', true)
-				.single();
+				.maybeSingle();
 
 			if (error && status !== 406) {
 				resultObject = {
@@ -112,12 +117,11 @@ export default async function serverAuth({
 			resultObject.isSuperAdmin = data?.is_super_admin === true;
 
 			if (!resultObject.isSuperAdmin && mustBeAdmin) {
-				redirect('/sign-in');
+				throw new UnauthorizedError('Admin Error.');
 			}
 		}
 		return resultObject;
 	} catch (error) {
-		console.error('Error with serverAuth:', error);
 		redirect('/sign-in');
 	}
 }

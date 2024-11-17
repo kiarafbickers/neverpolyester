@@ -1,19 +1,13 @@
 // Import Types
-import { LinkListItem } from '@/types';
 // Import External Packages
 import Image from 'next/image';
 import Link from 'next/link';
 // Import Components
 import SocialFollowBar from '@/components/SocialFollowBar';
-import ExternalLink from '@/ui/ExternalLink';
 // Import Functions & Actions & Hooks & State
 import { capitalize, cn } from '@/lib/utils';
 // Import Data
-import {
-	COMPANY_BASIC_INFORMATION,
-	CREATOR_INFORMATION,
-	FOOTER_SLOGAN,
-} from '@/constants';
+import { COMPANY_BASIC_INFORMATION, FOOTER_SLOGAN } from '@/constants';
 // Import Assets & Icons
 // FIXED DATA
 
@@ -22,7 +16,7 @@ const FOOTER_NAVIGATION_LINKS: {
 	[key: string]: { label: string; href: string }[];
 } = {
 	resources: [
-		{ label: 'All Ranches', href: '/ranches' },
+		{ label: 'All Listings', href: '/explore' },
 		{ label: 'Blog', href: '/blog' },
 		{ label: 'Advertise', href: '/advertise' },
 	],
@@ -101,17 +95,24 @@ export default function Footer() {
 			<h2 id="footer-heading" className="sr-only">
 				Footer
 			</h2>
-			<div className="mx-auto max-w-7xl px-4 lg:px-12 pb-8 pt-16">
-				<div className="xl:grid xl:grid-cols-4 xl:gap-8">
-					<div className="space-y-8 pr-12 col-span-2">
+			<div className="mx-auto max-w-7xl px-4 lg:px-12 pt-16">
+				<div className="md:grid md:grid-cols-4 xl:gap-8">
+					<div className="pr-12 col-span-2">
 						<Image
-							className="h-auto w-48"
+							className="h-auto w-48 dark:hidden"
+							src="/logos/logo_for_light.png"
+							width={150}
+							height={100}
+							alt={`${COMPANY_BASIC_INFORMATION.NAME} Logo Dark on transparent background`}
+						/>
+						<Image
+							className="h-auto w-48 hidden dark:block"
 							src="/logos/logo_for_dark.png"
 							width={150}
 							height={100}
 							alt={`${COMPANY_BASIC_INFORMATION.NAME} Logo White on transparent background`}
 						/>
-						<p className="text-sm leading-6 text-muted-foreground">
+						<p className="text-sm leading-6 text-muted-foreground py-6">
 							{FOOTER_SLOGAN}
 						</p>
 

@@ -44,3 +44,5 @@ next-env.d.ts
 #Dev files
 zzz_ignore
 ignore
+ignore.txt
+/app/_modules/__playground

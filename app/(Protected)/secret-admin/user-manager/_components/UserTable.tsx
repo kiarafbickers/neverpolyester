@@ -4,17 +4,20 @@ import { Tables } from '@/supabase-types';
 // Import External Packages
 import { useState } from 'react';
 // Import Components
+import ActionVerificationModal from '@/components/ActionVerificationModal';
 import Pagination from '@/ui/Pagination';
 import { Switch } from '@/ui/Switch';
 import { Input } from '@/ui/Input';
 // Import Functions & Actions & Hooks & State
 import handleUsers_ADMIN from '@/actions/users/handleUsers_ADMIN';
-import { capitalize, cn, formatDate } from '@/lib/utils';
+import { cn, formatDate } from '@/lib/utils';
 import usePagination from '@/lib/usePagination';
 import { toast } from '@/lib/useToaster';
-import { CheckCircle, XCircle } from 'lucide-react';
+import softDeleteUser_ADMIN from '@/actions/users/softDeleteUser_ADMIN';
 // Import Data
+import { GENERAL_SETTINGS } from '@/constants';
 // Import Assets & Icons
+import { CheckCircle, TrashIcon, XCircle } from 'lucide-react';
 
 /**
  * A table component that displays users.
@@ -88,69 +91,70 @@ export default function UsersTable({
 							</div>
 
 							<div className="table-cell h-10 px-2 text-left align-middle font-medium  border-b-2 border-neutral-200">
-								Username
+								Super Admin
 							</div>
 
-							<div className="table-cell h-10 px-2 text-left align-middle font-medium  border-b-2 border-neutral-200">
-								Full Name
-							</div>
-
-							<div className="table-cell h-10 px-2 text-left align-middle font-medium  border-b-2 border-neutral-200">
-								Website
-							</div>
-							<div className="table-cell h-10 px-2 text-left align-middle font-medium  border-b-2 border-neutral-200">
-								Tag Line
-							</div>
+							{GENERAL_SETTINGS.USE_RBAC && (
+								<div className="table-cell h-10 px-2 text-left align-middle font-medium  border-b-2 border-neutral-200">
+									User Role
+								</div>
+							)}
 
 							<div className="table-cell h-10 px-2 text-left align-middle font-medium  border-b-2 border-neutral-200">
 								Created
 							</div>
+
 							<div className="table-cell h-10 px-2 text-left align-middle font-medium  border-b-2 border-neutral-200">
-								Super Admin
+								On Hold / Active
 							</div>
 							<div className="table-cell h-10 px-2 text-left align-middle font-medium  border-b-2 border-neutral-200">
-								Active
+								Delete
 							</div>
 						</div>
 					</div>
 					<div className="table-row-group">
-						{currentData.map((users) => (
-							<div key={users.id} className={cn('table-row h-auto')}>
+						{currentData.map((user) => (
+							<div key={user.id} className={cn('table-row h-auto')}>
 								<div className="table-cell content-center p-2 text-sm overflow-hidden  border-b-2 border-neutral-200">
-									{users.email || '---'}
+									{user.email || '---'}
 								</div>
 
-								<div className="table-cell content-center p-2 text-sm text-muted-foreground overflow-hidden  border-b-2 border-neutral-200 break-words max-w-44">
-									{users.username || '---'}
-								</div>
-
-								<div className="table-cell content-center p-2 text-sm text-muted-foreground overflow-hidden  border-b-2 border-neutral-200">
-									{users.full_name || '---'}
-								</div>
-								<div className="table-cell content-center p-2 text-sm text-muted-foreground overflow-hidden  border-b-2 border-neutral-200">
-									{users.website || '---'}
-								</div>
-								<div className="table-cell content-center p-2 text-sm text-muted-foreground overflow-hidden  border-b-2 border-neutral-200">
-									{users.tag_line || '---'}
-								</div>
-
-								<div className="table-cell content-center text-sm p-2 align-middle border-b-2 border-neutral-200">
-									{formatDate(new Date(users.created_at || 0))}
-								</div>
 								<div className="table-cell content-center text-sm p-2 border-b-2 border-neutral-200">
-									{users.is_super_admin ? (
+									{user.is_super_admin ? (
 										<CheckCircle className="w-6 h-6 text-green-500" />
 									) : (
 										<XCircle className="w-6 h-6 text-red-500" />
 									)}
 								</div>
+								{GENERAL_SETTINGS.USE_RBAC && (
+									<div className="table-cell content-center p-2 text-sm text-muted-foreground overflow-hidden  border-b-2 border-neutral-200 break-words max-w-44">
+										{user.role || '---'}
+									</div>
+								)}
+
+								<div className="table-cell content-center text-sm p-2 align-middle border-b-2 border-neutral-200">
+									{formatDate(new Date(user.created_at || 0))}
+								</div>
 
 								<div className="table-cell content-center text-sm p-2 border-b-2 border-neutral-200">
 									<Switch
-										checked={users.is_active ? true : false}
+										checked={user.is_active ? true : false}
 										onCheckedChange={() =>
-											handleApproveToggle(users, !users.is_active)
+											handleApproveToggle(user, !user.is_active)
 										}
+									/>
+								</div>
+
+								<div className="table-cell content-center text-sm p-2 border-b-2 border-neutral-200">
+									<ActionVerificationModal
+										data={user.id}
+										executionFunction={softDeleteUser_ADMIN}
+										buttonText=""
+										buttonIcon={TrashIcon}
+										modalTitle="Delete User"
+										modalDescription={`Are you sure you want to delete the user: ${user.email}?`}
+										modalVerficationWithAnswer={true}
+										modalVerificationAnswer="DELETE"
 									/>
 								</div>
 							</div>

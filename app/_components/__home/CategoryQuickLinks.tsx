@@ -33,7 +33,7 @@ export default async function CategoryQuickLinks() {
 				Categories
 			</SubSectionTitle>
 			<SubSectionInnerContainer>
-				<div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4  mx-auto">
+				<div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mx-auto mt-4">
 					{categoryData.map((category) => (
 						<div
 							key={category.id}
@@ -59,10 +59,10 @@ export default async function CategoryQuickLinks() {
 									className="group-hover:scale-150 duration-200 transition-all opacity-20 absolute right-2 bottom-2"
 								/>
 								<Link
-									href={`/state/${category.slug}`}
+									href={`/category/${category.slug}`}
 									className="absolute inset-0"
 								>
-									<span className="sr-only">State {category.slug} Link</span>
+									<span className="sr-only">Category {category.slug} Link</span>
 								</Link>
 							</div>
 						</div>

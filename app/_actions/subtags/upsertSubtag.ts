@@ -45,6 +45,9 @@ const SubtagFormSchema = z.object({
 		.max(160, { message: 'Be at most 160 characters long' }),
 	image_url_hero: z.optional(z.string()),
 	image_url_small: z.optional(z.string()),
+	emoji: z.optional(z.string()),
+	href: z.optional(z.string()),
+	color: z.optional(z.string()),
 });
 
 const SubtagGroupIdsSchema = z.array(z.string());

@@ -110,7 +110,7 @@ export default function CommentSystem({
 	const [commentContent, setCommentContent] = useState('');
 	const maxLength = 1000;
 
-	const { userObject: user } = useClientAuth({ checkUser: true });
+	const { userObject: user } = useClientAuth({});
 
 	const handleComment = async () => {
 		const newComment = await upsertComment({

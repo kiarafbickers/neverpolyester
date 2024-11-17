@@ -27,7 +27,7 @@ export default async function getTagByTagId(tagId: string) {
 		results = await supabase
 			.from('tags')
 			.select(
-				`id, name, slug, headline, description, image_url_hero, image_url_small, tag_groups(id, name)`
+				`id, name, slug, headline, description, image_url_hero, image_url_small, tag_groups(id, name), emoji, color, href`
 			)
 			.eq('id', tagId)
 			.single();

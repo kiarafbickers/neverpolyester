@@ -33,16 +33,16 @@ export default {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['var(--font-manrope)'],
+				sans: ['var(--font-inter)'],
 			},
 			colors: {
 				'dark-gray': '#302f36',
-				background: 'hsl(var(--background))',
 				'background-secondary': 'hsl(var(--background-secondary))',
 				'search-background': 'hsl(var(--search-background))',
 				'light-red-bg': 'hsl(var(--light-red-bg))',
 				'text-on-light-red': 'hsl(var(--text-on-light-red))',
 				'dark-foreground': 'hsl(var(--dark-foreground))',
+				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',

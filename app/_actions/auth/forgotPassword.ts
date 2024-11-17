@@ -19,20 +19,11 @@ import {
 	ServerResponse,
 } from '@/lib/handlingServerResponses';
 
-type ForgotPasswordFormState =
-	| {
-			errors?:
-				| {
-						email?: string[] | undefined;
-				  }
-				| undefined;
-			success?: boolean | undefined;
-	  }
-	| undefined;
-
 const ForgotPasswordFormSchema = z.object({
 	email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
 });
+
+type FormValues = z.infer<typeof ForgotPasswordFormSchema>;
 
 /**
  * Sends a forgot password request to the server.
@@ -41,13 +32,10 @@ const ForgotPasswordFormSchema = z.object({
  * @returns A promise that resolves to the server response.
  */
 export default async function forgotPassword(
-	state: ForgotPasswordFormState,
-	formData: FormData
+	formData: FormValues
 ): Promise<ServerResponse<any, Record<string, string[]>>> {
 	try {
-		const validatedFields = ForgotPasswordFormSchema.safeParse({
-			email: formData.get('email'),
-		});
+		const validatedFields = ForgotPasswordFormSchema.safeParse(formData);
 		if (!validatedFields.success) {
 			throw new HookFormError(validatedFields.error.flatten().fieldErrors);
 		}

@@ -44,7 +44,7 @@ export default function SubcategoryDeleteModal({
 					</DialogTitle>
 				</DialogHeader>
 
-				<div className="flex gap-2 mt-6">
+				<div className="flex gap-2 mt-6 flex-wrap">
 					<Button
 						variant="default"
 						type="button"
@@ -53,6 +53,7 @@ export default function SubcategoryDeleteModal({
 						onClick={async () => {
 							await deleteSubcategory(subcategoryId), setDialogOpen(false);
 						}}
+						className="w-full"
 					>
 						Yes, delete this subcategory
 					</Button>
@@ -64,6 +65,7 @@ export default function SubcategoryDeleteModal({
 						onClick={async () => {
 							setDialogOpen(false);
 						}}
+						className="w-full"
 					>
 						No, keep this subcategory
 					</Button>

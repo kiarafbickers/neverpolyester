@@ -18,37 +18,37 @@ export const COMPANY_BASIC_INFORMATION = {
 	/**
 	 * The name of the company.
 	 */
-	NAME: 'Ranchers List',
+	NAME: 'CompanyName',
 
 	/**
 	 * The legal name of the company. If no legal name is available, use the name of the company.
 	 */
-	LEGAL_NAME: 'Ranchers List',
+	LEGAL_NAME: 'Company Name LLC',
 
 	/**
 	 * The OTHER_INFO_TEXT will only be shown in the imprint. It can be used to show additional information, e.g. the VAT-ID of your business. It is an array of strings, where each string will be shown as a separate line.
 	 */
-	OTHER_INFO_LINES: ['-'],
+	OTHER_INFO_LINES: ['EU-Vat-ID: 1234'],
 
 	/**
 	 * The address of the company. Leave as '' if you do not want to display an address.
 	 */
-	ADDRESS: '',
+	ADDRESS: 'Example Street 123, 12345 Example City, Example Country',
 
 	/**
 	 * The URL of the company's website.
 	 */
-	URL: 'https://rancherslist.com',
+	URL: 'https://SOME_URL.com',
 
 	/**
 	 * The support email of the company.
 	 */
-	SUPPORT_EMAIL: 'kiara@rancherslist.com',
+	SUPPORT_EMAIL: 'support@SOME_URL.com',
 
 	/**
 	 * The support phone number of the company. (This is needed in certain countries for the imprint.)
 	 */
-	SUPPORT_PHONE: '',
+	SUPPORT_PHONE: '+1 234 567 890',
 
 	/**
 	 * The founding year of the company. For auto-updating the age of the company in the footer.
@@ -58,12 +58,12 @@ export const COMPANY_BASIC_INFORMATION = {
 	/**
 	 * The URL of the parent company's website. If you have a holding or a personal portfolio website, you can link it here.
 	 */
-	PARENT_COMPANY_URL: '',
+	PARENT_COMPANY_URL: 'https://SOME_ORTHER_URL.com',
 
 	/**
 	 * The name of the responsible person for the website. This is the person who is responsible for the content of the website, e.g. for the Cookie Policy.
 	 */
-	RESPONSIBLE_PERSON: 'Kiara Bickers',
+	RESPONSIBLE_PERSON: 'YOUR NAME',
 };
 
 /**
@@ -73,18 +73,17 @@ export const COMPANY_MARKETING_INFORMATION = {
 	/**
 	 * The meta title for the resource directory. Maximum 60-70 characters.
 	 */
-	META_TITLE: 'Know Your Rancher, Get Quality Meat',
+	META_TITLE: 'A resource directory for ABCs and XYZs',
 
 	/**
 	 * The meta description for the resource directory. Maximum 160 characters.
 	 */
-	META_DESCRIPTION:
-		"An online community hub connecting local people with local meat producers, fostering appreciation for the food's journey from pasteur to plate.",
+	META_DESCRIPTION: 'Find the best tools and resources for your ABC journey.',
 
 	/**
 	 * The meta keywords for the resource directory. Max 10 keywords.
 	 */
-	META_KEYWORDS: ['beef', 'wagyu', 'wagyu steak', 'grass fed beef', 'grass fed beef near me', 'best cut of steak', 'organic beef', 'buy meat online'],
+	META_KEYWORDS: ['some', 'keywords', 'your', 'target audience', 'googles'],
 
 	/**
 	 * The social links for the resource directory.
@@ -102,12 +101,12 @@ export const COMPANY_MARKETING_INFORMATION = {
 			/**
 			 * The URL of the social channel.
 			 */
-			CHANNEL_HREF: 'https://x.com/kiarabickers',
+			CHANNEL_HREF: 'https://x.com/domainerskit',
 
 			/**
 			 * The username for the social channel.
 			 */
-			USERNAME: '@kiarabickers',
+			USERNAME: '@domainerskit',
 
 			/**
 			 * The icon for the social channel.
@@ -130,13 +129,13 @@ export const BOT_USER_ID = '11111111-1111-4111-1111-111111111111';
 
 export const PROMOTIONS_DATA = {
 	// The price of the promotion in USD per DAY. 1 = 1 USD.
-	FIXED_FEE_PER_DAY: 2,
+	FIXED_FEE_PER_DAY: 1,
 	// The PRICE_ID for the promotion product in Stripe.
-	STRIPE_PRICE_ID: 'price_1Pr5hpCOsJxKgomzJ7UOkRPL',
+	STRIPE_PRICE_ID: 'price_...',
 	// The discount for the 30 day promotion. 0.1 = 10% discount.
 	THIRTY_DAY_DISCOUNT: 0.1,
 	// The COUPON_ID for the promotion product in Stripe. This coupong should give the same discount as the THIRTY_DAY_DISCOUNT.
-	STRIPE_COUPON_ID: 'rCqUF9Cl',
+	STRIPE_COUPON_ID: '......',
 };
 
 /**
@@ -144,6 +143,9 @@ export const PROMOTIONS_DATA = {
  */
 
 export const GENERAL_SETTINGS = {
+	// Do you want to use sublistings? If you set this to false, the system will not show anything related to 'Products' (including sublistings, subcategories, etc.) to your users. There might be some references throughout the admin area. If you want to get rid of them: search for "products" or "sublisting" and delete all references. You can still use the system as a directory for listings only.
+	USE_SUBLISTINGS: false,
+
 	// Shall the system count clicks on the Visit Website buttons on a listings page?
 	USE_CLICK: true,
 
@@ -180,13 +182,13 @@ export const GENERAL_SETTINGS = {
 
 	// Shall users be allowed to listings stats through the 'See Stats' Button on the listing page and on the bottom bar on each listing card?
 	// The listings stats are Likes, Views and Ratings. If you disable them, you should also disable the Stats Button.
-	USE_STATS: true,
+	USE_STATS: false,
 
 	// Shall users be allowed to share listings through social media?
 	USE_SOCIAL_SHARE: true,
 
 	// Shall Ads and Ad Slots be shown on the website?
-	USE_ADS: true,
+	USE_ADS: false,
 
 	// Do you - as an Admin - want to pre-approve each user-approved listing before it is published?
 	// Set 'false' if you want to manually review and approve listings before they are published. This is advisable, if you allow users to publish listings.
@@ -196,7 +198,7 @@ export const GENERAL_SETTINGS = {
 	// Do you - as an Admin - want to pre-approve each user-approved SUBlisting before it is published?
 	// Set 'false' if you want to manually review and approve sublistings before they are published. This is advisable, if you allow users to publish sublistings.
 	// If you set 'true', all sublistings will be published immediately after you or the user have published them.
-	PRE_ADMIN_APPROVE_SUBLISTINGS: false,
+	PRE_ADMIN_APPROVE_SUBLISTINGS: true,
 
 	// Do you - as an Admin - want to pre-approve each user-approved blog post before it is published?
 	// Set 'false' if you want to manually review and approve blog posts before they are published. This is advisable, if you allow users to publish blog posts.
@@ -207,7 +209,28 @@ export const GENERAL_SETTINGS = {
 	USE_AI_CONTENT_CREATION: true,
 
 	// Do you want to show the 'New' badge on listings that are younger than X DAYS? Enter 0 to disable the 'New' badge.
-	MAX_NUM_DAY_AGE_FOR_NEW_BADGE: 0,
+	MAX_NUM_DAY_AGE_FOR_NEW_BADGE: 7,
+
+	// Do you want to use Role Based Accound Control (RBAC)? If you set this to false, all users will have the same rights. If set to true, you will, per default, have two user roles: Users who can create listings (and everything else) and Users who basically can do nothing but change their account settings and view coupon codes on listings - if listings have a coupon code associated with them. The user roles & permissoins can of course be adapted to your needs. See constants/rbac_config.ts for more information.
+	USE_RBAC: false,
+};
+
+// Listings & Sublistings
+
+// Let AI know what your listings and sublistings are about. This will help the AI to generate better content for your listings and sublistings.
+
+export const LISTINGS_SETTINGS = {
+	singularName: 'Listing',
+	pluralName: 'Listings',
+	explanationForAiContentCreation:
+		'This type of listing provides detailed information about one XYZ.',
+};
+
+export const SUBLISTINGS_SETTINGS = {
+	singularName: 'Product',
+	pluralName: 'Products',
+	explanationForAiContentCreation:
+		'This type of listing provides detailed information about a product for example: XYZ.',
 };
 
 /* *
@@ -216,27 +239,10 @@ export const GENERAL_SETTINGS = {
  * ! Do not change the structure of the objects. Only change the values.
  * */
 
-// Listings & Sublistings
-
-export const LISTINGS_SETTINGS = {
-	singularName: 'Ranch',
-	pluralName: 'Ranches',
-	explanationForAiContentCreation:
-		'Each such listing provides detailed information about one rancher or producer.',
-};
-
-export const SUBLISTINGS_SETTINGS = {
-	singularName: 'product',
-	pluralName: 'products',
-	explanationForAiContentCreation:
-		"Each such listing provides detailed information about a farm's product for example: ground beef.",
-};
-
 // HERO
 
-export const HERO_TITLE = 'Know Your Rancher, Love Your Meat.';
-export const HERO_SLOGAN =
-	"Ranchers List is your a direct connection to the best independent ranchers, making it easier than ever to buy high-quality meat with confidence.";
+export const HERO_TITLE = 'All Things ABC.';
+export const HERO_SLOGAN = 'The ultimate resource directory for XYZ.';
 
 // FOOTER
 
@@ -246,12 +252,12 @@ export const CREATOR_INFORMATION = {
 	/**
 	 * The name of the creator.
 	 */
-	NAME: 'Kiara Bickers',
+	NAME: 'YOUR NAME',
 
 	/**
 	 * The URL of the creator's website.
 	 */
-	HREF: 'https://x.com/@kiarabickers',
+	HREF: 'https://x.com/@YOUR_HANDLE',
 };
 
 // What are disclaimers you want to show in the Footer?
@@ -262,8 +268,7 @@ export const FOOTER_DISCLAIMERS = [
 
 // What is the slogan you want to show in the Footer?
 
-export const FOOTER_SLOGAN =
-	"We revolutionize meat by offering an alternative to the impersonal factory farm model. We connect you directly with farmers, fostering appreciation for your food's journey from pasture to plate.";
+export const FOOTER_SLOGAN = 'The ultimate resource directory for XYZs';
 
 // What are the external links you want to show in the Footer? (e.g. to your other projects)
 
@@ -273,8 +278,8 @@ export const FOOTER_EXTERNAL_LINK_LIST: { label: string; href: string }[] = [
 		href: 'Link 1',
 	},
 	{
-		label: 'Label 2',
-		href: 'Label 2',
+		label: 'Directory Boilerplate @ DirectoryStack.com',
+		href: 'https://directorystack.com',
 	},
 	{
 		label: 'Label 3',
@@ -285,12 +290,12 @@ export const FOOTER_EXTERNAL_LINK_LIST: { label: string; href: string }[] = [
 // Ad slots are the slots where ads can be displayed. You can add as many as you want. Each slot must have a unique name and must be accompanied by a corresponding AdSlot. Per default, each CATEGORY has two ad slots - top of the page and bottom of the page. You can add more ad slots names here. If you want to add a new ad slot, add it here. Otherwise, do not change this. The default options are: Explore is the main page, Blog is the blog page, and Other is all other pages (e.g. tag pages).
 
 export const ADDITIONAL_AD_SLOTS = [
-	'ranch-1',
-	'ranch-2',
+	'explore-1',
+	'explore-2',
 	'blog-1',
 	'blog-2',
 	'blog-3',
-	'texas-1',
+	'other-1',
 ];
 
 // What are the image options you want to show in the Content Editor?

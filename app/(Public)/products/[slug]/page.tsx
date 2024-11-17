@@ -31,7 +31,7 @@ import CopyCouponCode from '../_components/CopyCouponCode';
 import getPublishedSublistings from '@/actions/sublistings/getPublishedSublistings';
 import PriceDisplay from '@/components/sublistings/PriceDisplay';
 import SublistingActionBar from '../_components/SublistingActionBar';
-import getListingByListingId from '@/actions/listings/getListingByListingId';
+import getPublishedListingById from '@/actions/listings/getPublishedListingById';
 import createMetaData from '@/lib/createMetaData';
 import createSupabaseBrowserClient from '@/lib/createSupabaseBrowserClient';
 import { cn, stringToSlug } from '@/utils';
@@ -123,7 +123,7 @@ export default async function SublistingPage({ params }: Props) {
 
 	if (!('id' in sublisting)) return notFound();
 
-	const { data: listingData } = await getListingByListingId(
+	const { data: listingData } = await getPublishedListingById(
 		sublisting.listing_id!
 	);
 
@@ -168,7 +168,7 @@ export default async function SublistingPage({ params }: Props) {
 								{sublisting &&
 									sublisting?.subtags?.map((tag) => (
 										<Link
-											href={`/ranches?tags=${stringToSlug(tag.name!)}`}
+											href={`/explore?tags=${stringToSlug(tag.name!)}`}
 											key={tag.name}
 										>
 											<Badge
@@ -226,7 +226,7 @@ export default async function SublistingPage({ params }: Props) {
 								{listingData &&
 									listingData?.tags?.map((tag) => (
 										<Link
-											href={`/ranches?tags=${stringToSlug(tag.name!)}`}
+											href={`/explore?tags=${stringToSlug(tag.name!)}`}
 											key={tag.name}
 										>
 											<Badge
@@ -242,7 +242,7 @@ export default async function SublistingPage({ params }: Props) {
 								<ExternalLinkButton
 									sublisting={sublisting}
 									className=" bg-dark-foreground rounded-full text-lg w-6/12"
-									type="farm"
+									type="listing"
 								/>
 								<ExternalLinkButton
 									sublisting={sublisting}
@@ -255,7 +255,13 @@ export default async function SublistingPage({ params }: Props) {
 
 							{listingData && (
 								<div className="grid gap-y-2">
+									{/* 
+
+									Uncomment for Google Maps - need to add address to listing data
+
+
 									<hr className="border-accent-2 mt-2" />
+
 									<h3 className="text-lg font-semibold text-foreground  py-2">
 										SOURCE
 									</h3>
@@ -268,6 +274,7 @@ export default async function SublistingPage({ params }: Props) {
 									<GoogleMapsBox
 										locationQuery={`${listingData.title},${listingData.category.name},USA`}
 									/>
+									*/}
 									<hr className="border-accent-2 mt-2" />
 									<h3 className="text-lg font-semibold text-foreground  py-2">
 										ABOUT VENDOR
@@ -285,39 +292,6 @@ export default async function SublistingPage({ params }: Props) {
 												/>
 											</div>
 										)}
-
-										<div
-											className={cn(
-												'flex flex-grow flex-col justify-between',
-												listingData.logo_image_url && 'md:text-center'
-											)}
-										>
-											<p className="text-base font-semibold">
-												{listingData.title}
-											</p>
-											{listingData.farmer_names && (
-												<p className="text-sm">
-													<span className="font-medium">Farmer:</span>{' '}
-													<span className="text-muted-foreground">
-														{listingData.farmer_names}
-													</span>
-												</p>
-											)}
-										</div>
-
-										<div className="flex flex-col justify-between">
-											{listingData.founding_year && (
-												<p className="text-muted-foreground text-sm">
-													Est {listingData.founding_year}
-												</p>
-											)}
-											<Link
-												href={`/ranches/${listingData.slug}`}
-												className="text-xs text-primary underline"
-											>
-												Visit Store {'->'}
-											</Link>
-										</div>
 									</div>
 
 									<p className="text-base text-muted-foreground mt-2">

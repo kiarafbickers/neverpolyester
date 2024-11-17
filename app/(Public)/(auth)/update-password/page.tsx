@@ -1,5 +1,6 @@
 // Import Types
 // Import External Packages
+import { redirect } from 'next/navigation';
 // Import Components
 import UpdatePasswordForm from './UpdatePasswordForm';
 // Import Functions & Actions & Hooks & State
@@ -15,7 +16,7 @@ export default async function UpdatePasswordPage() {
 	} = await supabase.auth.getSession();
 
 	if (!session) {
-		return <>We are facing an error. Please try again or contact support.</>;
+		return redirect('/auth-error');
 	}
 
 	return <UpdatePasswordForm />;

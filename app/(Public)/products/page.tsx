@@ -39,7 +39,7 @@ import { COMPANY_BASIC_INFORMATION } from '@/constants';
 export const metadata: Metadata = createMetaData({
 	customTitle: 'Products',
 	customDescription: `See, filter and sort all listings on ${COMPANY_BASIC_INFORMATION.NAME}. Find the best creators in the world. Get inspired by their work and hire them for your next project`,
-	customSlug: `ranches`,
+	customSlug: `products`,
 });
 
 function OverviewLoading(params: {
@@ -97,7 +97,7 @@ export default async function Page({
 						<div className="flex-grow">
 							<div className="flex flex-wrap sm:flex-nowrap justify-between">
 								<SectionTitle className="mx-0 max-w-none text-left">
-									All Farm Products
+									All Products
 								</SectionTitle>
 
 								<div className="flex justify-between w-full sm:w-fit pt-4 sm:pt-0">

@@ -14,7 +14,7 @@ import { backgroundPattern } from '@/lib/utils';
  * @param description - The description to display.
  */
 export default function Hero({
-	keyword = 'Ranches',
+	keyword = 'Explore',
 	headline = 'Explore everything we have to offer',
 	description = 'Find inspiration. Use the tags to filter and sort through our listings.',
 }: {
@@ -34,23 +34,22 @@ export default function Hero({
 					priority
 				/>
 				<div
-					className="text-center py-6 relative z-50 rounded-sm"
+					className="text-center py-6 relative z-50 rounded-sm h-full"
 					style={{ backgroundImage: backgroundPattern('boxes-sm') }}
 				>
-					<div className="flex justify-center h-48">
-						<div className="group relative w-full h-full flex items-center justify-center content-center">
-							<span className="font-black text-7xl text-white [text-shadow:0_4px_12px_rgba(0,0,0,0.6)]">
-								{keyword}
-							</span>
+					<div className="grid h-full items-center">
+						<span className="font-black text-7xl text-white [text-shadow:0_4px_12px_rgba(0,0,0,0.6)]">
+							{keyword}
+						</span>
+
+						<div className="grid space-y-2 max-w-3xl mx-auto">
+							<h1 className="text-3xl font-semibold text-white [text-shadow:0_4px_12px_rgba(0,0,0,0.6)]">
+								{headline}
+							</h1>
+							<p className="text-xl text-white [text-shadow:0_4px_12px_rgba(0,0,0,0.6)]">
+								{description}
+							</p>
 						</div>
-					</div>
-					<div className="grid space-y-2 max-w-3xl mx-auto">
-						<h1 className="text-3xl font-semibold text-white [text-shadow:0_4px_12px_rgba(0,0,0,0.6)]">
-							{headline}
-						</h1>
-						<p className="text-xl text-white [text-shadow:0_4px_12px_rgba(0,0,0,0.6)]">
-							{description}
-						</p>
 					</div>
 				</div>
 			</div>

@@ -27,6 +27,9 @@ type fullTag = {
 		id: string;
 		name: string;
 	}[];
+	emoji: string | null;
+	color: string | null;
+	href: string | null;
 };
 /**
  * Retrieves full tags based on the provided modifier.
@@ -44,7 +47,7 @@ export default async function getFullTags(modifier: 'active' | 'all') {
 			results = await supabase
 				.from('tags')
 				.select(
-					`id, name, slug, headline, description, image_url_hero, image_url_small, tag_groups(id, name)`
+					`id, name, slug, headline, description, image_url_hero, image_url_small, tag_groups(id, name), emoji, color, href`
 				);
 		} else {
 			throw new BadRequestError('Invalid modifier.');

@@ -29,7 +29,7 @@ export default async function getSubcategoryBySubcategoryId(
 		results = await supabase
 			.from('subcategories')
 			.select(
-				`id, name, slug, headline, description, image_url_hero, image_url_small, subcategory_groups(id, name)`
+				`id, name, slug, headline, description, image_url_hero, image_url_small, subcategory_groups(id, name), emoji, color, href`
 			)
 			.eq('id', subcategoryId)
 			.single();

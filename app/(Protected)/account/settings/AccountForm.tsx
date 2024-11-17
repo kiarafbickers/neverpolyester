@@ -1,7 +1,5 @@
 'use client';
 // Import Types
-import { type User } from '@supabase/supabase-js';
-import { Tables } from '@/supabase-types';
 // Import External Packages
 import { useCallback, useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
@@ -13,15 +11,10 @@ import { Label } from '@/ui/Label';
 // Import Functions & Actions & Hooks & State
 import createSupabaseBrowserClient from '@/lib/createSupabaseBrowserClient';
 import updateProfile from '@/actions/users/updateProfile';
-
 // Import Data
 // Import Assets & Icons
 
-export default function AccountForm({
-	user,
-}: {
-	user: User | Tables<'users'> | null;
-}) {
+export default function AccountForm({ userId }: { userId: string }) {
 	const [loading, setLoading] = useState(true);
 	const [state, formAction] = useFormState(updateProfile, undefined);
 	const [full_name, setfull_name] = useState<string | null>(null);
@@ -29,6 +22,7 @@ export default function AccountForm({
 	const [website, setWebsite] = useState<string | null>(null);
 	const [avatar_url, setAvatarUrl] = useState<string | null>(null);
 	const [tagLine, setTagLine] = useState<string | null>(null);
+	const [email, setEmail] = useState<string | null>(null);
 
 	const supabase = createSupabaseBrowserClient();
 
@@ -36,13 +30,13 @@ export default function AccountForm({
 		try {
 			setLoading(true);
 
-			if (!user) throw new Error('User not found');
+			if (!userId) throw new Error('User not found');
 
 			const { data, error, status } = await supabase
 				.from('users')
-				.select(`full_name, username, website, avatar_url, tag_line`)
-				.eq('id', user?.id)
-				.single();
+				.select(`full_name, username, website, avatar_url, tag_line, email`)
+				.eq('id', userId)
+				.maybeSingle();
 
 			if (error && status !== 406) {
 				console.error(error);
@@ -55,24 +49,25 @@ export default function AccountForm({
 				setWebsite(data.website);
 				setAvatarUrl(data.avatar_url);
 				setTagLine(data.tag_line);
+				setEmail(data.email);
 			}
 		} catch (error) {
 			alert('Error loading user data!');
 		} finally {
 			setLoading(false);
 		}
-	}, [user, supabase]);
+	}, [userId, supabase]);
 
 	useEffect(() => {
 		getProfile();
-	}, [user, getProfile]);
+	}, [userId, getProfile]);
 
 	return (
 		<div className="w-full">
 			<form action={formAction}>
 				<div className="grid gap-4">
 					<AvatarForm
-						uid={user?.id ?? null}
+						uid={userId ?? null}
 						url={avatar_url}
 						size={150}
 						onUpload={(url: string) => {
@@ -109,7 +104,7 @@ export default function AccountForm({
 							type="email"
 							name="email"
 							placeholder="you@example.com"
-							value={user?.email || ''}
+							value={email || ''}
 							disabled
 							required
 						/>

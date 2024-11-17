@@ -44,28 +44,32 @@ export default function SubtagGroupDeleteModal({
 					</DialogTitle>
 				</DialogHeader>
 
-				<Button
-					variant="default"
-					type="button"
-					size="lg"
-					disabled={!subtagGroupId}
-					onClick={async () => {
-						await deleteSubtagGroup(subtagGroupId), setDialogOpen(false);
-					}}
-				>
-					Yes, delete this subtag group
-				</Button>
-				<Button
-					variant="outline"
-					type="button"
-					size="lg"
-					disabled={!subtagGroupId}
-					onClick={async () => {
-						setDialogOpen(false);
-					}}
-				>
-					No, keep this subtag group
-				</Button>
+				<div className="flex gap-2 mt-6 flex-wrap">
+					<Button
+						variant="default"
+						type="button"
+						size="lg"
+						disabled={!subtagGroupId}
+						onClick={async () => {
+							await deleteSubtagGroup(subtagGroupId), setDialogOpen(false);
+						}}
+						className="w-full"
+					>
+						Yes, delete this subtag group
+					</Button>
+					<Button
+						variant="outline"
+						type="button"
+						size="lg"
+						disabled={!subtagGroupId}
+						onClick={async () => {
+							setDialogOpen(false);
+						}}
+						className="w-full"
+					>
+						No, keep this subtag group
+					</Button>
+				</div>
 			</DialogContent>
 		</Dialog>
 	);

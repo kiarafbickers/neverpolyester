@@ -4,7 +4,7 @@ Welcome to our directory business template, designed to harness the full power o
 
 Follow the official documentation here: [DirectoryStack Docs](https://directorystack.com/docs)
 
-## Features 
+## Features
 
 - 🚀 **High-Performance Static Website:** Enjoy lightning-fast page loads with our optimized static site setup, powered by a custom CMS.
 - 🛠️ **Type Safety:** Leverage full type safety with TypeScript and Supabase `gen types` functionality, ensuring robust and error-free development.
@@ -132,13 +132,14 @@ We choose Umami.is as the analytics provider because it has a generous free tier
 4. Paste it into your `.env.local` as your `NEXT_PUBLIC_UMAMI_ID`.
 5. You are done with Umami.
 
-### OpenAI Setup & Tokens (Pro Template Only)
+### OpenAI Setup & Tokens
 
-This is optional and only necessary if you want to have a button that creates tags, categories, blog posts, and listing descriptions using an LLM. If you choose to use it, there will be costs associated with it. This template uses the cheaper `gpt-4o-mini` model.
+We use OpenAI to create embeddings for the listings (AI-powered Semantic Search!), and for the "Ai Content Generation Buttons" (like to tags, categories, blog posts and listing descriptions).
 
-The following was calculated with the older 'gpt-3.5-turbo' model. Prices with new model are 60% cheaper!!
+There will be costs associated with it. This template uses the cheap `gpt-4o-mini` model.
 
-As per [openai.com](https://openai.com/api/pricing/), the current costs are US$0.50 per 1M tokens (input) and US$1.50 per 1M tokens (output). For a test project, we clicked the listing button 70 times (resulting in 70 descriptions and excerpts) and used 25k tokens (40% input & 60% output), which resulted in costs of US$0.005 (input) and US$0.0225 (output), totaling US$0.0275 (approximately 3 cents). For an example, head over to the test project [DomainersKit / Domainhacks.info](https://domainerskit.com/explore/domainhacks-info) and read the excerpt (the short description) and then the long text (the long description). This is what you'll get.
+As per [openai.com](https://openai.com/api/pricing/), the current costs are US$0.15 / 1M tokens (input) and US$0.6 /
+1M tokens (output). For a test project, we clicked the listing button 70 times (resulting in 70 descriptions and excerpts) and used 25k tokens (40% input & 60% output), which resulted in costs of US$0.0015 (input) and US$0.009 (output), totaling US$0.0105 (approximately 1 cent). For an example, head over to the test project [DomainersKit / Domainhacks.info](https://domainerskit.com/explore/domainhacks-info) and read the excerpt (the short description) and then the long text (the long description). This is what you'll get.
 
 1. Create an account at [openai.com](https://platform.openai.com/apps).
 2. On the left sidebar, click on `API Keys`.
@@ -146,16 +147,17 @@ As per [openai.com](https://openai.com/api/pricing/), the current costs are US$0
 4. Give it a name, set the permissions to `Restricted`, and allow `Write` for the `Model capabilities`. Then hit `Create secret key`.
 5. Copy the newly created key and paste it into your `.env.local` as the `OPENAI_API_KEY`.
 
-### Stripe Setup & First Product & First Coupon (Pro Template Only)
+### Stripe Setup & First Product & First Coupon
 
-You will only need this part if you intend to use Stripe for payments regarding user-driven listing promotions. If you do not set the three Stripe keys, the user will see a "Write us an email to promote your listing" notification instead of a self-signup form. It is advisable to perform steps 2-6 in "Test Mode" first before going live. The toggle is in the top right menu.
+You will only need this part if you intend to use Stripe for payments regarding user-driven listing promotions. If you do not set the three Stripe keys, the user will see a "Write us an email to promote your listing" notification instead of a self-signup form. It is advisable to perform steps 2-7 in "Test Mode" first before going live. The toggle is in the top right menu.
 
 1. Create a free account at [Stripe](https://stripe.com).
 2. Follow the onboarding flow and set up your account.
-3. Click on `Developers` in the top menu and then on `API keys`. Copy the publishable key as the `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`.
-4. On the same page, copy the Secret Key and add it as the `STRIPE_SECRET_KEY`.
-5. Still in the developer menu, click on `Webhooks` (right next to `API keys`), and create a new endpoint (https://YOURDOMAIN.com/api/payment/stripe-receipt). (If you want to test it locally, use the Stripe CLI and follow the steps in the Stripe docs).
-6. In the webhook menu for this custom webhook, click on `Signing Secret Reveal` and copy this value as the `STRIPE_WEBHOOK_SECRET`.
+3. Go to https://dashboard.stripe.com/settings/tax and activate automated tax calculations. If you don't want to use this feature, go to the file `createStripeCheckoutSession.ts` and remove the line `automatic_tax: { enabled: true },` from `const session = ...`.
+4. Next, click on `Developers` in the top menu and then on `API keys`. Copy the publishable key as the `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`.
+5. On the same page, copy the Secret Key and add it as the `STRIPE_SECRET_KEY`.
+6. Still in the developer menu, click on `Webhooks` (right next to `API keys`), and create a new endpoint (https://YOURDOMAIN.com/api/payment/stripe-receipt). (If you want to test it locally, use the Stripe CLI and follow the steps in the Stripe docs).
+7. In the webhook menu for this custom webhook, click on `Signing Secret Reveal` and copy this value as the `STRIPE_WEBHOOK_SECRET`.
 
 This was the setup of the Stripe account. While you are on stripe.com:
 
@@ -163,6 +165,30 @@ This was the setup of the Stripe account. While you are on stripe.com:
 2. Name it `Promoted Listing`, give it a ONE-TIME price of USD 1.00 (or whatever your price shall be for a listing to be promoted for 1 day).
 3. In the top-right corner of the product page, copy the `product id` which starts with 'price\_' and paste it into the file `app/constants/constants.ts` as the `STRIPE_PRICE_ID` where we define `PROMOTIONS_DATA`.
 4. Next, again in the `product catalog` on Stripe.com, click on `Coupons` and add a new coupon. This will be the automatic discount for when a user buys more than 30 days of promotions. E.g., create a 10% discount code, with a duration of forever. Once created, you'll need to copy the `ID` which you find under `Details`. IGNORE the API ID of the coupon, which is NOT needed here. The `ID` is a lot shorter than the API ID. Add this coupon as the `STRIPE_COUPON_ID` to the `PROMOTIONS_DATA` in the file `app/constants/constants.ts`.
+
+### Beehiiv Email (Optional)
+
+If you want to use Beehiiv as an email provider, follow along:
+
+- Go to https://beehiiv.com
+- Follow the instructions here to obtain an iframe URL for the subscribe form (https://www.beehiiv.com/support/article/12977090590487-creating-and-embedding-beehiiv-subscribe-forms).
+- Ignore the iframe portion. The EMBED_URL should look like this `https://embeds.beehive.com/SOME_UUID_CODE?slim=true`.
+- Paste the this whole EMBED_URL to your `.env.local` as `NEXT_PUBLIC_BEEHIIV_EMBED_URL`
+
+### Google Maps (Optional)
+
+If you intend to use Google Maps on your listings, follow along, otherwise you can safely ignore the following:
+
+- Go to https://console.cloud.google.com/projectselector2/home/dashboard
+- Create a new project, give it a Project Name
+- Go to https://console.cloud.google.com/apis/library/maps-embed-backend.googleapis.com Maps Embed API to enable the api key (its free for unlimited usage), click on 'Enable'
+- Follow the onboarding flow. You will need a credit card - but the usage of the Maps Embed API is free (see here: https://mapsplatform.google.com/pricing/).
+- Check all data and click "Start Free".
+- You might need to have your credit card details verified.
+- Once done: Copy your API KEY (and uncheck the checkbox for "Enable all Google Maps API for this account" and leave the other checkbox checked to get budget alerts (in case anything goes wrong - you will have $200 credits every month though))
+- Paste the API Key to your env.local as `GOOGLE_MAPS_API_KEY`
+- In the next window at google, it will ask you to protect your API key. For type, select "API restrictions" and for the API select "Maps Embed API". And confirm by clicking 'Rectrict Key'
+- For me, there came an error message that the API is not valid or has not been enabled. Check here again to make sure Maps Embed Api is enabled: https://console.cloud.google.com/apis/library/maps-embed-backend.googleapis.com or check here under your api dashboard (https://console.cloud.google.com/apis/dashboard)
 
 ## Step 2. Run Next.js locally in development mode
 
@@ -179,6 +205,8 @@ Let's connect Supabase with our local development project:
 1. Install the Supabase CLI by following the instructions here: [Supabase CLI Getting Started](https://supabase.com/docs/guides/cli/getting-started).
 2. In your IDE's terminal, run `npx supabase login`. It will say "Hello from Supabase! Press Enter to open browser and login automatically." So, press Enter. A browser window will log you in.
 3. Next, run `npx supabase link` and choose the project you created. It will ask you for your **database password** which you created a couple of minutes ago (and hopefully remembered).
+4. Next, run `npx supabase db push --linked --include-seed`. It will ask you: "Do you want to push these migrations to the remote database?
+   • 20240701155049_initial_structure.sql" Answer Y. This will set up your database structure from the migration file we created for you.
 5. Check here if your tables exist: [Table Editor](https://supabase.com/dashboard/project/_/editor).
 6. Check here if your buckets exist: [Storage Buckets](https://supabase.com/dashboard/project/_/storage/buckets).
 7. While you are in the storage buckets, drag and drop your default blog post images to `blog_images`. The default blog images are located in `public/img/blog/`. By default, there are 4 images (breaking-news, industry-news, og_1200x630, and placeholder.png). Upload your photos via the `Upload files` button or drag & drop them from your local folder (NOT from VS Code - this will not work).
@@ -217,7 +245,7 @@ You will see some warnings on the landing page, but this is just because we don'
 
 ## Step 6. Create Yourself as a User & Another User for Your Bots
 
-1. In the navbar, click on `Account` and you will be redirected to the login page.
+1. In the navbar, click on `Account` (the user icon) and you will be redirected to the login page.
 2. Click `Sign Up` and in the new window, enter your email address and a password (or whatever other authentication you have chosen).
 3. You'll need to verify your email with the code they've sent you. (If you have not set up Resend, the email will come from 'noreply@mail.app.supabase.io')
 4. When you run the app in localhost, there will be an `Admin Button` in the top navigation - but it won't work yet.
@@ -244,6 +272,7 @@ If you feel clicking a button in the admin area is a bit slow, you are correct. 
 ## Step 9. Add Your First Listing
 
 Now, it is time to create your first listing.
+Make sure to have defined at least 1 category and 1 tag.
 
 - In the top navigation in `/account`, there is a button `+ New Listing`.
 - Click on it and fill out the form.
@@ -299,30 +328,9 @@ To change the main color (red per default), head over to [ui.shadcn.com](https:/
 To deploy your local project to Vercel, push it to [GitHub](https://docs.github.com/en/get-started/importing-your-projects-to-github/importing-source-code-to-github/adding-locally-hosted-code-to-github) and [import it to Vercel](https://vercel.com/new).
 
 > [!IMPORTANT]  
-> When you import your project on Vercel, make sure to click on `Environment Variables` and set them to match your `.env.local` file.
+> When you import your project on Vercel, make sure to click on `Environment Variables` and set them to match your `.env.local` file with 1 exception: set `NODE_ENV` to `production`.
 
 ## Step 12. Check the Legal Work Before Launching Your New Directory
 
 - It should be clear: I am not a lawyer, so I am not warranting or guaranteeing the correctness of the provided legal documents, which serve only as a guide. Talk to an actual lawyer to be on the safe-side.
 - Make sure you have set up a company if you want to make money with the directory.
-
-## NEW
-
-### Google Maps
-
-- Go to https://console.cloud.google.com/projectselector2/home/dashboard
-- Create a new project, give it a Project Name
-- Go to https://console.cloud.google.com/apis/library/maps-embed-backend.googleapis.com Maps Embed API to enable the api key (its free for unlimited usage), click on 'Enable'
-- Follow the onboarding flow. You will need a credit card - but the usage of the Maps Embed API is free (see here: https://mapsplatform.google.com/pricing/).
-- Check all data and click "Start Free".
-- You might need to have your credit card details verified.
-- Once done: Copy your API KEY (and uncheck the checkbox for "Enable all Google Maps API for this account" and leave the other checkbox checked to get budget alerts (in case anything goes wrong - you will have $200 credits every month though))
-- Paste the API Key to your env.local as `GOOGLE_MAPS_API_KEY`
-- In the next window at google, it will ask you to protect your API key. For type, select "API restrictions" and for the API select "Maps Embed API". And confirm by clicking 'Rectrict Key'
-- For me, there came an error message that the API is not valid or has not been enabled. Check here again to make sure Maps Embed Api is enabled: https://console.cloud.google.com/apis/library/maps-embed-backend.googleapis.com or check here under your api dashboard (https://console.cloud.google.com/apis/dashboard)
-
-### Beehiiv
-
-- Go to https://beehiiv.com
-- Follow the instructions here to obtain the api key (https://support.beehiiv.com/hc/en-us/articles/13091918395799-Where-to-find-your-Publication-ID-or-API-keys)
-- Paste the API Key to your env.local as `NEXT_PUBLIC_BEEHIIV_EMBED_URL` 
