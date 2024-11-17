@@ -1,8 +1,0 @@
-[phases.setup]
-engine = "nodejs@18"
-
-[phases.build]
-command = "npm run typegen && npm i --frozen-lockfile && npm run build"
-
-[phases.start]
-command = "npm run start"
