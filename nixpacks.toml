@@ -1,0 +1,8 @@
+[phases.setup]
+engine = "nodejs@18"
+
+[phases.build]
+command = "pnpm i --frozen-lockfile && pnpm run build"
+
+[phases.start]
+command = "pnpm run start"
