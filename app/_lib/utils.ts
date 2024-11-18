@@ -3,7 +3,7 @@
 // Import Types
 // Import External Packages
 import { type ClassValue, clsx } from 'clsx';
-import { format, toZonedTime } from 'date-fns-tz';
+import { parseISO, startOfDay } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
 // Import Components
 // Import Functions & Actions & Hooks & State
@@ -152,16 +152,6 @@ export function formatDate(dateString: Date) {
 }
 
 /**
- * Formats a date string into a localized date string.
- * @param dateString - The date string to format.
- * @returns The formatted date string.
- */
-export function formatDateToTimezone(date: Date, timeZone: string) {
-	const zonedDate = toZonedTime(date, timeZone);
-	return format(zonedDate, 'MMMM d, yyyy', { timeZone });
-}
-
-/**
  * Formats the passed time since a given date into a human-readable string.
  * @param created_at - The date in string format to calculate the passed time from.
  * @returns A string representing the passed time in a human-readable format.
@@ -305,4 +295,33 @@ export function formDataToObject(formData: FormData): {
 		obj[key] = value as string;
 	});
 	return obj;
+}
+
+/**
+ * Adjusts the given date to the correct UTC time by subtracting the timezone offset.
+ * @param date - The date to be corrected.
+ * @returns The corrected date in UTC.
+ */
+export function correctUTC(date: Date | undefined) {
+	if (!date) return date;
+
+	const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+	// Convert the date to the start of the day in the user's timezone
+	const localStartOfDay = startOfDay(date);
+
+	// Format the date to an ISO string in the user's timezone
+	const formattedDate = localStartOfDay.toLocaleString('sv-SE', {
+		timeZone: userTimezone,
+	});
+
+	// Parse the formatted date string back to a Date object
+	const parsedDate = parseISO(formattedDate);
+
+	// Adjust the parsed date to UTC
+	const utcDate = new Date(
+		parsedDate.getTime() - parsedDate.getTimezoneOffset() * 60000
+	);
+
+	return utcDate;
 }

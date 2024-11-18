@@ -123,7 +123,7 @@ export default function FeedbackTable({
 									{feedback.url || 'Unknown Url'}
 								</div>
 
-								<div className="table-cell content-center p-2 text-sm text-muted-foreground overflow-hidden  border-b-2 border-neutral-200 break-all">
+								<div className="table-cell content-center p-2 text-sm text-muted-foreground overflow-hidden  border-b-2 border-neutral-200">
 									{feedback.description || 'No Description'}
 								</div>
 								<div className="table-cell content-center p-2 text-sm text-muted-foreground overflow-hidden  border-b-2 border-neutral-200">

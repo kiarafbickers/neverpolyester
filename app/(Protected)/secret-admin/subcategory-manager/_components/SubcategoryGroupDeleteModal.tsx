@@ -44,33 +44,29 @@ export default function SubcategoryGroupDeleteModal({
 					</DialogTitle>
 				</DialogHeader>
 
-				<div className="flex gap-2 mt-6 flex-wrap">
-					<Button
-						variant="default"
-						type="button"
-						size="lg"
-						disabled={!subcategoryGroupId}
-						onClick={async () => {
-							await deleteSubcategoryGroup(subcategoryGroupId),
-								setDialogOpen(false);
-						}}
-						className="w-full"
-					>
-						Yes, delete this subcategory group
-					</Button>
-					<Button
-						variant="outline"
-						type="button"
-						size="lg"
-						disabled={!subcategoryGroupId}
-						onClick={async () => {
+				<Button
+					variant="default"
+					type="button"
+					size="lg"
+					disabled={!subcategoryGroupId}
+					onClick={async () => {
+						await deleteSubcategoryGroup(subcategoryGroupId),
 							setDialogOpen(false);
-						}}
-						className="w-full"
-					>
-						No, keep this subcategory group
-					</Button>
-				</div>
+					}}
+				>
+					Yes, delete this subcategory group
+				</Button>
+				<Button
+					variant="outline"
+					type="button"
+					size="lg"
+					disabled={!subcategoryGroupId}
+					onClick={async () => {
+						setDialogOpen(false);
+					}}
+				>
+					No, keep this subcategory group
+				</Button>
 			</DialogContent>
 		</Dialog>
 	);

@@ -69,8 +69,8 @@ async function OverviewGrid({
 	includeOutOfStock,
 	minPriceFilter,
 	maxPriceFilter,
-	categoryFilter,
-	listingFilter,
+	stateFilter,
+	farmFilter,
 }: {
 	limit?: number;
 	tagArray?: string[] | undefined;
@@ -86,8 +86,8 @@ async function OverviewGrid({
 	includeOutOfStock?: boolean;
 	minPriceFilter?: string;
 	maxPriceFilter?: string;
-	categoryFilter?: string;
-	listingFilter?: string;
+	stateFilter?: string;
+	farmFilter?: string;
 }) {
 	let sublistingData: SublistingType[] = [];
 
@@ -102,8 +102,8 @@ async function OverviewGrid({
 		includeOutOfStock,
 		minPriceFilter,
 		maxPriceFilter,
-		categoryFilter,
-		listingFilter
+		stateFilter,
+		farmFilter
 	);
 
 	sublistingData = regularSearchData;
@@ -209,7 +209,7 @@ async function OverviewGrid({
 export default function SublistingOverview({
 	title = 'Most Recent',
 	buttonText = 'View All',
-	buttonHref = '/explore',
+	buttonHref = '/ranches',
 	categoryNavigation = true,
 	className,
 	maxNumSublistings = 3,
@@ -239,7 +239,7 @@ export default function SublistingOverview({
 		? filterAndSortParams?.tags.split(',').map((tagName) => tagName)
 		: [];
 	const subcategoryFilter = filterAndSortParams?.subcategory ?? '';
-	const categoryFilter = filterAndSortParams?.category ?? '';
+	const stateFilter = filterAndSortParams?.state ?? '';
 	const searchFilter =
 		filterAndSortParams?.search && filterAndSortParams?.search.length > 0
 			? filterAndSortParams?.search
@@ -262,7 +262,7 @@ export default function SublistingOverview({
 		? filterAndSortParams?.maxPrice
 		: '100000000';
 
-	const listingFilter = filterAndSortParams?.listing ?? '';
+	const farmFilter = filterAndSortParams?.farm ?? '';
 
 	return (
 		<SubSectionOuterContainer
@@ -281,12 +281,12 @@ export default function SublistingOverview({
 							maxCols={maxCols}
 							preferPromoted={preferPromoted}
 							subcategoryFilter={subcategoryFilter}
-							categoryFilter={categoryFilter}
+							stateFilter={stateFilter}
 							searchQuery={searchFilter}
 							minPriceFilter={minPriceFilter}
 							maxPriceFilter={maxPriceFilter}
 							includeOutOfStock={availbilityFilter}
-							listingFilter={listingFilter}
+							farmFilter={farmFilter}
 							showPagination={showPagination}
 							itemsPerPage={itemsPerPage || maxCols * 2}
 							showSearch={showSearch}

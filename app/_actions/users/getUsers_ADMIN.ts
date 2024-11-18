@@ -35,7 +35,6 @@ export default async function getUsers_ADMIN() {
 		const { data, error } = await supabase
 			.from('users')
 			.select('*')
-			.is('deleted_at', null)
 			.order('created_at', { ascending: false });
 
 		if (error) {

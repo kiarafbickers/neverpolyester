@@ -10,7 +10,7 @@ import fs from 'fs';
 import { getAllSlugsFromPublishedPosts } from '@/actions/blog/getAllSlugsFromPublishedPosts';
 import createSupabaseBrowserClient from '@/lib/createSupabaseBrowserClient';
 // Import Data
-import { COMPANY_BASIC_INFORMATION, GENERAL_SETTINGS } from '@/constants';
+import { COMPANY_BASIC_INFORMATION } from '@/constants';
 // Import Assets & Icons
 
 // THIS PAGE CREATES A SITEMAP FOR THE WEBSITE
@@ -26,9 +26,6 @@ function readFolderStructure(
 ) {
 	const urls: URL_Object[] = [];
 	const disabledIncludes = ['(Protected)', 'api', 'thank-you', 'checkout'];
-	if (!GENERAL_SETTINGS.USE_SUBLISTINGS) {
-		disabledIncludes.push('products', 'subcategory', 'subtag');
-	}
 	const disabledStartsWith = ['_', '['];
 	fs.readdirSync(dirPath, { withFileTypes: true }).forEach((dirent) => {
 		if (dirent.isDirectory()) {
@@ -83,7 +80,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 	const LEVEL1_PAGES: URL_Object[] = readFolderStructure();
 
-	// Level 2: /explore/[slug] => website.com/explore/[slug]
+	// Level 2: /ranches/[slug] => website.com/ranches/[slug]
 
 	const listingSlugs = await supabase
 		.from('listings')
@@ -93,7 +90,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 	const LEVEL2_LISTING_SLUGS: URL_Object[] = slugs
 		? slugs.flatMap((listing) => ({
-				url: `${COMPANY_BASIC_INFORMATION.URL}/explore/${listing.slug}`,
+				url: `${COMPANY_BASIC_INFORMATION.URL}/ranches/${listing.slug}`,
+		  }))
+		: [];
+
+	// Level 2: /products/[slug] => website.com/products/[slug]
+
+	const sublistingsArray = await supabase
+		.from('sublistings')
+		.select('slug')
+		.match({ is_user_published: true, is_admin_published: true });
+	const sublistingSlugs = sublistingsArray?.data?.map(({ slug }) => ({
+		slug: slug,
+	}));
+
+	const LEVEL2_SUBLISTING_SLUGS: URL_Object[] = sublistingSlugs
+		? sublistingSlugs.flatMap((listing) => ({
+				url: `${COMPANY_BASIC_INFORMATION.URL}/products/${listing.slug}`,
 		  }))
 		: [];
 
@@ -117,41 +130,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		  }))
 		: [];
 
-	// Category Level 2: /category => website.com/category/{slug}
-
-	const { data: categoryData } = await supabase.rpc('get_active_categories');
-
-	const LEVEL2_CATEGORY_SLUGS = categoryData
-		? categoryData.flatMap((tag) => ({
-				url: `${COMPANY_BASIC_INFORMATION.URL}/category/${tag.slug}`,
-		  }))
-		: [];
-
-	// Owners Level 2: /user => website.com/user/{slug}
-	const { data: userData } = await supabase.rpc('get_user_usernames');
-
-	const LEVEL2_OWNER_SLUGS = userData
-		? userData.flatMap((userProfile) => ({
-				url: `${COMPANY_BASIC_INFORMATION.URL}/user/${userProfile.username}`,
-		  }))
-		: [];
-
-	// Level 2: /products/[slug] => website.com/products/[slug]
-
-	const sublistingsArray = await supabase
-		.from('sublistings')
-		.select('slug')
-		.match({ is_user_published: true, is_admin_published: true });
-	const sublistingSlugs = sublistingsArray?.data?.map(({ slug }) => ({
-		slug: slug,
-	}));
-
-	const LEVEL2_SUBLISTING_SLUGS: URL_Object[] = sublistingSlugs
-		? sublistingSlugs.flatMap((listing) => ({
-				url: `${COMPANY_BASIC_INFORMATION.URL}/products/${listing.slug}`,
-		  }))
-		: [];
-
 	// Tag level 2: /subtag => website.com/subtag/{slug}
 
 	const { data: subtagData } = await supabase.rpc('get_active_subtags');
@@ -159,6 +137,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const LEVEL2_SUBTAG_SLUGS = subtagData
 		? subtagData.flatMap((tag) => ({
 				url: `${COMPANY_BASIC_INFORMATION.URL}/subtag/${tag.slug}`,
+		  }))
+		: [];
+
+	// Category Level 2: /state => website.com/state/{slug}
+
+	const { data: categoryData } = await supabase.rpc('get_active_categories');
+
+	const LEVEL2_CATEGORY_SLUGS = categoryData
+		? categoryData.flatMap((tag) => ({
+				url: `${COMPANY_BASIC_INFORMATION.URL}/state/${tag.slug}`,
 		  }))
 		: [];
 
@@ -179,11 +167,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		...LEVEL1_PAGES,
 		...LEVEL2_BLOG_SLUGS,
 		...LEVEL2_LISTING_SLUGS,
+		...LEVEL2_SUBLISTING_SLUGS,
 		...LEVEL2_TAG_SLUGS,
+		...LEVEL2_SUBTAG_SLUGS,
 		...LEVEL2_CATEGORY_SLUGS,
-		...LEVEL2_OWNER_SLUGS,
-		...(GENERAL_SETTINGS.USE_SUBLISTINGS ? LEVEL2_SUBLISTING_SLUGS : []),
-		...(GENERAL_SETTINGS.USE_SUBLISTINGS ? LEVEL2_SUBTAG_SLUGS : []),
-		...(GENERAL_SETTINGS.USE_SUBLISTINGS ? LEVEL2_SUBCATEGORY_SLUGS : []),
+		...LEVEL2_SUBCATEGORY_SLUGS,
 	];
 }

@@ -3,7 +3,7 @@
 // Import External Packages
 // Import Components
 // Import Functions & Actions & Hooks & State
-import createSupabaseBrowserClient from '@/lib/createSupabaseBrowserClient';
+import createSupabaseRLSClient from '@/lib/createSupabaseRLSClient';
 import { sublistingsParams } from '@/lib/supabaseQueries';
 // Import Data
 // Import Assets & Icons
@@ -21,7 +21,7 @@ import {
  */
 export default async function getSublistingBySublistingId(id: string) {
 	try {
-		const supabase = createSupabaseBrowserClient();
+		const supabase = createSupabaseRLSClient();
 		const { data, error } = await supabase
 			.from('sublistings')
 			.select(sublistingsParams)

@@ -3,13 +3,7 @@
 import { ListingType, CategoryType } from '@/supabase-special-types';
 import { DateBefore, DateRange } from 'react-day-picker';
 // Import External Packages
-import { fromZonedTime, toZonedTime } from 'date-fns-tz';
-import {
-	addDays,
-	differenceInCalendarDays,
-	endOfDay,
-	startOfDay,
-} from 'date-fns';
+import { differenceInDays } from 'date-fns';
 import { useEffect, useState } from 'react';
 // Import Components
 import StripeCheckout from './StripeCheckout';
@@ -27,7 +21,7 @@ import { Calendar } from '@/ui/Calendar';
 // Import Functions & Actions & Hooks & State
 import createStripeCheckoutSession from '@/actions/promotions/createStripeCheckoutSession';
 import { toast } from '@/lib/useToaster';
-import { formatDateToTimezone } from '@/utils';
+import { correctUTC, formatDate } from '@/utils';
 // Import Data
 import { COMPANY_BASIC_INFORMATION, PROMOTIONS_DATA } from '@/constants';
 // Import Assets & Icons
@@ -72,17 +66,15 @@ export default function FeeCalculator({
 		}
 	}, [paymentObject]);
 
-	const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
 	const disabledDatesForCategory: (DateRange | DateBefore)[] = disabledDates
 		.filter((date) => date.category_id === selectedCategoryId)
 		.map((dateRange) => ({
-			from: toZonedTime(new Date(dateRange.start_date), userTimeZone),
-			to: toZonedTime(new Date(dateRange.end_date), userTimeZone),
+			from: new Date(dateRange.start_date),
+			to: new Date(dateRange.end_date),
 		}));
 
 	disabledDatesForCategory.push({
-		before: toZonedTime(addDays(new Date(), 1), userTimeZone),
+		before: new Date(),
 	});
 
 	const handleListingChange = (listingId: string) => {
@@ -92,43 +84,33 @@ export default function FeeCalculator({
 		if (!categoryId) return;
 		setSelectedCategoryId(categoryId);
 		setSelectedListingId(listingId);
-		setSelectedDateRange(undefined);
-		setPromotionFee(0);
 	};
+	const handleDateRangeChange = (dateRange: DateRange | undefined) => {
+		const correctedDateRange =
+			dateRange &&
+			({
+				from: correctUTC(dateRange.from),
+				to: correctUTC(dateRange.to),
+			} as DateRange);
 
+		setSelectedDateRange(correctedDateRange);
+		calculatePromotionFee(dateRange);
+	};
 	const calculatePromotionFee = (dateRange: DateRange | undefined) => {
 		if (!dateRange || !dateRange.from || !dateRange.to) {
 			setPromotionFee(0);
 		} else {
-			const days = differenceInCalendarDays(dateRange.to, dateRange.from) + 1;
+			const days =
+				differenceInDays(
+					correctUTC(dateRange.to)!,
+					correctUTC(dateRange.from)!
+				) + 1;
 			const fee =
 				days *
 				PROMOTIONS_DATA.FIXED_FEE_PER_DAY *
 				(days >= 30 ? 1 - PROMOTIONS_DATA.THIRTY_DAY_DISCOUNT : 1);
 			setPromotionFee(fee);
 			setDays(days);
-		}
-	};
-
-	const handleDateRangeChange = (dateRange: DateRange | undefined) => {
-		if (dateRange) {
-			const utcStartDate = dateRange.from
-				? fromZonedTime(startOfDay(dateRange.from), userTimeZone)
-				: undefined;
-			const utcEndDate = dateRange.to
-				? fromZonedTime(endOfDay(dateRange.to), userTimeZone)
-				: undefined;
-
-			const correctedDateRange: DateRange = {
-				from: utcStartDate,
-				to: utcEndDate,
-			};
-
-			setSelectedDateRange(correctedDateRange);
-			calculatePromotionFee(dateRange);
-		} else {
-			setSelectedDateRange(undefined);
-			setPromotionFee(0);
 		}
 	};
 
@@ -239,12 +221,8 @@ export default function FeeCalculator({
 									{selectedDateRange &&
 									selectedDateRange.from &&
 									selectedDateRange.to
-										? `${formatDateToTimezone(
-												selectedDateRange.from,
-												userTimeZone
-										  )} - ${formatDateToTimezone(
-												selectedDateRange.to,
-												userTimeZone
+										? `${formatDate(selectedDateRange.from)} - ${formatDate(
+												selectedDateRange.to
 										  )}`
 										: 'Select date range'}
 								</Button>

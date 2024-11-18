@@ -37,11 +37,13 @@ export default async function getSublistingStats(
 ) {
 	try {
 		const supabase = createSupabaseRLSClient();
-		const rpcParams = {
-			logged_user_id: finderId && isValidUUID(finderId) ? finderId : undefined,
-			sublisting_id:
-				sublistingId && isValidUUID(sublistingId) ? sublistingId : undefined,
-		};
+		const rpcParams =
+			finderId &&
+			sublistingId &&
+			isValidUUID(finderId) &&
+			isValidUUID(sublistingId)
+				? { logged_user_id: finderId, sublisting_id: sublistingId }
+				: {};
 		const { data, error } = await supabase.rpc(
 			'get_sublisting_statistics',
 			rpcParams

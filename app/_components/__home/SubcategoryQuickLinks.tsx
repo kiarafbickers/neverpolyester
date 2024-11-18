@@ -16,6 +16,10 @@ import getFullSubcategories from '@/actions/subcategories/getFullSubcategories';
 // Import Assets & Icons
 
 export default async function SubategoryQuickLinks() {
+	// Temporarily commented out the SubategoryQuickLinks component functionality.
+	// Will revisit and include this functionality after addressing other components.
+
+	/*
 	const { data: subcategoryData } = await getFullSubcategories('active');
 
 	return (
@@ -23,7 +27,7 @@ export default async function SubategoryQuickLinks() {
 			<SubSectionInnerContainer>
 				<SubSectionTitle>Trending Categories</SubSectionTitle>
 				<SubSectionDescription>
-					Find the best deals right now.
+					Find the best deals from farms nationally right now.
 				</SubSectionDescription>
 
 				<SubSectionContentContainer className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-5 gap-4 mx-auto">
@@ -60,4 +64,8 @@ export default async function SubategoryQuickLinks() {
 			</SubSectionInnerContainer>
 		</SubSectionOuterContainer>
 	);
+	*/
+
+	// Return null to render nothing temporarily
+	return null;
 }

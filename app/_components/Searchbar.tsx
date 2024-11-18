@@ -30,11 +30,11 @@ export default function Searchbar({
 	placeholder,
 	className,
 	id,
-	rootPage = '/explore',
+	rootPage = '/ranches',
 }: {
 	placeholder?: string;
 	className?: string;
-	id: string;
+	id?: string;
 	rootPage?: string;
 }) {
 	const Router = useRouter();
@@ -80,14 +80,14 @@ export default function Searchbar({
 	};
 
 	return (
-		<div className={className}>
+		<div id={id} className={className}>
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				className="flex bg-search-background rounded-xl items-center"
 			>
 				<SearchIcon size={18} className="text-muted-foreground mx-2" />
 				<Input
-					id={id}
+					id="search"
 					type="text"
 					placeholder={
 						placeholder ||

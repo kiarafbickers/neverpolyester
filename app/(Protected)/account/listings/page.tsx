@@ -4,22 +4,24 @@ import { Metadata } from 'next';
 import { Suspense } from 'react';
 import Link from 'next/link';
 // Import Components
-import { Card, CardHeader, CardDescription, CardContent } from '@/ui/Card';
 import ComponentMultiplier from '@/ui/ComponentMultiplier';
 import ListingTable from '@/components/listings/ListingTable';
 import { buttonVariants } from '@/ui/Button';
 import { Skeleton } from '@/ui/Skeleton';
 import { SectionOuterContainer, SectionTitle } from '@/ui/Section';
-import AccessDenied from '@/components/AccessDenied';
 // Import Functions & Actions & Hooks & State
 import getListingsByUserId from '@/actions/listings/getListingsByUserId';
 import serverAuth from '@/actions/auth/serverAuth';
 import { cn } from '@/lib/utils';
-import { Roles, userHasPermission, Permissions } from '@/rbac';
-// Import Data
-import { GENERAL_SETTINGS } from '@/constants';
-// Import Assets & Icons
+import {
+	Card,
+	CardHeader,
+	CardDescription,
+	CardContent,
+} from '@/components/_ui/Card';
 import { PlusIcon } from 'lucide-react';
+// Import Data
+// Import Assets & Icons
 
 export const metadata: Metadata = {
 	title: `Listings Overview`,
@@ -29,22 +31,10 @@ export default async function ListingPage() {
 	const { user, error } = await serverAuth({
 		mustBeSignedIn: true,
 		checkAdmin: true,
-		checkUser: true,
 	});
 
 	if (!user || error) {
 		return error;
-	}
-
-	if (
-		GENERAL_SETTINGS.USE_RBAC &&
-		(!user.role ||
-			!userHasPermission(
-				user.role as Roles,
-				Permissions.MANAGE_ACCOUNT_SETTINGS
-			))
-	) {
-		return <AccessDenied />;
 	}
 
 	// Listings that belong to the user

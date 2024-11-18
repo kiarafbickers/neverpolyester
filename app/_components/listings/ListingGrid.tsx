@@ -10,7 +10,6 @@ import Pagination from '@/ui/Pagination';
 import { Input } from '@/ui/Input';
 // Import Functions & Actions & Hooks & State
 import usePagination from '@/lib/usePagination';
-import useClientAuth from '@/lib/useClientAuth';
 // Import Data
 // Import Assets & Icons
 import { AlertCircle } from 'lucide-react';
@@ -44,8 +43,6 @@ export default function ListingGrid({
 		data: listings,
 		searchField: 'title',
 	});
-
-	const { userObject: user } = useClientAuth({});
 
 	return (
 		<>
@@ -89,7 +86,7 @@ export default function ListingGrid({
 							className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-10 gap-x-8 lg:grid-cols-${maxCols.toString()} w-full`}
 						>
 							{currentData.map((listing) => (
-								<ListingCard key={listing.slug} listing={listing} user={user} />
+								<ListingCard key={listing.slug} listing={listing} />
 							))}
 						</div>
 					)}

@@ -27,9 +27,6 @@ type fullCategory = {
 		id: string;
 		name: string;
 	}[];
-	emoji: string | null;
-	color: string | null;
-	href: string | null;
 };
 
 /**
@@ -48,7 +45,7 @@ export default async function getFullCategories(modifier: 'active' | 'all') {
 			results = await supabase
 				.from('categories')
 				.select(
-					`id, name, slug, headline, description, image_url_hero, image_url_small, category_groups(id, name), emoji, color, href`
+					`id, name, slug, headline, description, image_url_hero, image_url_small, category_groups(id, name)`
 				);
 		} else {
 			throw new BadRequestError('Invalid modifier.');

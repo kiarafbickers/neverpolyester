@@ -82,6 +82,9 @@ const ListingFormSchema = z.object({
 	is_user_published: z.boolean().nullable(),
 	is_admin_published: z.boolean().nullable(),
 	click_url: z.string().url(),
+	address: z.string().optional(),
+	farmer_names: z.string().optional(),
+	founding_year: z.string().optional(),
 	discount_code_text: z.string().optional(),
 	discount_code_percentage: z.string().optional(),
 	discount_code: z.string().optional(),
@@ -172,6 +175,9 @@ export default function ListingEditor({
 			is_user_published: listing?.is_user_published ?? false,
 			is_admin_published: listing?.is_admin_published ?? false,
 			default_image_url: listing?.default_image_url ?? '',
+			address: listing?.address ?? '',
+			farmer_names: listing?.farmer_names ?? '',
+			founding_year: listing?.founding_year ?? '',
 			discount_code_text: listing?.discount_code_text ?? '',
 			discount_code_percentage: listing?.discount_code_percentage ?? '',
 			discount_code: listing?.discount_code ?? '',
@@ -557,6 +563,70 @@ export default function ListingEditor({
 
 						<Card>
 							<CardHeader>
+								<CardTitle>Miscellaneous</CardTitle>
+								<CardDescription>
+									Enter some more data to enrich your profile.
+								</CardDescription>
+							</CardHeader>
+							<CardContent>
+								<FormField
+									control={form.control}
+									name="address"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Address</FormLabel>
+											<FormDescription>
+												Your farm&apos;s address
+											</FormDescription>
+											<FormControl>
+												<Input {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<FormField
+									control={form.control}
+									name="farmer_names"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Ranchers Names</FormLabel>
+											<FormDescription>
+												Enter the names of your farmers. Will be displayed on
+												the product page.{' '}
+											</FormDescription>
+											<FormControl>
+												<Input {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<FormField
+									control={form.control}
+									name="founding_year"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Founding Year</FormLabel>
+											<FormDescription>
+												When was your farm founded?
+											</FormDescription>
+											<FormControl>
+												<Input {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+
+								<h4 className="font-semibold"> </h4>
+							</CardContent>
+						</Card>
+
+						<Card>
+							<CardHeader>
 								<CardTitle>Current Promotions</CardTitle>
 								<CardDescription>
 									Do you have any current promotions? If not, leave it empty.
@@ -772,7 +842,7 @@ export default function ListingEditor({
 										<CardDescription>
 											Download our Badge and show that you are featured on our
 											website! You can link to: <br /> <br />
-											<span className="italic">{`${COMPANY_BASIC_INFORMATION.URL}/explore/${listing.slug}`}</span>
+											<span className="italic">{`${COMPANY_BASIC_INFORMATION.URL}/ranches/${listing.slug}`}</span>
 										</CardDescription>
 										<Image
 											src="/img/featured_badge.png"

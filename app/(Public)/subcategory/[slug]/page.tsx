@@ -1,10 +1,9 @@
 // Import Types
 import { Metadata } from 'next/types';
 // Import External Packages
-import { notFound } from 'next/navigation';
 // Import Components
 import AdSlot from '@/components/ads/AdSlot';
-import SubcategoryHero from '@/components/subcategories/SubcategoryHero';
+import Hero from '@/components/Hero';
 import SublistingOverview from '@/components/sublistings/SublistingOverview';
 import { SectionOuterContainer } from '@/ui/Section';
 // Import Functions & Actions & Hooks & State
@@ -59,13 +58,17 @@ export default async function Page({ params, searchParams }: Props) {
 
 	const subcategory = categoriesData.data.find((t) => t.slug === params.slug);
 
-	if (!subcategory) {
-		notFound();
-	}
-
 	return (
 		<SectionOuterContainer className="max-w-5xl mx-auto py-0 pb-12">
-			<SubcategoryHero subcategory={subcategory} />
+			<Hero
+				keyword={subcategory?.name}
+				headline={subcategory?.headline ?? `All ${subcategory?.name} Listings`}
+				description={
+					subcategory?.description ??
+					`All listings with the subcategory ${subcategory?.name}.`
+				}
+			/>
+
 			<SublistingOverview
 				categoryNavigation={false}
 				filterAndSortParams={{

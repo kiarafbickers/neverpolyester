@@ -8,7 +8,7 @@ import OpenAI from 'openai';
 import {
 	COMPANY_BASIC_INFORMATION,
 	COMPANY_MARKETING_INFORMATION,
-	LISTINGS_SETTINGS,
+	SUBLISTINGS_SETTINGS,
 } from '@/constants';
 // Import Assets & Icons
 
@@ -27,7 +27,7 @@ const secretKey = process.env.API_SECRET_KEY;
 export async function GET(req: Request) {
 	const { searchParams } = new URL(req.url);
 	const sharedKey = searchParams.get('secretKey');
-	const tag = searchParams.get('tag');
+	const subtag = searchParams.get('subtag');
 
 	if (sharedKey !== secretKey) {
 		return NextResponse.json(
@@ -36,10 +36,14 @@ export async function GET(req: Request) {
 		);
 	}
 
-	if (!tag || (tag && tag.length === 0) || (tag && tag.length > 100)) {
+	if (
+		!subtag ||
+		(subtag && subtag.length === 0) ||
+		(subtag && subtag.length > 100)
+	) {
 		return NextResponse.json(
 			{
-				error: 'Missing or wrongly formatted tag',
+				error: 'Missing or wrongly formatted subtag',
 				description: '',
 				excerpt: '',
 			},
@@ -53,11 +57,11 @@ export async function GET(req: Request) {
 			messages: [
 				{
 					role: 'system',
-					content: `You are a research assistant for ${COMPANY_BASIC_INFORMATION.NAME}, which can be described as ${COMPANY_MARKETING_INFORMATION.META_DESCRIPTION}. The company uses tags and categories to cluster their listings. ${LISTINGS_SETTINGS} You are tasked with analyzing and optimize for SEO the tag: ${tag}. Generate a summary in JSON format with two fields in english: 1)'headline': A SEO-optimzed title for the tag (40-55 characters). 2) 'description': A SEO-optimized description for the tag (12-160 characters). This may not be empty! Remember that the company uses the tag to cluster their listings, so the headline and the description should fit their company purpose and the type of listing. If you have no knowledge of the provided input return 'Sorry, never heard.' for both values.`,
+					content: `You are a research assistant for ${COMPANY_BASIC_INFORMATION.NAME}, which can be described as ${COMPANY_MARKETING_INFORMATION.META_DESCRIPTION}. The company uses tags and categories to cluster their listings. ${SUBLISTINGS_SETTINGS} You are tasked with analyzing and optimize for SEO the tag: ${subtag}. Generate a summary in JSON format with two fields in english: 1)'headline': A SEO-optimzed title for the tag (40-55 characters). 2) 'description': A SEO-optimized description for the tag (12-160 characters). This may not be empty! Remember that the company uses the tag to cluster their listings, so the headline and the description should fit their company purpose and the type of listing. If you have no knowledge of the provided input return 'Sorry, never heard.' for both values.`,
 				},
 				{
 					role: 'user',
-					content: `${tag}`,
+					content: `${subtag}`,
 				},
 			],
 			temperature: 1,

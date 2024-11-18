@@ -19,7 +19,6 @@ import {
 	TagsIcon,
 	User2Icon,
 } from 'lucide-react';
-import { GENERAL_SETTINGS } from '../_constants/constants';
 // Import Assets & Icons
 
 const ADMIN_NAV_LINKS = [
@@ -34,17 +33,17 @@ const ADMIN_NAV_LINKS = [
 		icon: MessageCircleHeartIcon,
 	},
 	{
-		label: 'Listings',
+		label: 'Ranchers',
 		href: '/secret-admin/listing-manager',
 		icon: LayoutTemplateIcon,
 	},
 	{
-		label: 'Listing Categories',
+		label: 'Farm Categories',
 		href: '/secret-admin/category-manager',
 		icon: TagIcon,
 	},
 	{
-		label: 'Listing Tags',
+		label: 'Farm Tags',
 		href: '/secret-admin/tag-manager',
 		icon: TagsIcon,
 	},
@@ -106,24 +105,19 @@ export default function Sidebar_Admin() {
 			<header className="sticky top-20 items-start pt-8 h-fit px-2">
 				<h2 className="text-lg font-bold py-2">Quick Links</h2>
 				<nav className="grid">
-					{ADMIN_NAV_LINKS.map(
-						(link) =>
-							(GENERAL_SETTINGS.USE_SUBLISTINGS ||
-								(!GENERAL_SETTINGS.USE_SUBLISTINGS &&
-									!link.label.includes('Product'))) && (
-								<Link
-									key={link.label}
-									href={link.href}
-									className={cn(
-										'text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-3 p-2 transition-all',
-										link.href === pathname ? 'text-foreground bg-muted' : ''
-									)}
-								>
-									{<link.icon className="h-4 w-4 ml-1" />}
-									{link.label}
-								</Link>
-							)
-					)}
+					{ADMIN_NAV_LINKS.map((link) => (
+						<Link
+							key={link.label}
+							href={link.href}
+							className={cn(
+								'text-muted-foreground hover:text-foreground hover:bg-muted flex items-center gap-3 p-2 transition-all',
+								link.href === pathname ? 'text-foreground bg-muted' : ''
+							)}
+						>
+							{<link.icon className="h-4 w-4 ml-1" />}
+							{link.label}
+						</Link>
+					))}
 				</nav>
 			</header>
 		</div>

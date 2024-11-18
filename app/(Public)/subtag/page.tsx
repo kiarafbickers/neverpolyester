@@ -21,12 +21,12 @@ import { COMPANY_BASIC_INFORMATION } from '@/constants';
 
 export const metadata: Metadata = createMetaData({
 	customTitle: 'Subtags',
-	customDescription: `See all subtags used on ${COMPANY_BASIC_INFORMATION.NAME}. Quickly find what you are looking for by clicking on a subtag. Subtags are used to categorize and filter all products.`,
+	customDescription: `See all subtags used on ${COMPANY_BASIC_INFORMATION.NAME}. Quickly find what you are looking for by clicking on a subtag. Subtags are used to categorize and filter all farm products.`,
 	customSlug: `tag`,
 });
 
 const explanationOfTags =
-	'Subtags are a way to categorize and filter all products. They are used to help you find what you are looking for. Click on a subtag to see all sublistings that have that subtag.';
+	'Subtags are a way to categorize and filter all farm products. They are used to help you find what you are looking for. Click on a subtag to see all sublistings that have that subtag.';
 
 export default async function Page() {
 	const tagData = await getFullSubtags('active');

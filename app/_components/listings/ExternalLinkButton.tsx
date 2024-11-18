@@ -30,12 +30,12 @@ export default function ExternalLinkButton({
 	className?: string;
 }) {
 	if (!listing?.click_url) return null;
-
-	const referral = COMPANY_BASIC_INFORMATION.URL.replace('https://', '');
-
 	return (
 		<ExternalLink
-			href={listing.click_url + `?ref=${referral}`}
+			href={
+				listing.click_url +
+				`?ref=${COMPANY_BASIC_INFORMATION.NAME.toLowerCase()}`
+			}
 			className={cn(
 				buttonVariants({ variant: 'default', size: 'lg' }),
 				'text-lg',

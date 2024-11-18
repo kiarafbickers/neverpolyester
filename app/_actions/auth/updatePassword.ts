@@ -18,6 +18,17 @@ import {
 	ServerResponse,
 } from '@/lib/handlingServerResponses';
 
+type UpdatePasswordFormState =
+	| {
+			errors?:
+				| {
+						password?: string[] | undefined;
+				  }
+				| undefined;
+			success?: boolean | undefined;
+	  }
+	| undefined;
+
 const UpdatePasswordFormSchema = z.object({
 	password: z
 		.string()
@@ -31,8 +42,6 @@ const UpdatePasswordFormSchema = z.object({
 		.trim(),
 });
 
-type FormValues = z.infer<typeof UpdatePasswordFormSchema>;
-
 /**
  * Updates the user's password.
  *
@@ -41,10 +50,13 @@ type FormValues = z.infer<typeof UpdatePasswordFormSchema>;
  * @returns A promise that resolves to a server response.
  */
 export default async function updatePassword(
-	formData: FormValues
+	state: UpdatePasswordFormState,
+	formData: FormData
 ): Promise<ServerResponse<any, Record<string, string[]>>> {
 	try {
-		const validatedFields = UpdatePasswordFormSchema.safeParse(formData);
+		const validatedFields = UpdatePasswordFormSchema.safeParse({
+			password: formData.get('password'),
+		});
 		if (!validatedFields.success) {
 			throw new HookFormError(validatedFields.error.flatten().fieldErrors);
 		}
@@ -56,16 +68,10 @@ export default async function updatePassword(
 		});
 
 		if (error) {
-			if (error.code === 'same_password') {
-				throw new InternalServerError(
-					'You cannot use the same password as before.'
-				);
-			} else {
-				console.error('Error with updating password:', error);
-				throw new InternalServerError(
-					'Error updating your password. Contact Support.'
-				);
-			}
+			console.error('Error with updating password:', error);
+			throw new InternalServerError(
+				'Error updating your password. Contact Support.'
+			);
 		}
 
 		await insertActivity('new_password', 'REDACTED');

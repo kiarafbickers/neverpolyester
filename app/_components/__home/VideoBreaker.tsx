@@ -20,19 +20,21 @@ export default function VideoBreaker({ className }: { className?: string }) {
 			<SubSectionInnerContainer>
 				<SubSectionContentContainer className="mt-0">
 					<div className="w-full z-10 relative isolate overflow-hidden rounded-xl">
-						<Image
-							src="/img/grilled-chicken.jpg"
-							alt="Hero Image"
-							className="absolute inset-0 z-20 h-full w-full object-cover"
-							width={1920}
-							height={1080}
-							priority
+						<video
+						  src="/videos/grilled-steak.mp4"
+						  className="absolute inset-0 z-20 h-full w-full object-cover"
+						  width={1920}
+						  height={1080}
+						  autoPlay
+						  loop
+						  muted
+						  playsInline
 						/>
 
-						<div className="relative px-12  text-white rounded-xl z-30 mx-auto text-center backdrop-blur-sm h-full w-full flex items-center  py-10">
+						<div className="relative px-12 text-white rounded-xl z-30 mx-auto text-center h-full w-full flex items-center py-10">
 							<div className="space-y-2 max-w-xl mx-auto">
 								<div className="m-auto text-3xl tracking-tight sm:text-7xl font-semibold">
-									<h2>REWILD</h2>
+									<h2>QUALITY</h2>
 								</div>
 								<div className="mx-auto w-full">
 									<p className="text-base font-medium">
@@ -41,17 +43,6 @@ export default function VideoBreaker({ className }: { className?: string }) {
 										better.
 									</p>
 								</div>
-								<p className="text-sm leading-6">
-									<Link
-										href="#"
-										className={cn(
-											buttonVariants({ variant: 'default', size: 'lg' }),
-											'bg-dark-foreground rounded-full text-base'
-										)}
-									>
-										Watch on YouTube
-									</Link>
-								</p>
 							</div>
 						</div>
 					</div>

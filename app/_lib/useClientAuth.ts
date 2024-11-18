@@ -1,13 +1,13 @@
 'use client';
 // Import Types
-import { AuthUserType } from '@/supabase-special-types';
-import { PostgrestError } from '@supabase/supabase-js';
+import { Tables } from '@/supabase-types';
+import { PostgrestError, User } from '@supabase/supabase-js';
 // Import External Packages
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 // Import Components
 // Import Functions & Actions & Hooks & State
-import createSupabaseBrowserClient from '@/lib/createSupabaseBrowserClient';
+import createSupabaseBrowserClient from './createSupabaseBrowserClient';
 // Import Data
 // Import Assets & Icons
 
@@ -22,16 +22,18 @@ import createSupabaseBrowserClient from '@/lib/createSupabaseBrowserClient';
  * @returns An object containing user, userObject, isSuperAdmin, loading, and error.
  */
 export default function useClientAuth({
+	checkUser = false,
 	checkAdmin = false,
 	mustBeAdmin = false,
 	mustBeSignedIn = false,
 }: {
+	checkUser?: boolean;
 	checkAdmin?: boolean;
 	mustBeAdmin?: boolean;
 	mustBeSignedIn?: boolean;
 }) {
-	const [user, setUser] = useState<AuthUserType | null>(null);
-	const [userObject, setUserObject] = useState<AuthUserType | null>(null);
+	const [user, setUser] = useState<User | null>(null);
+	const [userObject, setUserObject] = useState<Tables<'users'> | null>(null);
 	const [isSuperAdmin, setIsSuperAdmin] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<PostgrestError | null | unknown>(null);
@@ -56,19 +58,23 @@ export default function useClientAuth({
 					return;
 				}
 
-				const { data, error, status } = await supabase
-					.from('users')
-					.select('id, email, is_active, role, avatar_url')
-					.eq('id', user.id)
-					.maybeSingle();
+				setUser(user);
 
-				if (error && status !== 406) {
-					setError(error);
-					throw error;
-				}
+				if (checkUser) {
+					const { data, error, status } = await supabase
+						.from('users')
+						.select('*')
+						.eq('id', user.id)
+						.single();
 
-				if (data) {
-					setUserObject(data);
+					if (error && status !== 406) {
+						setError(error);
+						throw error;
+					}
+
+					if (data) {
+						setUserObject(data);
+					}
 				}
 
 				if (checkAdmin || mustBeAdmin) {
@@ -76,7 +82,7 @@ export default function useClientAuth({
 						.from('users')
 						.select('is_super_admin')
 						.eq('id', user.id)
-						.maybeSingle();
+						.single();
 
 					if (error && status !== 406) {
 						setError(error);
@@ -101,7 +107,23 @@ export default function useClientAuth({
 		};
 
 		checkAuthStatus();
-	}, [checkAdmin, mustBeAdmin, mustBeSignedIn, router]);
+	}, [checkAdmin, mustBeAdmin, mustBeSignedIn, checkUser, router]);
 
-	return { user, userObject, isSuperAdmin, loading, error };
+	const signOut = useCallback(async () => {
+		const supabase = createSupabaseBrowserClient();
+		await supabase.auth.signOut();
+		
+		// Use the current origin or fall back to the NEXT_PUBLIC_SITE_URL
+		const baseUrl = typeof window !== 'undefined' 
+			? window.location.origin 
+			: process.env.NEXT_PUBLIC_SITE_URL;
+		
+		// Construct the full sign-in URL
+		const signInUrl = `${baseUrl}/sign-in`;
+		
+		// Use router.push for client-side navigation
+		router.push(signInUrl);
+	}, [router]);
+
+	return { user, userObject, isSuperAdmin, loading, error, signOut };
 }

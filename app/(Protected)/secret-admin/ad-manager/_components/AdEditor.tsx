@@ -37,7 +37,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/Popover';
 import { Calendar } from '@/ui/Calendar';
 // Import Functions & Actions & Hooks & State
-import { cn, formatDateToTimezone } from '@/lib/utils';
+import { cn, correctUTC, formatDate } from '@/lib/utils';
 import { toast } from '@/lib/useToaster';
 import upsertAd from '@/actions/ads/upsertAd';
 // Import Data
@@ -73,15 +73,13 @@ export default function AdEditor({
 }) {
 	const router = useRouter();
 
-	const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
 	const form = useForm<z.infer<typeof AdFormSchema>>({
 		resolver: zodResolver(AdFormSchema),
 		defaultValues: {
 			id: ad?.id || '',
 			name: ad?.name || '',
-			start_date: ad?.start_date ? new Date(ad?.start_date) : undefined,
-			end_date: ad?.end_date ? new Date(ad?.end_date) : undefined,
+			start_date: ad?.start_date ? new Date(ad?.start_date) : new Date(),
+			end_date: ad?.end_date ? new Date(ad?.end_date) : new Date(),
 			invoice_id: ad?.invoice_id || '',
 			price: ad?.price !== null ? ad?.price : 0,
 			contact_name: ad?.contact_name || '',
@@ -336,7 +334,7 @@ export default function AdEditor({
 														)}
 													>
 														{field.value ? (
-															formatDateToTimezone(field.value, userTimeZone)
+															formatDate(field.value)
 														) : (
 															<span>Pick a date</span>
 														)}
@@ -348,8 +346,8 @@ export default function AdEditor({
 												<Calendar
 													mode="single"
 													selected={field.value}
-													onSelect={(date) => field.onChange(date)}
-													disabled={(date) => date < new Date()}
+													onSelect={(date) => field.onChange(correctUTC(date))}
+													disabled={(date) => date < new Date('1900-01-01')}
 													initialFocus
 												/>
 											</PopoverContent>
@@ -379,7 +377,7 @@ export default function AdEditor({
 														)}
 													>
 														{field.value ? (
-															formatDateToTimezone(field.value, userTimeZone)
+															formatDate(field.value)
 														) : (
 															<span>Pick a date</span>
 														)}
@@ -391,8 +389,8 @@ export default function AdEditor({
 												<Calendar
 													mode="single"
 													selected={field.value}
-													onSelect={(date) => field.onChange(date)}
-													disabled={(date) => date < new Date()}
+													onSelect={(date) => field.onChange(correctUTC(date))}
+													disabled={(date) => date < new Date('1900-01-01')}
 													initialFocus
 												/>
 											</PopoverContent>

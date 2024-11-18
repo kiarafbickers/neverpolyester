@@ -13,9 +13,9 @@ import { PlusIcon } from 'lucide-react';
 /**
  * A component that displays a breaker ad.
  */
-export default function BreakerPropose({ className }: { className?: string }) {
+export default function BreakerPropose() {
 	return (
-		<div className={cn('relative max-w-screen-md mx-auto py-24', className)}>
+		<div className="relative max-w-screen-md mx-auto py-24">
 			<div className="relative grid md:grid-cols-3 bg-neutral-100 dark:bg-neutral-100/50 rounded-xl">
 				<div className="flex align-middle mx-auto col-span-2 self-center">
 					<div className="p-6 xl:p-8 mx-auto h-fit">
