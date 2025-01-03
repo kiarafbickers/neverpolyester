@@ -44,28 +44,32 @@ export default function CategoryGroupDeleteModal({
 					</DialogTitle>
 				</DialogHeader>
 
-				<Button
-					variant="default"
-					type="button"
-					size="lg"
-					disabled={!categoryGroupId}
-					onClick={async () => {
-						await deleteCategoryGroup(categoryGroupId), setDialogOpen(false);
-					}}
-				>
-					Yes, delete this category group
-				</Button>
-				<Button
-					variant="outline"
-					type="button"
-					size="lg"
-					disabled={!categoryGroupId}
-					onClick={async () => {
-						setDialogOpen(false);
-					}}
-				>
-					No, keep this category group
-				</Button>
+				<div className="flex gap-2 mt-6 flex-wrap">
+					<Button
+						variant="default"
+						type="button"
+						size="lg"
+						disabled={!categoryGroupId}
+						onClick={async () => {
+							await deleteCategoryGroup(categoryGroupId), setDialogOpen(false);
+						}}
+						className="w-full"
+					>
+						Yes, delete this category group
+					</Button>
+					<Button
+						variant="outline"
+						type="button"
+						size="lg"
+						disabled={!categoryGroupId}
+						onClick={async () => {
+							setDialogOpen(false);
+						}}
+						className="w-full"
+					>
+						No, keep this category group
+					</Button>
+				</div>
 			</DialogContent>
 		</Dialog>
 	);

@@ -27,24 +27,27 @@ export default function ExternalLinkButton({
 }: {
 	sublisting: SublistingType;
 	className?: string;
-	type: 'farm' | 'product';
+	type: 'listing' | 'product';
 }) {
 	if (!sublisting?.click_url) return null;
+
+	const referral = COMPANY_BASIC_INFORMATION.URL.replace('https://', '');
+
 	return (
 		<ExternalLink
 			href={
 				/* @ts-ignore */
-				(type === 'farm' ? sublisting.owner.click_url : sublisting.click_url) +
-				`?ref=${COMPANY_BASIC_INFORMATION.NAME.toLowerCase()
-					.split(' ')
-					.join('-')}`
+				(type === 'listing'
+					? /* @ts-ignore */
+					  sublisting.owner.click_url
+					: sublisting.click_url) + `?ref=${referral}`
 			}
 			className={cn(
 				buttonVariants({
-					variant: type === 'farm' ? 'default' : 'outline',
+					variant: type === 'listing' ? 'default' : 'outline',
 					size: 'lg',
 				}),
-				type === 'farm' && 'dark:bg-primary',
+				type === 'listing' && 'dark:bg-primary',
 				className
 			)}
 			trusted
@@ -58,10 +61,10 @@ export default function ExternalLinkButton({
 			data-umami-event="External Link Clicked"
 			data-umami-event-sublisting={
 				/* @ts-ignore */
-				type === 'farm' ? sublisting.owner.click_url : sublisting.click_url
+				type === 'listing' ? sublisting.owner.click_url : sublisting.click_url
 			}
 		>
-			{type === 'farm' ? 'Meet Rancher' : 'Buy Now'}
+			{type === 'listing' ? 'See Listing' : 'Buy Now'}
 		</ExternalLink>
 	);
 }

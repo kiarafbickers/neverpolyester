@@ -9,7 +9,8 @@ import { Card, CardHeader, CardDescription, CardContent } from '@/ui/Card';
 // Import Functions & Actions & Hooks & State
 import serverAuth from '@/actions/auth/serverAuth';
 // Import Data
-import { COMPANY_BASIC_INFORMATION } from '@/constants'; // Import Assets & Icons
+import { COMPANY_BASIC_INFORMATION } from '@/constants';
+// Import Assets & Icons
 import { CircleUserRoundIcon } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -40,7 +41,7 @@ export default async function AccountPage() {
 
 				<CardContent>
 					<Suspense fallback={<CircleUserRoundIcon />}>
-						<AccountForm user={user} />
+						<AccountForm userId={user.id} />
 					</Suspense>
 				</CardContent>
 			</Card>

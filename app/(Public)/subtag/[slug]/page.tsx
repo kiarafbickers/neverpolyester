@@ -2,9 +2,10 @@
 import { Metadata } from 'next/types';
 // Import External Packages
 import { Suspense } from 'react';
+import { notFound } from 'next/navigation';
 // Import Components
 import SublistingOverview from '@/components/sublistings/SublistingOverview';
-import Hero from '@/components/Hero';
+import SubtagHero from '@/components/subtags/SubtagHero';
 import { SectionOuterContainer } from '@/ui/Section';
 // Import Functions & Actions & Hooks & State
 import createSupabaseBrowserClient from '@/lib/createSupabaseBrowserClient';
@@ -51,21 +52,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params, searchParams }: Props) {
-	const tagData = await getFullSubtags('active');
+	const subtagData = await getFullSubtags('active');
 
-	const tag = tagData.data.find((t) => t.slug === params.slug);
+	const subtag = subtagData.data.find((t) => t.slug === params.slug);
+
+	if (!subtag) {
+		notFound();
+	}
 
 	return (
 		<SectionOuterContainer className="max-w-5xl mx-auto ">
-			<Suspense fallback={null}>
-				<Hero
-					keyword={tag?.name}
-					headline={tag?.headline ?? `All ${tag?.name} Listings`}
-					description={
-						tag?.description ?? `All listings with the tag ${tag?.name}.`
-					}
-				/>
-			</Suspense>
+			<SubtagHero subtag={subtag} />
 
 			<Suspense fallback={null}>
 				<SublistingOverview

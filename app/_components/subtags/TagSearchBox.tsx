@@ -115,8 +115,8 @@ export function TagSearchBox({
 	const [initialRangeValues, setInitialRangeValue] = useState([0, 200]);
 	const [rangeValues, setRangeValue] = useState([0, 200]);
 
-	const [resetFarmSelector, setResetFarmSelector] = useState('');
-	const [resetStateSelector, setResetStateSelector] = useState('');
+	const [resetListingSelector, setResetListingSelector] = useState('');
+	const [resetCategorySelector, setResetCategorySelector] = useState('');
 
 	const handleRangeChange = (newValues: any) => {
 		setRangeValue(newValues);
@@ -254,8 +254,8 @@ export function TagSearchBox({
 	const handleRemoveAllParams = () => {
 		setSelected([]);
 		setAvailabilityChecked(false);
-		setResetFarmSelector(Math.random().toString());
-		setResetStateSelector(Math.random().toString());
+		setResetListingSelector(Math.random().toString());
+		setResetCategorySelector(Math.random().toString());
 		const currentUrl = new URL(window.location.href);
 		const currentSearchParams = new URLSearchParams(currentUrl.search);
 		currentSearchParams.delete('tags');
@@ -264,18 +264,18 @@ export function TagSearchBox({
 		currentSearchParams.delete('minPrice');
 		currentSearchParams.delete('maxPrice');
 		currentSearchParams.delete('search');
-		currentSearchParams.delete('state');
-		currentSearchParams.delete('farm');
+		currentSearchParams.delete('category');
+		currentSearchParams.delete('listing');
 		Router.push(pathname + '?' + currentSearchParams.toString(), {
 			scroll: false,
 		});
 	};
 
-	const handleFarmSelect = (value: string) => {
+	const handleListingSelect = (value: string) => {
 		const currentUrl = new URL(window.location.href);
 		const currentSearchParams = new URLSearchParams(currentUrl.search);
 
-		currentSearchParams.set('farm', value);
+		currentSearchParams.set('listing', value);
 		const finalUrl = pathname + '?' + currentSearchParams.toString();
 		Router.push(finalUrl, { scroll: false });
 	};
@@ -284,7 +284,7 @@ export function TagSearchBox({
 		const currentUrl = new URL(window.location.href);
 		const currentSearchParams = new URLSearchParams(currentUrl.search);
 
-		currentSearchParams.set('state', value);
+		currentSearchParams.set('category', value);
 		const finalUrl = pathname + '?' + currentSearchParams.toString();
 		Router.push(finalUrl, { scroll: false });
 	};
@@ -651,30 +651,30 @@ export function TagSearchBox({
 				</div>
 				<div className="overflow-visible relative w-full flex flex-col items-start border-t border-b group-last:border-b-0 py-4">
 					<div className="w-full flex justify-between items-end">
-						<p className="text-sm font-semibold py-2">State</p>
+						<p className="text-sm font-semibold py-2">Category</p>
 					</div>
 					<Combobox
-						itemName="state"
+						itemName="category"
 						valueLabelPair={valueLabelPairCategories}
 						changeFunction={handleSelectSelect}
 						whatShouldBeReturned="value"
 						whatShouldBeSearchable="label"
-						reset={resetStateSelector}
+						reset={resetCategorySelector}
 					/>
 				</div>
 
 				<div className="overflow-visible relative w-full flex flex-col items-start border-t border-b group-last:border-b-0 py-4">
 					<div className="w-full flex justify-between items-end">
-						<p className="text-sm font-semibold py-2">Farms</p>
+						<p className="text-sm font-semibold py-2">Listings</p>
 					</div>
 
 					<Combobox
-						itemName="farm"
+						itemName="listing"
 						valueLabelPair={listings}
-						changeFunction={handleFarmSelect}
+						changeFunction={handleListingSelect}
 						whatShouldBeReturned="value"
 						whatShouldBeSearchable="label"
-						reset={resetFarmSelector}
+						reset={resetListingSelector}
 					/>
 				</div>
 			</div>

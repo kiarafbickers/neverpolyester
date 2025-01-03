@@ -36,8 +36,8 @@ export default async function getPublishedSublistings(
 	includeOutOfStock?: boolean | null,
 	minPriceFilter?: string | null,
 	maxPriceFilter?: string | null,
-	stateFilter?: string | null,
-	farmFilter?: string | null
+	categoryFilter?: string | null,
+	listingFilter?: string | null
 ) {
 	try {
 		let results;
@@ -84,7 +84,7 @@ export default async function getPublishedSublistings(
 			return subtags.every((subtag) => sublistingTags.includes(subtag));
 		};
 
-		const matchesCategory = (
+		const matchesSubcategory = (
 			sublisting: (typeof sublistingData)[0],
 			subcategory: typeof subcategoryFilter
 		) => {
@@ -106,22 +106,22 @@ export default async function getPublishedSublistings(
 			return false;
 		};
 
-		const matchesState = (
+		const matchesCategory = (
 			sublisting: (typeof sublistingData)[0],
-			state: typeof stateFilter
+			category: typeof categoryFilter
 		) => {
 			/*
      			 // @ts-ignore */
-			return sublisting.owner.category_id === state;
+			return sublisting.owner.category_id === category;
 		};
 
-		const matchesFarm = (
+		const matchesListing = (
 			sublisting: (typeof sublistingData)[0],
-			farm: typeof farmFilter
+			listing: typeof listingFilter
 		) => {
 			/*
 	 			 // @ts-ignore */
-			return sublisting.owner.id === farm;
+			return sublisting.owner.id === listing;
 		};
 
 		results = sublistingData.filter((sublisting) => {
@@ -130,25 +130,25 @@ export default async function getPublishedSublistings(
 					? matchesTags(sublisting, subtagArray)
 					: true;
 			const subcategoryCondition = subcategoryFilter
-				? matchesCategory(sublisting, subcategoryFilter)
+				? matchesSubcategory(sublisting, subcategoryFilter)
 				: true;
 			const priceCondition =
 				minPriceFilter && maxPriceFilter
 					? matchesPrice(sublisting, minPriceFilter, maxPriceFilter)
 					: true;
-			const stateCondition = stateFilter
-				? matchesState(sublisting, stateFilter)
+			const categoryCondition = categoryFilter
+				? matchesCategory(sublisting, categoryFilter)
 				: true;
 
-			const farmCondition = farmFilter
-				? matchesFarm(sublisting, farmFilter)
+			const listingCondition = listingFilter
+				? matchesListing(sublisting, listingFilter)
 				: true;
 			return (
 				subtagCondition &&
 				subcategoryCondition &&
 				priceCondition &&
-				stateCondition &&
-				farmCondition
+				categoryCondition &&
+				listingCondition
 			);
 		});
 

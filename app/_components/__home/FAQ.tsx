@@ -20,19 +20,24 @@ import { MinusSquareIcon, PlusIcon, PlusSquareIcon } from 'lucide-react';
 
 export const GENERAL_FAQS: { question: string; answer: string }[] = [
 	{
-		question: 'What is RanchersList.com?',
+		question: 'How can I delete my account?',
 		answer:
-			"Our platform connects you directly with local farmers and artisan food producers for fresh, high-quality food that will deliver to you or can be picked up locally. Sign up to our mailing list to get deals on  pasture-raised meats, fresh fruits and vegetables, dairy, eggs, and artisanal products products nationwide.",
+			"You can delete your account at any time by visiting the '/account' section after logging in. Please note that deleting your account is irreversible and will result in the removal of all your data from our system.",
 	},
 	{
-		question: 'What kinds of products can I find here?',
+		question: 'How do I update my account information?',
 		answer:
-			"Right now, we're just listing the ranchers and farms themselves, but in the future we'll may have users be able to checkout on our platform.",
+			'You can update your account information by logging into your account and accessing the account settings section. From there, you can modify your profile details and save changes.',
 	},
 	{
-		question: 'How is the food delivered?',
+		question: 'What should I do if I forget my password?',
 		answer:
-			"Details on delivery options, including shipping, pickup locations, and how to coordinate with producers. For now we just direct consumers to ranchers in their area.",
+			"If you forget your password, you can reset it by clicking on the 'Forgot Password' link on the login page. Follow the instructions provided to receive an email with steps to reset your password.",
+	},
+	{
+		question: 'How do I contact customer support?',
+		answer:
+			'If you need assistance or have any queries, please contact our customer support team by sending an email to support@SOME_URL.com. We aim to respond to all inquiries within 24 hours.',
 	},
 ];
 

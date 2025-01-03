@@ -6,6 +6,7 @@ import {
 	SubcategoryGroupType,
 } from '@/supabase-special-types';
 // Import External Packages
+import EmojiPicker from 'emoji-picker-react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -13,6 +14,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 // Import Components
 import SupabaseImageUploadArea from '@/components/SupabaseImageUploadArea';
+import { Popover, PopoverTrigger, PopoverContent } from '@/ui/Popover';
 import { Button } from '@/ui/Button';
 import { Input } from '@/ui/Input';
 import {
@@ -55,6 +57,9 @@ const SubcategoryFormSchema = z.object({
 		.max(160, { message: 'Be at most 160 characters long' }),
 	image_url_hero: z.optional(z.string()),
 	image_url_small: z.optional(z.string()),
+	emoji: z.optional(z.string()),
+	href: z.optional(z.string()),
+	color: z.optional(z.string()),
 });
 
 export default function SubcategoryEditor({
@@ -79,6 +84,9 @@ export default function SubcategoryEditor({
 			description: subcategory?.description || '',
 			image_url_hero: subcategory?.image_url_hero || '',
 			image_url_small: subcategory?.image_url_small || '',
+			emoji: subcategory?.emoji || '',
+			href: subcategory?.href || '',
+			color: subcategory?.color || '',
 		},
 	});
 
@@ -97,6 +105,10 @@ export default function SubcategoryEditor({
 	};
 
 	const [aiIsLoading, setAiIsLoading] = useState<boolean>(false);
+	const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
+	const [colorPreview, setColorPreview] = useState<string | undefined | null>(
+		subcategory?.color
+	);
 
 	const {
 		formState: { isDirty, isSubmitting },
@@ -320,6 +332,26 @@ export default function SubcategoryEditor({
 								)}
 							/>
 
+							<FormField
+								control={form.control}
+								name="href"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>URL</FormLabel>
+										<FormDescription>
+											Optional, external URL, will be used oly when a component
+											is used that uses this URL. Default: not used. Enter full
+											URL with https://
+										</FormDescription>
+										<FormControl>
+											<Input placeholder="https://" type="url" {...field} />
+										</FormControl>
+
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+
 							<TagSelect
 								updaterFunction={handleSubcategoryGroupChange}
 								possibleTags={subcategoryGroups as { name: string }[]}
@@ -346,6 +378,57 @@ export default function SubcategoryEditor({
 							</CardDescription>
 						</CardHeader>
 						<CardContent className="space-y-2">
+							<FormField
+								control={form.control}
+								name="emoji"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Emoji</FormLabel>
+										<FormDescription>
+											Optional, single emoji, will be displayed above the
+											subcategory name.
+										</FormDescription>
+										<div className="flex gap-x-4">
+											<FormControl>
+												<Input placeholder="Emoji" {...field} />
+											</FormControl>
+											<Popover
+												open={isEmojiPickerOpen}
+												onOpenChange={setIsEmojiPickerOpen}
+											>
+												<PopoverTrigger asChild>
+													<FormControl>
+														<Button
+															variant={'outline'}
+															className={cn('pl-3 text-left font-normal')}
+														>
+															🔍
+														</Button>
+													</FormControl>
+												</PopoverTrigger>
+												<PopoverContent className="w-auto p-0" align="start">
+													<EmojiPicker
+														open={true}
+														reactionsDefaultOpen={false}
+														onEmojiClick={(e) => {
+															setValue('emoji', e.emoji, {
+																shouldValidate: true,
+																shouldDirty: true,
+																shouldTouch: true,
+															});
+															setIsEmojiPickerOpen(false);
+														}}
+														height={400}
+													/>
+												</PopoverContent>
+											</Popover>
+										</div>
+
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+
 							<FormField
 								control={form.control}
 								name="image_url_hero"
@@ -409,7 +492,8 @@ export default function SubcategoryEditor({
 										<FormDescription>
 											Optional, 1x1 aspect ratio, e.g. 256px x 256px, displayed
 											on the /subcategory page. Will only be used when
-											corresponding component is used somewhere.
+											corresponding component is used somewhere. Default: not
+											used{' '}
 										</FormDescription>
 										<FormControl>
 											<SupabaseImageUploadArea
@@ -447,6 +531,94 @@ export default function SubcategoryEditor({
 									</FormItem>
 								)}
 							/>
+							<FormField
+								control={form.control}
+								name="color"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Choose a color</FormLabel>
+										<FormDescription>
+											Optional. Will be used as background color for the hero
+											section when no Hero Image is provided. When no Hero Image
+											and no Color is set, the default image will be used.
+										</FormDescription>
+										<FormControl>
+											<div className="flex items-center space-x-2">
+												<Input
+													type="color"
+													{...field}
+													value={field.value || '#000000'}
+													onChange={(e) => {
+														field.onChange(e.target.value);
+														setColorPreview(e.target.value);
+													}}
+													className="w-12 p-1 rounded-md"
+												/>
+												<Input
+													type="text"
+													{...field}
+													value={field.value || ''}
+													onChange={(e) => {
+														field.onChange(e.target.value);
+														setColorPreview(e.target.value);
+													}}
+													placeholder="Enter a color value"
+													className="flex-grow"
+												/>
+												<Button
+													type="button"
+													variant="outline"
+													onClick={() => {
+														setValue('color', undefined, {
+															shouldValidate: true,
+															shouldDirty: true,
+															shouldTouch: true,
+														});
+														setColorPreview(subcategory?.color);
+													}}
+												>
+													Reset
+												</Button>
+												<Button
+													type="button"
+													variant="outline"
+													onClick={() => {
+														setValue('color', '', {
+															shouldValidate: true,
+															shouldDirty: true,
+															shouldTouch: true,
+														});
+														setColorPreview('transparent');
+													}}
+												>
+													Delete
+												</Button>
+											</div>
+										</FormControl>
+										<FormDescription>
+											Enter a color value or use the color picker. Please see
+											the default text color on your chosen color and make sure
+											it is readable:
+										</FormDescription>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+
+							<div
+								className={cn(
+									'h-24 rounded-md content-center',
+									colorPreview === '#ffffff' && 'border border-gray-300'
+								)}
+								style={{ backgroundColor: colorPreview || 'transparent' }}
+								aria-label="Color preview"
+							>
+								{colorPreview && colorPreview !== 'transparent' && (
+									<p className="text-white [text-shadow:0_4px_12px_rgba(0,0,0,0.6)] text-center">
+										{subcategory?.name || 'Category Name'}
+									</p>
+								)}
+							</div>
 						</CardContent>
 					</Card>
 				</div>

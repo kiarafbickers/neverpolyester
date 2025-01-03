@@ -2,15 +2,11 @@
 import { Metadata } from 'next/types';
 // Import External Packages
 import { Suspense } from 'react';
+import { notFound } from 'next/navigation';
 // Import Components
-import { SortDirectionBox } from '@/components/SortDirectionBox';
 import ListingOverview from '@/components/listings/ListingOverview';
-import Hero from '@/components/Hero';
-import {
-	SectionOuterContainer,
-	SubSectionInnerContainer,
-	SubSectionOuterContainer,
-} from '@/ui/Section';
+import TagHero from '@/components/tags/TagHero';
+import { SectionOuterContainer } from '@/ui/Section';
 // Import Functions & Actions & Hooks & State
 import getFullTags from '@/actions/tags/getFullTags';
 import createSupabaseBrowserClient from '@/lib/createSupabaseBrowserClient';
@@ -55,34 +51,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	});
 }
 
-async function FilterBar() {
-	return (
-		<SubSectionOuterContainer>
-			<SubSectionInnerContainer>
-				<div className="flex flex-wrap md:flex-nowrap items-center pb-12">
-					<SortDirectionBox />
-				</div>
-			</SubSectionInnerContainer>
-		</SubSectionOuterContainer>
-	);
-}
-
 export default async function Page({ params, searchParams }: Props) {
 	const tagData = await getFullTags('active');
 
 	const tag = tagData.data.find((t) => t.slug === params.slug);
 
+	if (!tag) {
+		notFound();
+	}
+
 	return (
-		<SectionOuterContainer className="max-w-5xl mx-auto ">
-			<Suspense fallback={null}>
-				<Hero
-					keyword={tag?.name}
-					headline={tag?.headline ?? `All ${tag?.name} Listings`}
-					description={
-						tag?.description ?? `All listings with the tag ${tag?.name}.`
-					}
-				/>
-			</Suspense>
+		<SectionOuterContainer className="max-w-5xl mx-auto pb-4">
+			<TagHero tag={tag} />
 
 			<Suspense fallback={null}>
 				<ListingOverview

@@ -23,6 +23,7 @@ import {
 	listingQuery,
 	slugQuery,
 	sublistingsQuery,
+	authUserQuery,
 } from '@/lib/supabaseQueries';
 // Import Data
 // Import Assets & Icons
@@ -77,3 +78,5 @@ export type FullPromotionType = HalfPromotionType & {
 	listing_name: string;
 	category_name: string;
 };
+
+export type AuthUserType = QueryData<typeof authUserQuery>[0];

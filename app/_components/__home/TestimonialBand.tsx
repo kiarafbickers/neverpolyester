@@ -67,10 +67,6 @@ const testimonials = [
  */
 
 export default function TestimonialBand({ className }: { className?: string }) {
-	// Temporarily commented out the SubategoryQuickLinks component functionality.
-	// Will revisit and include this functionality after addressing other components.
-
-	/*
 	return (
 		<SubSectionOuterContainer className={className}>
 			<SubSectionInnerContainer>
@@ -127,8 +123,4 @@ export default function TestimonialBand({ className }: { className?: string }) {
 			</SubSectionContentContainer>
 		</SubSectionOuterContainer>
 	);
-	*/
-
-	// Return null to render nothing temporarily
-	return null;
 }

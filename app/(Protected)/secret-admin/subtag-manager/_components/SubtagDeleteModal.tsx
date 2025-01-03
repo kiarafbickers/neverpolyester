@@ -44,7 +44,7 @@ export default function SubtagDeleteModal({
 					</DialogTitle>
 				</DialogHeader>
 
-				<div className="flex gap-2 mt-6">
+				<div className="flex gap-2 mt-6 flex-wrap">
 					<Button
 						variant="default"
 						type="button"
@@ -53,6 +53,7 @@ export default function SubtagDeleteModal({
 						onClick={async () => {
 							await deleteSubtag(subtagId), setDialogOpen(false);
 						}}
+						className="w-full"
 					>
 						Yes, delete this subtag
 					</Button>
@@ -64,6 +65,7 @@ export default function SubtagDeleteModal({
 						onClick={async () => {
 							setDialogOpen(false);
 						}}
+						className="w-full"
 					>
 						No, keep this subtag
 					</Button>

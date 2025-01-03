@@ -22,7 +22,7 @@ import getPartialCategories from '@/actions/categories/getPartialCategories';
  */
 export default async function CategoryBar({
 	text = 'Trending Categories',
-	hrefPrefix = '/ranches?categories=',
+	hrefPrefix = '/explore?categories=',
 	className,
 	badgeClassName,
 	variant = 'outline',
@@ -67,7 +67,7 @@ export default async function CategoryBar({
 						</Link>
 					))}
 					<Link
-						href="/state"
+						href="/category"
 						className="px-1"
 						data-umami-event="Badge Clicked"
 						data-umami-event-item="All"
