@@ -1,26 +1,20 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
-import SupabaseImage from "../SupabaseImage";
 import { Disclosure } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon } from "lucide-react";
+import Link from "next/link";
+import SupabaseImage from "../SupabaseImage";
+import Image from "next/image";
 
-type CategoryQuickLinksProps = {
-  categoryData: {
-    name: string;
-    slug: string;
-    image_url_small?: string | null;
-    description?: string | null;
-  }[];
-};
-
-export default function CategoryQuickLinks({
-  categoryData,
-}: CategoryQuickLinksProps) {
+export default function CategoryLinks({
+  categories,
+}: {
+  categories: Category[];
+}) {
   const title = "Shop Popular Categories";
   const description =
     "We've got everything from everyday basics to statement pieces.";
+  const limitedCategories = categories.slice(0, 12);
 
   return (
     <div className="bg-backgroundDz">
@@ -32,12 +26,9 @@ export default function CategoryQuickLinks({
         <Disclosure.Button className="group flex w-full items-center justify-between border-b border-mutedDz pb-8">
           <div className="text-left">
             <h2 className="text-3xl font-bold text-primaryDz sm:text-4xl">
-              Shop Popular Categories
+              {title}
             </h2>
-            <p className="mt-4 text-base text-mutedDz">
-              We&apos;ve got everything from everyday basics to statement
-              pieces.
-            </p>
+            <p className="mt-4 text-base text-mutedDz">{description}</p>
           </div>
           <ChevronDownIcon
             aria-hidden="true"
@@ -47,10 +38,10 @@ export default function CategoryQuickLinks({
 
         <Disclosure.Panel>
           <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 md:grid-cols-6 mt-8">
-            {categoryData.map((category) => (
+            {limitedCategories.map((category) => (
               <Link
-                key={category.name}
-                href="#"
+                key={category.id}
+                href={`/category/${category.slug}`}
                 className="flex flex-col items-center group"
               >
                 <div
@@ -74,10 +65,10 @@ export default function CategoryQuickLinks({
                   ) : (
                     <Image
                       src="/img/placeholder.png"
-                      alt="Hero Image"
+                      alt={category.name}
                       className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
-                      width={1920}
-                      height={1080}
+                      width={320}
+                      height={320}
                       priority
                     />
                   )}

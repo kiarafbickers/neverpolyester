@@ -14,7 +14,7 @@ export default function MainHero() {
         <div className="w-full md:w-7/12 relative">
           <div className="aspect-w-4 aspect-h-5 md:aspect-w-3 md:aspect-h-2">
             <Image
-              src="/img/hero1.png"
+              src="/img/homepage/hero1.png"
               alt="Image 1"
               height={1080}
               width={1920}
@@ -44,7 +44,7 @@ export default function MainHero() {
         <div className="w-full md:w-7/12 order-1 md:order-2 relative">
           <div className="aspect-w-4 aspect-h-5 md:aspect-w-3 md:aspect-h-2">
             <Image
-              src="/img/hero2.png"
+              src="/img/homepage/hero2.png"
               alt="Image 2"
               height={1080}
               width={1920}

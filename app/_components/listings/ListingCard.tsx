@@ -1,97 +1,116 @@
-// Import Types
-import { ListingType, AuthUserType } from '@/supabase-special-types';
-// Import External Packages
-// Import Components
-import SupabaseImage from '@/components/SupabaseImage';
-import {
-	ImageCard,
-	ImageCardFooter,
-	ImageCardImageContainer,
-	ImageCardLink,
-	ImageCardTitle,
-	ImageCardBanner,
-} from '@/ui/ImageCard';
-import ListingCardCoupon from '@/components/listings/ListingCardCoupon';
-// Import Functions & Actions & Hooks & State
-// Import Data
-import { GENERAL_SETTINGS } from '@/constants';
-// Import Assets & Icons
-import { BadgeCheckIcon } from 'lucide-react';
+import Link from "next/link";
+import { BadgeCheckIcon } from "lucide-react";
+import SupabaseImage from "@/components/SupabaseImage";
+import { GENERAL_SETTINGS } from "@/constants";
+import { AuthUserType, ListingType } from "@/supabase-special-types";
 
-/**
- * A card component that displays a listing.
- * @param listing - The listing to display.
- * @param settings - The settings for the card.
- */
 export default function ListingCard({
-	listing,
-	user,
+  listing,
+  user,
 }: {
-	listing: ListingType;
-	user: AuthUserType | null;
+  listing: ListingType;
+  user: AuthUserType | null;
 }) {
-	const isNew =
-		new Date(listing.created_at || Date.now()) >
-		new Date(
-			Date.now() -
-				GENERAL_SETTINGS.MAX_NUM_DAY_AGE_FOR_NEW_BADGE * 24 * 60 * 60 * 1000
-		);
-	return (
-		<ImageCard
-			linkHover
-			className="border-1 border-transparent fade-in bg-transparent shadow-none group "
-		>
-			<ImageCardImageContainer className="rounded-lg aspect-video w-auto">
-				<SupabaseImage
-					dbImageUrl={listing.default_image_url}
-					width={1600}
-					height={900}
-					database="listing_images"
-					priority
-					className="group-hover:scale-105 transition-transform duration-300 h-full w-full"
-				/>
+  const isNew =
+    new Date(listing.created_at || Date.now()) >
+    new Date(
+      Date.now() -
+        GENERAL_SETTINGS.MAX_NUM_DAY_AGE_FOR_NEW_BADGE * 24 * 60 * 60 * 1000
+    );
 
-				<ImageCardBanner className="flex gap-2 bg-transparent" location="tr">
-					{listing.is_promoted && (
-						<span className="bg-green-400/60 text-green-800 rounded-sm w-fit px-1 text-sm tracking-tight">
-							Promoted
-						</span>
-					)}
-					{listing.created_at && isNew && (
-						<span className="bg-light-red-bg text-text-on-light-red rounded-sm w-fit px-1 text-sm tracking-tight">
-							New
-						</span>
-					)}
-					{listing.owner_id && (
-						<span className="bg-transparent">
-							<BadgeCheckIcon className="h-5 w-5 text-green-500" />
-						</span>
-					)}
-				</ImageCardBanner>
+  return (
+    <div key={listing.id} className="flex flex-col lg:flex-row overflow-hidden">
+      {/* Image */}
+      <div className="w-full lg:w-1/3 relative">
+        {listing.default_image_url ? (
+          <SupabaseImage
+            dbImageUrl={listing.default_image_url}
+            width={800}
+            height={600}
+            database="listing_images"
+            priority
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="block w-full aspect-[16/9] bg-gray-200 lg:h-full" />
+        )}
+        <div className="absolute top-2 right-2 flex flex-col space-y-1">
+          {listing.is_promoted && (
+            <span className="inline-flex items-center rounded bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+              Promoted
+            </span>
+          )}
+          {isNew && (
+            <span className="inline-flex items-center rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
+              New
+            </span>
+          )}
+        </div>
+      </div>
 
-				<ImageCardLink
-					href={`/explore/${listing.slug}`}
-					data-umami-event="Listing Card"
-					data-umami-event-listing={listing.slug}
-				/>
-			</ImageCardImageContainer>
+      {/* Content */}
+      <div className="w-full lg:w-2/3 py-4 flex flex-col justify-between lg:p-4">
+        {/* Title */}
+        <div>
+          <div className="flex items-center space-x-2">
+            {/* Title */}
+            <h3 className="text-lg font-semibold text-gray-800">
+              <Link
+                href={`/explore/${listing.slug}`}
+                className="hover:underline"
+                data-umami-event="Listing Card"
+                data-umami-event-listing={listing.slug}
+              >
+                {listing.title}
+              </Link>
+            </h3>
 
-			<ImageCardFooter className="flex flex-col relative w-full overflow-hidden bg-transparent p-0 pt-2">
-				<ImageCardLink
-					href={`/explore/${listing.slug}`}
-					data-umami-event="Listing Card"
-					data-umami-event-listing={listing.slug}
-				/>
+            {/* Badge */}
+            {listing.owner_id && (
+              <div className="inline-flex items-center text-sm text-gray-600">
+                <BadgeCheckIcon className="w-4 h-4 text-blue-500" />
+                <span className="sr-only">Verified Owner</span>
+              </div>
+            )}
+          </div>
 
-				<div className="relative w-full gap-x-2 flex text-sm items-center text-muted-foreground">
-					{!!listing.category?.name && <p>{listing.category?.name}</p>}
-				</div>
+          {/* Voucher Code */}
+          {listing.discount_code && (
+            <div className="mt-3 flex items-center">
+              <p className="text-sm font-medium text-gray-600">Voucher Code:</p>
+              {user ? (
+                <span className="ml-2 rounded bg-green-50 px-3 py-1 text-sm font-semibold text-green-700">
+                  {listing.discount_code}
+                </span>
+              ) : (
+                <>
+                  <span className="ml-2 rounded bg-gray-100 px-3 py-1 text-sm font-semibold text-gray-800">
+                    *****{listing.discount_code.slice(-2)}
+                  </span>
+                  <span className="ml-2 rounded bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
+                    Log in to view
+                  </span>
+                </>
+              )}
+            </div>
+          )}
 
-				<div className="flex justify-between h-14 overflow-hidden w-full">
-					<ImageCardTitle>{listing.title}</ImageCardTitle>
-					<ListingCardCoupon listing={listing} user={user} />
-				</div>
-			</ImageCardFooter>
-		</ImageCard>
-	);
+          {/* Excerpt */}
+          <p className="mt-4 text-sm text-gray-700">
+            {listing.excerpt || "No description available."}
+          </p>
+        </div>
+
+        {/* Actions */}
+        <div className="mt-6 flex space-x-4">
+          <Link
+            href={`/explore/${listing.slug}`}
+            className="inline-flex items-center justify-center rounded bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200"
+          >
+            Read more
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 }

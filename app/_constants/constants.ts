@@ -18,17 +18,17 @@ export const COMPANY_BASIC_INFORMATION = {
   /**
    * The name of the company.
    */
-  NAME: "never polyester",
+  NAME: "Never Polyester",
 
   /**
    * The legal name of the company. If no legal name is available, use the name of the company.
    */
-  LEGAL_NAME: "Company Name LLC",
+  LEGAL_NAME: "Never Polyester LLC",
 
   /**
    * The OTHER_INFO_TEXT will only be shown in the imprint. It can be used to show additional information, e.g. the VAT-ID of your business. It is an array of strings, where each string will be shown as a separate line.
    */
-  OTHER_INFO_LINES: ["EU-Vat-ID: 1234"],
+  OTHER_INFO_LINES: ["-"],
 
   /**
    * The address of the company. Leave as '' if you do not want to display an address.
@@ -38,17 +38,17 @@ export const COMPANY_BASIC_INFORMATION = {
   /**
    * The URL of the company's website.
    */
-  URL: "https://SOME_URL.com",
+  URL: "https://neverpolyester.com",
 
   /**
    * The support email of the company.
    */
-  SUPPORT_EMAIL: "support@SOME_URL.com",
+  SUPPORT_EMAIL: "contact@neverpolyester.com",
 
   /**
    * The support phone number of the company. (This is needed in certain countries for the imprint.)
    */
-  SUPPORT_PHONE: "+1 234 567 890",
+  SUPPORT_PHONE: "",
 
   /**
    * The founding year of the company. For auto-updating the age of the company in the footer.
@@ -58,12 +58,12 @@ export const COMPANY_BASIC_INFORMATION = {
   /**
    * The URL of the parent company's website. If you have a holding or a personal portfolio website, you can link it here.
    */
-  PARENT_COMPANY_URL: "https://SOME_ORTHER_URL.com",
+  PARENT_COMPANY_URL: "",
 
   /**
    * The name of the responsible person for the website. This is the person who is responsible for the content of the website, e.g. for the Cookie Policy.
    */
-  RESPONSIBLE_PERSON: "YOUR NAME",
+  RESPONSIBLE_PERSON: "Kiara Bickers",
 };
 
 /**
@@ -73,12 +73,13 @@ export const COMPANY_MARKETING_INFORMATION = {
   /**
    * The meta title for the resource directory. Maximum 60-70 characters.
    */
-  META_TITLE: "A resource directory for ABCs and XYZs",
+  META_TITLE: "Never Polyester - The ultimate resource directory for XYZ.",
 
   /**
    * The meta description for the resource directory. Maximum 160 characters.
    */
-  META_DESCRIPTION: "Find the best tools and resources for your ABC journey.",
+  META_DESCRIPTION:
+    "Never Polyester is the ultimate resource directory for XYZ. Find the best brands, products, and services for your needs.",
 
   /**
    * The meta keywords for the resource directory. Max 10 keywords.
@@ -101,12 +102,12 @@ export const COMPANY_MARKETING_INFORMATION = {
       /**
        * The URL of the social channel.
        */
-      CHANNEL_HREF: "https://x.com/domainerskit",
+      CHANNEL_HREF: "https://x.com/kiarabickers",
 
       /**
        * The username for the social channel.
        */
-      USERNAME: "@domainerskit",
+      USERNAME: "@kiarabickers",
 
       /**
        * The icon for the social channel.
@@ -182,7 +183,7 @@ export const GENERAL_SETTINGS = {
 
   // Shall users be allowed to listings stats through the 'See Stats' Button on the listing page and on the bottom bar on each listing card?
   // The listings stats are Likes, Views and Ratings. If you disable them, you should also disable the Stats Button.
-  USE_STATS: false,
+  USE_STATS: true,
 
   // Shall users be allowed to share listings through social media?
   USE_SOCIAL_SHARE: true,
@@ -209,7 +210,7 @@ export const GENERAL_SETTINGS = {
   USE_AI_CONTENT_CREATION: true,
 
   // Do you want to show the 'New' badge on listings that are younger than X DAYS? Enter 0 to disable the 'New' badge.
-  MAX_NUM_DAY_AGE_FOR_NEW_BADGE: 0,
+  MAX_NUM_DAY_AGE_FOR_NEW_BADGE: 7,
 
   // Do you want to use Role Based Accound Control (RBAC)? If you set this to false, all users will have the same rights. If set to true, you will, per default, have two user roles: Users who can create listings (and everything else) and Users who basically can do nothing but change their account settings and view coupon codes on listings - if listings have a coupon code associated with them. The user roles & permissoins can of course be adapted to your needs. See constants/rbac_config.ts for more information.
   USE_RBAC: false,
@@ -223,7 +224,7 @@ export const LISTINGS_SETTINGS = {
   singularName: "Brand",
   pluralName: "Brands",
   explanationForAiContentCreation:
-    "This type of listing provides detailed information about one XYZ.",
+    "This type of listing provides detailed information about a brand for example: XYZ.",
 };
 
 export const SUBLISTINGS_SETTINGS = {
@@ -245,7 +246,7 @@ export const HERO_TITLE = "Natural Fibers";
 export const HERO_SLOGAN =
   "Natural fibers come straight from the Earth—plants and animals. They’re renewable, kind to your skin, and naturally antibacterial.";
 export const HERO_BUTTON_TEXT = "Shop now";
-export const HERO_BUTTON_HREF = "/explore";
+export const HERO_BUTTON_HREF = "/products";
 
 // FOOTER
 
@@ -255,12 +256,12 @@ export const CREATOR_INFORMATION = {
   /**
    * The name of the creator.
    */
-  NAME: "YOUR NAME",
+  NAME: "Kiara Bickers",
 
   /**
    * The URL of the creator's website.
    */
-  HREF: "https://x.com/@YOUR_HANDLE",
+  HREF: "https://x.com/@kiarabickers",
 };
 
 // What are disclaimers you want to show in the Footer?
@@ -271,7 +272,7 @@ export const FOOTER_DISCLAIMERS = [
 
 // What is the slogan you want to show in the Footer?
 
-export const FOOTER_SLOGAN = "The ultimate resource directory for XYZs";
+export const FOOTER_SLOGAN = "";
 
 // What are the external links you want to show in the Footer? (e.g. to your other projects)
 
@@ -395,28 +396,28 @@ export const SUBLISTING_SORT_DIRECTIONS: SublistingSortDirectionObject[] = [
 ];
 
 export const POLYESTERPROCESS = [
-  { step: "Trash", imageSrc: "/img/polyester_trash.png" },
-  { step: "Shred", imageSrc: "/img/polyester_shred.png" },
-  { step: "Spin", imageSrc: "/img/polyester_spin.png" },
-  { step: "Wear", imageSrc: "/img/polyester_wear.png" },
+  { step: "Trash", imageSrc: "/img/homepage/polyester_trash.png" },
+  { step: "Shred", imageSrc: "/img/homepage/polyester_shred.png" },
+  { step: "Spin", imageSrc: "/img/homepage/polyester_spin.png" },
+  { step: "Wear", imageSrc: "/img/homepage/polyester_wear.png" },
 ];
 
 export const NATURALFIBERBENEFITS = [
   {
     title: "Polyester and Microplastic Free",
-    imageSrc: "/img/benefit1.png",
+    imageSrc: "/img/homepage/benefit1.png",
   },
   {
     title: "No Endocrine Disruptiors",
-    imageSrc: "/img/benefit2.png",
+    imageSrc: "/img/homepage/benefit2.png",
   },
   {
     title: "No Harsh Chemicals",
-    imageSrc: "/img/benefit3.png",
+    imageSrc: "/img/homepage/benefit3.png",
   },
   {
     title: "Only 100% Natural Fibers",
-    imageSrc: "/img/benefit4.png",
+    imageSrc: "/img/homepage/benefit4.png",
   },
 ];
 
@@ -426,22 +427,132 @@ export const STEPS = [
   {
     name: "1. Filter by fabric",
     href: "#",
-    imageSrc: "/img/step1.png",
+    imageSrc: "/img/homepage/step1.png",
     imageAlt: "Choose Your Comfort",
     buttonText: "Choose Your Comfort",
   },
   {
     name: "2. Find nature-made pieces",
     href: "#",
-    imageSrc: "/img/step2.png",
+    imageSrc: "/img/homepage/step2.png",
     imageAlt: "Choose Sustainable Style",
     buttonText: "Choose Sustainable Style",
   },
   {
     name: "3. Grab the best deals",
     href: "#",
-    imageSrc: "/img/step3.png",
+    imageSrc: "/img/homepage/step3.png",
     imageAlt: "Snag a Deal Now",
     buttonText: "Snag a Deal Now",
   },
+];
+
+export const MEDIA_PARTNERS = [
+  { alt: "Forbes", src: "/logos/forbes.png" },
+  { alt: "The Washington Post", src: "/logos/the-washington-post.png" },
+  { alt: "Business Insider", src: "/logos/business-insider.png" },
+  { alt: "The Guardian", src: "/logos/the-guardian.png" },
+  { alt: "Wired", src: "/logos/wired.png" },
+  { alt: "Bloomberg", src: "/logos/bloomberg.png" },
+];
+
+export const TIMELINE = [
+  { month: "January", title: "TimeFound", icon: "/img/timeline/timefound.png" },
+  {
+    month: "February",
+    title: "Never Polyester",
+    icon: "/img/timeline/neverpolyester.png",
+  },
+  { month: "March", title: "", icon: "" },
+  { month: "April", title: "", icon: "" },
+  { month: "May", title: "", icon: "" },
+  { month: "June", title: "", icon: "" },
+  { month: "July", title: "", icon: "" },
+  { month: "August", title: "", icon: "" },
+  { month: "September", title: "", icon: "" },
+  { month: "October", title: "", icon: "" },
+  { month: "November", title: "", icon: "" },
+  { month: "December", title: "", icon: "" },
+];
+
+export const NAVBAR_ADD_LINKS = [
+  { name: "Women", href: "/explore?tags=women" },
+  { name: "Men", href: "/explore?tags=men" },
+  { name: "Kids", href: "/explore?tags=kids" },
+  { name: "Sale", href: "#" },
+  {
+    name: "All Clothes",
+    ALL: [
+      { name: "Beachwear and Swimwear", href: "#" },
+      { name: "Coats", href: "#" },
+      { name: "Dresses", href: "#" },
+      { name: "Hosiery", href: "#" },
+      { name: "Jackets", href: "#" },
+      { name: "Jeans", href: "#" },
+      { name: "Jumpsuits and Rompers", href: "#" },
+      { name: "Knitwear", href: "#" },
+      { name: "Lingerie", href: "#" },
+      { name: "Nightwear and Sleepwear", href: "#" },
+      { name: "Pants", href: "#" },
+    ],
+    FEATURED: [
+      [
+        { name: "True Religion Jeans", href: "#" },
+        { name: "Wrangler Jeans", href: "#" },
+        { name: "Reformation Dresses", href: "#" },
+        { name: "GOOD AMERICAN Jeans", href: "#" },
+        { name: "Rock Revival Jeans", href: "#" },
+        { name: "Mother Jeans", href: "#" },
+        { name: "PAIGE Jeans", href: "#" },
+        { name: "Levi's Jeans", href: "#" },
+        { name: "Democracy Jeans", href: "#" },
+        { name: "Agolde Jeans", href: "#" },
+        { name: "Spanx Pants", href: "#" },
+      ],
+      [
+        { name: "PacSun Jeans", href: "#" },
+        { name: "Carhartt Jackets", href: "#" },
+        { name: "Spanx Jeans", href: "#" },
+        { name: "Columbia Jackets", href: "#" },
+        { name: "Patagonia Jackets", href: "#" },
+        { name: "Flying Monkey Jeans", href: "#" },
+        { name: "Eliza J Dresses", href: "#" },
+        { name: "Adrianna Papell Dresses", href: "#" },
+        { name: "Adidas Shorts", href: "#" },
+      ],
+    ],
+  },
+  {
+    name: "All Brands",
+    ALL: [
+      { name: "Nike", href: "#" },
+      { name: "Adidas", href: "#" },
+      { name: "Patagonia", href: "#" },
+      { name: "Levi's", href: "#" },
+      { name: "Wrangler", href: "#" },
+      { name: "Columbia", href: "#" },
+      { name: "Carhartt", href: "#" },
+      { name: "Reformation", href: "#" },
+      { name: "True Religion", href: "#" },
+      { name: "GOOD AMERICAN", href: "#" },
+    ],
+    FEATURED: [
+      [
+        { name: "Luxury Brands", href: "#" },
+        { name: "Eco-Friendly Brands", href: "#" },
+        { name: "Activewear Brands", href: "#" },
+        { name: "Denim Experts", href: "#" },
+      ],
+      [
+        { name: "Outdoor and Hiking", href: "#" },
+        { name: "Casual Classics", href: "#" },
+        { name: "Premium Streetwear", href: "#" },
+        { name: "Iconic Labels", href: "#" },
+      ],
+    ],
+  },
+  { name: "Why", href: "#why" },
+  { name: "How", href: "#how" },
+  { name: "Deals", href: "#deals" },
+  { name: "Blog", href: "#blog" },
 ];

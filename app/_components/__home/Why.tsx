@@ -1,7 +1,8 @@
 "use client";
 
 import { Disclosure } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { ChevronDown } from "lucide-react";
+// import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -20,10 +21,7 @@ interface Props {
   benefits: Benefit[];
 }
 
-export default function WhyNeverPolyester({
-  polyesterProcess,
-  benefits,
-}: Props) {
+export default function Why({ polyesterProcess, benefits }: Props) {
   return (
     <div className="bg-primaryDz">
       {/* Header Section */}
@@ -33,7 +31,7 @@ export default function WhyNeverPolyester({
             <div className="w-full">
               <div className="aspect-w-4 aspect-h-3 md:aspect-w-16 md:aspect-h-9">
                 <Image
-                  src="/img/header_img1.png"
+                  src="/img/homepage/header_img1.png"
                   alt="Image 3"
                   height={1080}
                   width={1920}
@@ -48,7 +46,7 @@ export default function WhyNeverPolyester({
             <div className="w-full">
               <div className="aspect-w-4 aspect-h-3 md:aspect-w-16 md:aspect-h-9">
                 <Image
-                  src="/img/header_img2.png"
+                  src="/img/homepage/header_img2.png"
                   alt="Image 4"
                   height={1080}
                   width={1920}
@@ -93,7 +91,7 @@ export default function WhyNeverPolyester({
                 clothes.
               </p>
             </div>
-            <ChevronDownIcon
+            <ChevronDown
               aria-hidden="true"
               className="size-5 flex-none group-data-[open]:rotate-180 text-white"
             />
@@ -143,7 +141,7 @@ export default function WhyNeverPolyester({
                 <div className="relative aspect-w-3 aspect-h-4 md:aspect-w-4 md:aspect-h-3">
                   <Link href="#love">
                     <Image
-                      src="/img/polyester_love.png"
+                      src="/img/homepage/polyester_love.png"
                       alt="Love"
                       height={1080}
                       width={1080}

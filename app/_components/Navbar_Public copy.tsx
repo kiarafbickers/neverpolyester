@@ -1,260 +1,308 @@
 "use client";
 
-// Import Types
-// Import External Packages
-import { Disclosure } from "@headlessui/react";
+import { useState } from "react";
+import { Dialog, Disclosure, Popover } from "@headlessui/react";
+import { Menu, UserIcon, XIcon, ChevronRightIcon, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-// Import Components
-import { buttonVariants } from "@/ui/Button";
-import Searchbar from "@/components/Searchbar";
-// Import Functions & Actions & Hooks & State
-import { cn } from "@/lib/utils";
-// Import Data
-import { COMPANY_BASIC_INFORMATION, GENERAL_SETTINGS } from "@/constants";
-// Import Assets & Icons
 import {
-  MenuIcon,
-  MoonIcon,
-  XIcon,
-  SunIcon,
-  UserCircleIcon,
-} from "lucide-react";
+  COMPANY_BASIC_INFORMATION,
+  GENERAL_SETTINGS,
+  NAVBAR_ADD_LINKS,
+} from "../_constants/constants";
+import { cn } from "../_lib/utils";
+import { buttonVariants } from "./_ui/Button";
+import Searchbar from "./Searchbar";
 
-export const NAVBAR_ADD_LINKS = [
-  {
-    name: "Listings",
-    href: "/explore",
-  },
-  {
-    name: "Products",
-    href: "/products",
-  },
-  {
-    name: "Advertise",
-    href: "/advertise",
-  },
-  {
-    name: "Blog",
-    href: "/blog",
-  },
-];
+export default function Header() {
+  const [open, setOpen] = useState(false);
 
-/**
- * Renders a mode toggle button that allows the user to switch between light and dark mode.
- * If you want to use this component somewhere else, extract it to a separate file and import it.
- */
-function ModeToggle() {
-  function disableTransitionsTemporarily() {
-    document.documentElement.classList.add("[&_*]:!transition-none");
-    window.setTimeout(() => {
-      document.documentElement.classList.remove("[&_*]:!transition-none");
-    }, 0);
-  }
-
-  function toggleMode() {
-    disableTransitionsTemporarily();
-
-    const darkModeMediaQuery = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    );
-    const isSystemDarkMode = darkModeMediaQuery.matches;
-    const isDarkMode = document.documentElement.classList.toggle("dark");
-
-    if (isDarkMode === isSystemDarkMode) {
-      delete window.localStorage.isDarkMode;
-    } else {
-      window.localStorage.isDarkMode = isDarkMode;
-    }
-  }
-
-  return (
-    <button
-      type="button"
-      aria-label="Toggle dark mode"
-      className="group rounded-full px-3 py-2"
-      onClick={toggleMode}
-    >
-      <SunIcon className="h-6 w-6 fill-amber-200 stroke-amber-300 transition group-hover:hidden group-hover:dark:block dark:hidden " />
-      <MoonIcon className="hidden h-6 w-6 fill-zinc-700 stroke-zinc-400 group-hover:block group-hover:dark:hidden transition dark:block" />
-    </button>
+  // Filter untuk navigasi utama (sebelum logo)
+  const mainNavLinks = NAVBAR_ADD_LINKS.filter((link) =>
+    ["Women", "Men", "Kids", "All Clothes", "All Brands", "Sale"].includes(
+      link.name
+    )
   );
-}
 
-export default function Navbar_Public() {
+  // Filter untuk navigasi setelah logo
+  const rightOfLogoLinks = NAVBAR_ADD_LINKS.filter((link) =>
+    ["Why", "How", "Deals", "Blog"].includes(link.name)
+  );
+
   return (
-    <Disclosure
-      as="nav"
-      className="w-full sticky top-0 z-50  dark:bg-black bg-white px-4 py-2 xl:px-0"
-    >
-      {({ open }) => (
-        <>
-          <div className="max-w-7xl mx-auto h-full grid grid-rows-2 md:grid-rows-1">
-            <div className="flex items-center justify-between  py-2">
-              <div className="flex items-center">
-                {/* Desktop Nav */}
-                {/* Logo */}
-                <div className="items-center h-auto w-32 md:w-48">
-                  <Link href="/">
-                    <Image
-                      src="/logos/logo_for_light.png"
-                      alt={`${COMPANY_BASIC_INFORMATION.NAME} Logo Light Mode`}
-                      width={640}
-                      height={107}
-                      className="h-auto dark:hidden"
-                      priority
-                    />
-                    <Image
-                      src="/logos/logo_for_dark.png"
-                      alt={`${COMPANY_BASIC_INFORMATION.NAME} Logo Dark Mode`}
-                      width={640}
-                      height={107}
-                      className="hidden  dark:inline"
-                      priority
-                    />
-                  </Link>
-                </div>
-                {/* Navbar_PublicItems */}
-              </div>
-              <div className="w-full flex-grow" />
+    <div className="bg-white">
+      {/* Mobile menu */}
+      <Dialog open={open} onClose={setOpen} className="relative z-40 lg:hidden">
+        <Dialog.Backdrop className="fixed inset-0 bg-black bg-opacity-25 transition-opacity duration-300 ease-linear data-[closed]:opacity-0" />
+        <div className="fixed inset-0 z-40 flex">
+          <Dialog.Panel className="relative flex w-full max-w-xs transform flex-col overflow-y-auto bg-white pb-12 shadow-xl transition duration-300 ease-in-out data-[closed]:-translate-x-full">
+            <div className="bg-gray-100 relative flex items-center justify-center p-4">
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="absolute left-4 -m-3 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
+              >
+                <span className="sr-only">Close menu</span>
+                <XIcon aria-hidden="true" className="h-6 w-6" />
+              </button>
+              <Link href="/" className="text-xl font-extrabold lowercase">
+                {COMPANY_BASIC_INFORMATION.NAME}
+              </Link>
+            </div>
 
-              <Searchbar
-                placeholder="Search by name.."
-                className="hidden md:block w-full px-4"
-                id="nav_search"
-                rootPage="/explore"
-              />
-
-              <div className="flex items-center justify-end lg:max-w-fit whitespace-nowrap ">
-                <div className="hidden items-center lg:flex lg:gap-x-1">
-                  {NAVBAR_ADD_LINKS.map(
-                    (link) =>
-                      (GENERAL_SETTINGS.USE_SUBLISTINGS ||
-                        (!GENERAL_SETTINGS.USE_SUBLISTINGS &&
-                          link.name !== "Products")) && (
-                        <div
-                          key={link.name}
-                          className="group relative flex items-center rounded-lg p-2 text-sm leading-6"
-                        >
-                          <div className="flex">
-                            <Link
-                              href={link.href}
-                              className="hover:underline text-muted-foreground"
-                            >
-                              {link.name}
-                            </Link>
+            {/* Sign up or log in */}
+            <div className="border-y border-gray-200 px-4 py-6">
+              <Link
+                href="/propose"
+                className={cn(
+                  buttonVariants({ variant: "default", size: "sm" }),
+                  "block w-full text-center bg-primaryDz px-3 py-2 rounded-none hover:bg-secondaryDz"
+                )}
+              >
+                Sign up or Log in
+              </Link>
+            </div>
+            <div className="p-4 space-y-4">
+              {NAVBAR_ADD_LINKS.map((link) =>
+                link.ALL ? (
+                  <Disclosure key={link.name} as="div">
+                    {({ open }) => (
+                      <div>
+                        <Disclosure.Button className="flex w-full items-center justify-between text-left text-sm font-semibold text-primaryDz">
+                          <span>{link.name}</span>
+                          <ChevronRightIcon
+                            className={`h-5 w-5 transform transition-transform duration-200 ${
+                              open ? "rotate-90" : "text-gray-400"
+                            }`}
+                          />
+                        </Disclosure.Button>
+                        <Disclosure.Panel className="mt-4 space-y-4">
+                          <div>
+                            <p className="sr-only">All Categories</p>
+                            <ul className="mt-4 space-y-4">
+                              {link.ALL.map((item) => (
+                                <li key={item.name}>
+                                  <Link
+                                    href={item.href}
+                                    onClick={() => setOpen(false)}
+                                    className="text-sm text-gray-500"
+                                  >
+                                    {item.name}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
-                        </div>
-                      )
+                          <div>
+                            <p className="font-medium text-primaryDz">
+                              Featured Categories
+                            </p>
+                            <ul className="mt-4 space-y-4">
+                              {link.FEATURED[0].map((item) => (
+                                <li key={item.name}>
+                                  <Link
+                                    href={item.href}
+                                    className="text-sm text-gray-500"
+                                  >
+                                    {item.name}
+                                  </Link>
+                                </li>
+                              ))}
+                              {link.FEATURED[1].map((item) => (
+                                <li key={item.name}>
+                                  <Link
+                                    href={item.href}
+                                    className="text-sm text-gray-500"
+                                  >
+                                    {item.name}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </Disclosure.Panel>
+                      </div>
+                    )}
+                  </Disclosure>
+                ) : (
+                  <Link
+                    key={link.name}
+                    href={link.href ?? "#"}
+                    className="block text-sm font-semibold text-primaryDz"
+                    onClick={() => setOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                )
+              )}
+            </div>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
+
+      <header className="relative">
+        <nav aria-label="Top">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex h-16 items-center justify-between lg:space-x-6">
+              {/* Left Navigation Links */}
+              <Popover.Group className="hidden lg:flex lg:flex-1">
+                <div className="flex h-full space-x-4 lg:space-x-6">
+                  {mainNavLinks.map((link, index) =>
+                    link.ALL ? (
+                      <Popover key={index} className="flex">
+                        <Popover.Button className="relative z-10 -mb-px flex items-center border-b-2 border-transparent pt-px text-sm font-medium text-primaryDz transition-colors duration-200 ease-out hover:text-accentDz focus:outline-none whitespace-nowrap">
+                          {link.name}
+                        </Popover.Button>
+
+                        <Popover.Panel className="absolute inset-x-0 top-full text-gray-500 transition data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in sm:text-sm z-10">
+                          <div
+                            aria-hidden="true"
+                            className="absolute inset-0 top-1/2 bg-white shadow"
+                          />
+                          <div className="relative bg-white">
+                            <div className="mx-auto max-w-7xl px-8">
+                              <div className="grid grid-cols-2 items-start gap-x-8 gap-y-10 pb-12 pt-10">
+                                <div className="pr-8 border-r border-gray-200">
+                                  <ul className="space-y-6 sm:space-y-4">
+                                    {link.ALL.map((item) => (
+                                      <li key={item.name}>
+                                        <Link
+                                          href={item.href ?? "#"}
+                                          className="flex justify-between items-center w-full hover:text-accentDz"
+                                        >
+                                          <span>{item.name}</span>
+                                          <ChevronRightIcon
+                                            className="h-4 w-4 text-gray-400"
+                                            aria-hidden="true"
+                                          />
+                                        </Link>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                                <div className="grid grid-cols-1 gap-x-6 gap-y-10 lg:gap-x-8">
+                                  <div>
+                                    <p className="font-medium text-primaryDz">
+                                      Featured
+                                    </p>
+                                    <div className="sm:grid sm:grid-cols-2 sm:gap-x-6">
+                                      <ul className="mt-4 space-y-4">
+                                        {link.FEATURED[0].map((item) => (
+                                          <li key={item.name}>
+                                            <Link
+                                              href={item.href ?? "#"}
+                                              className="hover:text-accentDz"
+                                            >
+                                              {item.name}
+                                            </Link>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                      <ul className="mt-4 space-y-4">
+                                        {link.FEATURED[1].map((item) => (
+                                          <li key={item.name}>
+                                            <Link
+                                              href={item.href ?? "#"}
+                                              className="hover:text-accentDz"
+                                            >
+                                              {item.name}
+                                            </Link>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </Popover.Panel>
+                      </Popover>
+                    ) : (
+                      <Link
+                        key={link.name}
+                        href={link.href ?? "#"}
+                        className="text-sm font-medium text-primaryDz hover:text-accentDz"
+                      >
+                        {link.name}
+                      </Link>
+                    )
                   )}
                 </div>
+              </Popover.Group>
 
-                <Link
-                  href={"/propose"}
-                  className={cn(
-                    buttonVariants({ variant: "outline", size: "sm" }),
-                    "bg-dark-foreground hover:bg-dark-foreground/80 rounded-full text-white hover:text-white py-4"
-                  )}
-                  prefetch={false}
-                  data-umami-event="Navbar: Submit a Business"
+              {/* Mobile menu button */}
+              <div className="flex items-center lg:hidden">
+                <button
+                  type="button"
+                  onClick={() => setOpen(true)}
+                  className="-ml-2 p-2 text-gray-400"
                 >
-                  + Submit a Business
+                  <Menu className="h-6 w-6" />
+                </button>
+              </div>
+
+              {/* Logo */}
+              <div className="flex justify-center lg:flex-1">
+                <Link href="/" className="flex">
+                  <h1 className="text-xl font-extrabold lowercase lg:text-2xl">
+                    {COMPANY_BASIC_INFORMATION.NAME}
+                  </h1>
+                </Link>
+              </div>
+
+              {/* Links next to the logo */}
+              <div className="hidden lg:flex lg:space-x-6">
+                {rightOfLogoLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    href={link.href ?? "#"}
+                    className="text-sm font-medium text-primaryDz hover:text-accentDz"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+
+              {/* Search and Account Icons */}
+              <div className="flex items-center space-x-4">
+                {/* Sign up or log in */}
+                <Link
+                  href="/propose"
+                  className={cn(
+                    buttonVariants({ variant: "default", size: "sm" }),
+                    "hidden bg-primaryDz rounded-none hover:bg-secondaryDz md:inline-flex"
+                  )}
+                >
+                  Sign up or Log in
                 </Link>
 
-                <div className="pointer-events-auto border-gray-500 flex flex-nowrap items-center justify-end">
-                  <ModeToggle />
-                  {GENERAL_SETTINGS.USE_PUBLISH && (
-                    <>
-                      <Link
-                        href={"/account"}
-                        className="hover:underline text-muted-foreground text-sm"
-                        prefetch={false}
-                        data-umami-event="Navbar: Account"
-                      >
-                        <UserCircleIcon size={22} />
-                        <span className="sr-only">Account</span>
-                      </Link>
-                      {process.env.NODE_ENV === "development" && (
-                        <Link
-                          href={"/secret-admin"}
-                          className={cn(
-                            buttonVariants({
-                              variant: "default",
-                              size: "sm",
-                            }),
-                            "absolute top-40 md:top-20 right-4"
-                          )}
-                          prefetch={false}
-                        >
-                          Admin
-                        </Link>
-                      )}
-                    </>
-                  )}
-                </div>
+                {/* Search Icon */}
+                <Popover className="relative">
+                  <Popover.Button className="flex items-center text-primaryDz hover:text-secondaryDz focus:outline-none">
+                    <Search className="h-6 w-6" />
+                  </Popover.Button>
+                  <Popover.Panel className="absolute right-0 mt-2 w-96 bg-white border border-gray-200 shadow-lg p-4 z-10">
+                    <Searchbar
+                      placeholder="Search by name.."
+                      id="nav_search"
+                      rootPage="/explore"
+                    />
+                  </Popover.Panel>
+                </Popover>
+
+                {/* Account Icon */}
+                <Link
+                  href="/account"
+                  className="flex items-center text-sm font-medium text-primaryDz hover:text-secondaryDz"
+                >
+                  <UserIcon className="h-6 w-6" />
+                </Link>
               </div>
-            </div>
-            <div className="md:hidden flex justify-between items-center py-2">
-              <div className="-ml-2 mr-2 flex items-center lg:hidden">
-                {/* Mobile menu button */}
-                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-black dark:hover:bg-neutral-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                  <span className="absolute -inset-0.5" />
-                  <span className="sr-only">Open main menu</span>
-                  {open ? (
-                    <XIcon className="block h-6 w-6" aria-hidden="true" />
-                  ) : (
-                    <MenuIcon className="block h-6 w-6" aria-hidden="true" />
-                  )}
-                </Disclosure.Button>
-              </div>
-              <Searchbar
-                placeholder="Listings.."
-                className="w-full"
-                id="nav_search_mobile"
-              />
             </div>
           </div>
-
-          {/* Mobile menu, show/hide based on menu open state.*/}
-          <Disclosure.Panel className="lg:hidden bg-white dark:bg-black">
-            {({ close }) => (
-              <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                {NAVBAR_ADD_LINKS.map((link) => (
-                  <Disclosure.Button key={link.name} className="block w-full">
-                    <Link
-                      href={link.href}
-                      className="hover:bg-black dark:hover:bg-neutral-800 hover:text-white dark:text-white block rounded-md px-3 py-2 text-base font-medium"
-                      onClick={() => close()}
-                    >
-                      {link.name}
-                    </Link>
-                  </Disclosure.Button>
-                ))}
-                {GENERAL_SETTINGS.USE_PUBLISH && (
-                  <Disclosure.Button className="block w-full">
-                    <Link
-                      href={"/account/new-listing"}
-                      className="hover:bg-black dark:hover:bg-neutral-800 hover:text-white dark:text-white block rounded-md px-3 py-2 text-base font-medium"
-                      onClick={() => close()}
-                      prefetch={false}
-                    >
-                      Submit a listing
-                    </Link>
-                    <Link
-                      href={"/account"}
-                      className="hover:bg-black dark:hover:bg-neutral-800 hover:text-white dark:text-white block rounded-md px-3 py-2 text-base font-medium"
-                      onClick={() => close()}
-                      prefetch={false}
-                    >
-                      Account
-                    </Link>
-                  </Disclosure.Button>
-                )}
-              </div>
-            )}
-          </Disclosure.Panel>
-        </>
-      )}
-    </Disclosure>
+        </nav>
+      </header>
+    </div>
   );
 }

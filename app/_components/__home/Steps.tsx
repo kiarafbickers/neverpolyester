@@ -1,7 +1,7 @@
 "use client";
 
 import { Disclosure } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -17,7 +17,7 @@ interface Props {
   steps: Step[];
 }
 
-export default function StepsSection({ steps }: Props) {
+export default function Steps({ steps }: Props) {
   return (
     <div id="how" className="bg-backgroundDz">
       <Disclosure
@@ -34,7 +34,7 @@ export default function StepsSection({ steps }: Props) {
               than ever.
             </p>
           </div>
-          <ChevronDownIcon
+          <ChevronDown
             aria-hidden="true"
             className="w-5 h-5 transition-transform duration-200 group-data-[open]:-rotate-180"
           />

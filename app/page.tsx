@@ -1,39 +1,61 @@
-import CategoryQuickLinks from "@/components/__home/CategoryQuickLinks";
-import Navbar_Public from "@/components/Navbar_Public";
-import { SectionOuterContainer } from "@/ui/Section";
-import MainHero from "@/components/__home/MainHero";
-import WhyNeverPolyester from "./_components/__home/WhyNeverPolyester";
+import serverAuth from "./_actions/auth/serverAuth";
+import { getPublishedPosts } from "./_actions/blog/getPublishedPosts";
+import getFullCategories from "./_actions/categories/getFullCategories";
+import getListingCoupon from "./_actions/listings/getListingCoupon";
+import {
+  getAllListingsForNavbar,
+  getPromotedListingsForNavbar,
+} from "./_actions/listings/getListingForNavbar";
+import CategoryLinks from "./_components/__home/CategoryLinks";
+import Coupons from "./_components/__home/Coupons";
+import CreatorInfo from "./_components/__home/CreatorInfo";
+import LatestArticles from "./_components/__home/LatestArticles";
+import MainHero from "./_components/__home/MainHero";
+import MediaLogos from "./_components/__home/MediaLogos";
+import ScrollingLabels from "./_components/__home/ScrollingLabels";
+import Steps from "./_components/__home/Steps";
+import Timeline from "./_components/__home/Timeline";
+import Why from "./_components/__home/Why";
+import { SectionOuterContainer } from "./_components/_ui/Section";
+import Navbar_Public from "./_components/Navbar_Public";
 import {
   LABELS,
+  MEDIA_PARTNERS,
   NATURALFIBERBENEFITS,
   POLYESTERPROCESS,
   STEPS,
+  TIMELINE,
 } from "./_constants/constants";
-import ScrollingLabels from "./_components/__home/ScrollingLabels";
-import StepsSection from "./_components/__home/Steps";
-import getFullCategories from "./_actions/categories/getFullCategories";
 
 export default async function Page() {
-  const { data: rawCategoryData } = await getFullCategories("all");
-
-  const CATEGORYDATA = rawCategoryData.map((category) => ({
-    name: category.name,
-    slug: category.slug,
-    image_url_small: category.image_url_small ?? undefined,
-    description: category.description ?? undefined,
-  }));
+  const { user } = await serverAuth({ checkUser: true });
+  const { data: coupons } = await getListingCoupon(4);
+  const { data: categories } = await getFullCategories("all");
+  const { data: articles } = await getPublishedPosts(2);
+  const { data: allListings } = await getAllListingsForNavbar(10);
+  const { data: promotedListings } = await getPromotedListingsForNavbar(10);
   return (
     <>
-      <Navbar_Public />
+      <Navbar_Public
+        allListings={allListings}
+        promotedListings={promotedListings}
+      />
+
       <SectionOuterContainer className="mx-auto py-0">
         <MainHero />
-        <WhyNeverPolyester
+        <Why
           polyesterProcess={POLYESTERPROCESS}
           benefits={NATURALFIBERBENEFITS}
         />
         <ScrollingLabels labels={LABELS} />
-        <StepsSection steps={STEPS} />
-        <CategoryQuickLinks categoryData={CATEGORYDATA} />
+        <Steps steps={STEPS} />
+        <Coupons listings={coupons} user={user} />
+        <CategoryLinks categories={categories} />
+        <LatestArticles articles={articles} />
+        <ScrollingLabels labels={LABELS} />
+        <MediaLogos logos={MEDIA_PARTNERS} />
+        <CreatorInfo />
+        <Timeline timelineData={TIMELINE} />
       </SectionOuterContainer>
     </>
   );

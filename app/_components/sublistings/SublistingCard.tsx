@@ -1,123 +1,257 @@
-// Import Types
-import { SublistingType } from '@/supabase-special-types';
-// Import External Packages
-// Import Components
-import PriceDisplay from './PriceDisplay';
-import { StarRating } from '@/components/sublistings/StarRating';
-import SupabaseImage from '@/components/SupabaseImage';
-import {
-	ImageCard,
-	ImageCardDescription,
-	ImageCardFooter,
-	ImageCardImageContainer,
-	ImageCardLink,
-	ImageCardTitle,
-	ImageCardBanner,
-} from '@/ui/ImageCard';
-// Import Functions & Actions & Hooks & State
-import { cn } from '@/utils';
-// Import Data
-import { GENERAL_SETTINGS } from '@/constants';
-import { BadgePercentIcon } from 'lucide-react';
-// Import Assets & Icons
+"use client";
 
-/**
- * A card component that displays a sublisting.
- * @param sublisting - The sublisting to display.
- * @param settings - The settings for the card.
- */
+import { useState } from "react";
+import { Dialog } from "@headlessui/react";
+import SupabaseImage from "@/components/SupabaseImage";
+import LikeButton from "./Button_Like";
+
+// Icon
+import { Copy, Link2Icon, XIcon } from "lucide-react";
+import ExternalLinkButton from "./ExternalLinkButton";
+import CopyCouponCode from "@/app/(Public)/products/_components/CopyCouponCode";
+
 export default function SublistingCard({
-	sublisting,
-	showAsRow,
+  sublisting,
+  user,
+  showAsRow,
 }: {
-	sublisting: SublistingType;
-	showAsRow?: boolean;
+  sublisting: Sublisting;
+  user: User | null;
+  showAsRow?: boolean;
 }) {
-	return (
-		<ImageCard
-			linkHover
-			className="border-1 border-transparent fade-in bg-transparent shadow-none group "
-		>
-			<ImageCardImageContainer
-				className={cn(
-					'rounded-lg aspect-square',
-					showAsRow ? 'w-52 md:w-auto' : 'w-auto'
-				)}
-			>
-				<SupabaseImage
-					dbImageUrl={sublisting.default_image_url}
-					width={1600}
-					height={900}
-					database="sublisting_images"
-					priority={true}
-					className="group-hover:scale-105 transition-transform duration-300 h-full w-full"
-				/>
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const isSoldOut = !sublisting.availability;
+  const isOnSale =
+    sublisting.availability && !!sublisting.price_promotional_in_cents;
 
-				{!sublisting.availability && (
-					<ImageCardBanner className="flex gap-2 bg-transparent" location="tl">
-						<span className="bg-black text-white rounded-lg w-fit px-2 py-1 font-medium text-base">
-							Sold Out
-						</span>
-					</ImageCardBanner>
-				)}
+  const calculateDiscountPercentage = (
+    regularPrice: number,
+    promotionalPrice: number
+  ) => {
+    if (regularPrice && promotionalPrice) {
+      return Math.round(
+        ((regularPrice - promotionalPrice) / regularPrice) * 100
+      );
+    }
+    return 0;
+  };
 
-				{sublisting.availability && !!sublisting.price_promotional_in_cents ? (
-					<ImageCardBanner className="flex gap-2 bg-transparent" location="tl">
-						<span className="bg-light-red-bg text-text-on-light-red rounded-lg w-fit px-2 py-1 font-medium text-base">
-							Sale
-						</span>
-					</ImageCardBanner>
-				) : null}
+  const handleCardClick = () => {
+    setIsDialogOpen(true);
+  };
 
-				<ImageCardBanner className="flex gap-2 bg-transparent" location="tr">
-					{sublisting.is_promoted && (
-						<span className="bg-green-400/60 text-green-800 rounded-xl w-fit px-1 text-sm tracking-tight">
-							Promoted
-						</span>
-					)}
-					{GENERAL_SETTINGS.USE_RATING_ON_CARD &&
-					sublisting.average_rating &&
-					sublisting.average_rating > 0 ? (
-						<span className="bg-green-600 text-white rounded-sm w-fit px-1 text-sm tracking-tight">
-							<StarRating
-								rating={sublisting.average_rating}
-								maxRating={5}
-								numberOfStars={1}
-							/>
-						</span>
-					) : null}
-				</ImageCardBanner>
+  const handleCopyCode = () => {
+    navigator.clipboard.writeText(sublisting.discount_code).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
 
-				<ImageCardLink
-					href={`/products/${sublisting.slug}`}
-					data-umami-event="Sublisting Card"
-					data-umami-event-sublisting={sublisting.slug}
-				/>
-			</ImageCardImageContainer>
+  return (
+    <>
+      {/* Main Card */}
+      <div
+        className="relative rounded-lg overflow-hidden cursor-pointer"
+        onClick={handleCardClick}
+      >
+        {/* Featured Banner */}
+        {sublisting.is_promoted && (
+          <div className="absolute top-2 z-10">
+            <div
+              className="bg-red-800 text-white text-xs font-bold py-1 px-3"
+              style={{
+                clipPath: "polygon(0 0, 100% 0, 90% 50%, 100% 100%, 0 100%)",
+              }}
+            >
+              Featured
+            </div>
+          </div>
+        )}
 
-			<ImageCardFooter className="flex flex-col relative w-full overflow-hidden bg-transparent p-0 pt-2">
-				<ImageCardLink
-					href={`/products/${sublisting.slug}`}
-					data-umami-event="Sublisting Card"
-					data-umami-event-sublisting={sublisting.slug}
-				/>
-				<div className="flex justify-between items-center h-7 overflow-hidden w-full">
-					<ImageCardTitle className="whitespace-nowrap">
-						{sublisting.title}
-					</ImageCardTitle>
-					{/* @ts-ignore TODO : fix : Supabase Error: https://github.com/supabase/postgrest-js/issues/408#issuecomment-2175585000 */}
-					{!!sublisting.owner.discount_code_percentage && (
-						<div className="bg-light-red-bg text-text-on-light-red whitespace-nowrap h-fit p-1 rounded-md text-sm font-medium items-center hidden md:flex">
-							<BadgePercentIcon size={14} className="mr-1" />{' '}
-							{/* @ts-ignore TODO : fix : Supabase Error: https://github.com/supabase/postgrest-js/issues/408#issuecomment-2175585000 */}
-							{sublisting.owner.discount_code_percentage}% Off
-						</div>
-					)}
-				</div>
-				<PriceDisplay sublisting={sublisting} />
-				{/* @ts-ignore TODO : fix : Supabase Error: https://github.com/supabase/postgrest-js/issues/408#issuecomment-2175585000 */}
-				<ImageCardDescription>{sublisting.owner.title}</ImageCardDescription>
-			</ImageCardFooter>
-		</ImageCard>
-	);
+        {/* Image */}
+        <div className="relative">
+          <SupabaseImage
+            dbImageUrl={sublisting.default_image_url}
+            width={1600}
+            height={900}
+            database="sublisting_images"
+            priority
+            className="aspect-1 w-full rounded-md bg-gray-200 object-cover"
+          />
+
+          {/* Sold Out Banner */}
+          {isSoldOut && (
+            <div className="absolute inset-0 flex items-center justify-center z-10">
+              <div className="bg-black text-white rounded-full h-20 w-20 flex items-center justify-center text-xs font-bold">
+                Sold Out
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="mt-4">
+          {/* Price and Like Button */}
+          <div className="flex items-center justify-between">
+            <p className="text-sm">
+              {sublisting.price_promotional_in_cents ? (
+                <>
+                  <span className="text-gray-500 line-through mr-2">
+                    ${sublisting.price_regular_in_cents / 100}
+                  </span>
+                  <span className="font-semibold text-red-600">
+                    From ${sublisting.price_promotional_in_cents / 100}
+                  </span>
+                </>
+              ) : (
+                <span className="font-semibold text-gray-900">
+                  ${sublisting.price_regular_in_cents / 100}
+                </span>
+              )}
+            </p>
+            {/* Like Button */}
+            <div
+              onClick={(e) => e.stopPropagation()} // Prevents dialog from opening
+            >
+              <LikeButton sublisting={sublisting} user={user} />
+            </div>
+          </div>
+
+          {/* Subcategory */}
+          {sublisting.subcategory?.name && (
+            <p className="mt-2 text-sm font-medium text-gray-900">
+              {sublisting.subcategory.name}
+            </p>
+          )}
+
+          {/* Title */}
+          <h3 className="text-sm text-gray-500">{sublisting.title}</h3>
+        </div>
+
+        {/* Owner */}
+        {sublisting.owner?.title && (
+          <p className="mt-1 text-xs text-gray-400 flex items-center">
+            <Link2Icon
+              className="w-4 h-4 mr-1 text-gray-400"
+              aria-hidden="true"
+            />
+            {sublisting.owner.title}
+          </p>
+        )}
+
+        {/* Sale Banner */}
+        {isOnSale && (
+          <div className="mt-3 text-xs font-bold text-green-600 uppercase">
+            SALE
+          </div>
+        )}
+      </div>
+
+      {/* Dialog */}
+      {isDialogOpen && (
+        <Dialog
+          open={isDialogOpen}
+          onClose={() => setIsDialogOpen(false)}
+          className="relative z-50"
+        >
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          <div className="fixed inset-0 z-50 w-screen overflow-y-auto">
+            <div className="flex min-h-full items-stretch justify-center text-center md:items-center md:px-2 lg:px-4">
+              <Dialog.Panel className="flex w-full transform text-left text-base transition data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in md:my-8 md:max-w-2xl md:px-4 data-[closed]:md:translate-y-0 data-[closed]:md:scale-95 lg:max-w-4xl">
+                <div className="relative flex w-full items-center overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
+                  <button
+                    type="button"
+                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+                    onClick={() => setIsDialogOpen(false)}
+                  >
+                    <XIcon className="h-6 w-6" />
+                    <span className="sr-only">Close</span>
+                  </button>
+                  <div className="grid w-full grid-cols-1 sm:grid-cols-12 sm:gap-x-6 lg:gap-x-8">
+                    {/* Details */}
+                    <div className="sm:col-span-6 lg:col-span-6 order-2 sm:order-1">
+                      {/* Title */}
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <h2 className="mt-8 text-2xl font-bold text-gray-900 sm:mt-0">
+                            {sublisting.owner?.title
+                              ? sublisting.owner.title
+                              : "No seller information available."}
+                          </h2>
+                          <h3 className="text-sm text-gray-600">
+                            {sublisting.title}
+                          </h3>
+                        </div>
+                        <LikeButton sublisting={sublisting} user={user} />
+                      </div>
+
+                      {/* Voucher */}
+                      {sublisting.owner?.discount_code_text && (
+                        <div className="mt-2 flex items-center">
+                          <p className="text-sm text-gray-600 mr-2">
+                            Code:
+                            <span className="ml-2 inline-flex items-center rounded-md bg-gray-100 px-2 py-1 text-xs uppercase font-medium text-gray-800">
+                              {copied
+                                ? "Copied!"
+                                : sublisting.owner?.discount_code_text}
+                            </span>
+                          </p>
+                          <button
+                            onClick={handleCopyCode}
+                            className="text-xs text-gray-600 hover:text-gray-800"
+                          >
+                            <Copy className="w-4 h-4 inline-block mr-1" />
+                            <span className="sr-only">
+                              {copied ? "Copied!" : "Copy"}
+                            </span>
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Price */}
+                      <div className="mt-4">
+                        {sublisting.price_promotional_in_cents ? (
+                          <div className="flex items-center">
+                            <span className="text-gray-500 line-through mr-2">
+                              ${sublisting.price_regular_in_cents / 100}
+                            </span>
+                            <span className="font-semibold text-red-600">
+                              ${sublisting.price_promotional_in_cents / 100}
+                            </span>
+                            <span className="ml-2 inline-flex items-center rounded-md bg-green-100 px-2 py-1 text-xs font-medium text-green-600">
+                              {calculateDiscountPercentage(
+                                sublisting.price_regular_in_cents,
+                                sublisting.price_promotional_in_cents
+                              )}
+                              % OFF
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="font-semibold text-gray-900">
+                            ${sublisting.price_regular_in_cents / 100}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Tombol */}
+                      <div className="mt-6">
+                        <ExternalLinkButton
+                          sublisting={sublisting}
+                          className="w-full bg-gray-900 text-white rounded-none border-none hover:bg-gray-800 hover:text-white"
+                          type="product"
+                        />
+                      </div>
+
+                      <CopyCouponCode listingData={sublisting} />
+                    </div>
+                    {/* Images */}
+                  </div>
+                </div>
+              </Dialog.Panel>
+            </div>
+          </div>
+        </Dialog>
+      )}
+    </>
+  );
 }

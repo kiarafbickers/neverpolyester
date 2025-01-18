@@ -1,257 +1,205 @@
 "use client";
 
-import { Dialog, Disclosure, Popover } from "@headlessui/react";
-import {
-  Bars3Icon,
-  ChevronRightIcon,
-  MagnifyingGlassIcon,
-  UserIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import Link from "next/link";
 import { useState } from "react";
+import { Dialog, Disclosure, Popover } from "@headlessui/react";
+import { Menu, UserIcon, XIcon, ChevronRightIcon, Search } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import {
   COMPANY_BASIC_INFORMATION,
   GENERAL_SETTINGS,
+  NAVBAR_ADD_LINKS,
 } from "../_constants/constants";
 import { cn } from "../_lib/utils";
 import { buttonVariants } from "./_ui/Button";
+import Searchbar from "./Searchbar";
 
-const NAVBAR_ADD_LINKS = {
-  MENU: [
-    { name: "Women", href: "#" },
-    { name: "Men", href: "#" },
-    { name: "Kids", href: "#" },
-  ],
-  CATEGORIES: [
-    {
-      name: "All Clothes",
-      all: [
-        { name: "Beachwear and Swimwear", href: "#" },
-        { name: "Coats", href: "#" },
-        { name: "Dresses", href: "#" },
-        { name: "Hosiery", href: "#" },
-        { name: "Jackets", href: "#" },
-        { name: "Jeans", href: "#" },
-        { name: "Jumpsuits and Rompers", href: "#" },
-        { name: "Knitwear", href: "#" },
-        { name: "Lingerie", href: "#" },
-        { name: "Nightwear and Sleepwear", href: "#" },
-        { name: "Pants", href: "#" },
-      ],
-      featured: [
-        [
-          { name: "True Religion Jeans", href: "#" },
-          { name: "Wrangler Jeans", href: "#" },
-          { name: "Reformation Dresses", href: "#" },
-          { name: "GOOD AMERICAN Jeans", href: "#" },
-          { name: "Rock Revival Jeans", href: "#" },
-          { name: "Mother Jeans", href: "#" },
-          { name: "PAIGE Jeans", href: "#" },
-          { name: "Levi's Jeans", href: "#" },
-          { name: "Democracy Jeans", href: "#" },
-          { name: "Agolde Jeans", href: "#" },
-          { name: "Spanx Pants", href: "#" },
-        ],
-        [
-          { name: "PacSun Jeans", href: "#" },
-          { name: "Carhartt Jackets", href: "#" },
-          { name: "Spanx Jeans", href: "#" },
-          { name: "Columbia Jackets", href: "#" },
-          { name: "Patagonia Jackets", href: "#" },
-          { name: "Flying Monkey Jeans", href: "#" },
-          { name: "Eliza J Dresses", href: "#" },
-          { name: "Adrianna Papell Dresses", href: "#" },
-          { name: "Adidas Shorts", href: "#" },
-        ],
-      ],
-    },
-    {
-      name: "All Brands",
-      all: [
-        { name: "Nike", href: "#" },
-        { name: "Adidas", href: "#" },
-        { name: "Patagonia", href: "#" },
-        { name: "Levi's", href: "#" },
-        { name: "Wrangler", href: "#" },
-        { name: "Columbia", href: "#" },
-        { name: "Carhartt", href: "#" },
-        { name: "Reformation", href: "#" },
-        { name: "True Religion", href: "#" },
-        { name: "GOOD AMERICAN", href: "#" },
-      ],
-      featured: [
-        [
-          { name: "Luxury Brands", href: "#" },
-          { name: "Eco-Friendly Brands", href: "#" },
-          { name: "Activewear Brands", href: "#" },
-          { name: "Denim Experts", href: "#" },
-        ],
-        [
-          { name: "Outdoor and Hiking", href: "#" },
-          { name: "Casual Classics", href: "#" },
-          { name: "Premium Streetwear", href: "#" },
-          { name: "Iconic Labels", href: "#" },
-        ],
-      ],
-    },
-  ],
-  OTHER: [{ name: "Sale", href: "#" }],
-  PAGES: [
-    { name: "Why", href: "#why" },
-    { name: "How", href: "#how" },
-    { name: "Deals", href: "#deals" },
-    { name: "Blog", href: "#blog" },
-  ],
-};
-
-export default function Header() {
+export default function Navbar_Public({
+  allListings,
+  promotedListings,
+}: {
+  allListings: Listing[];
+  promotedListings: Listing[];
+}) {
   const [open, setOpen] = useState(false);
+
+  // Transform data listing menjadi { name, href } untuk submenu
+  const allListingsAsLinks = allListings.map((item) => ({
+    name: item.title,
+    href: `/explore/${item.slug}`,
+  }));
+
+  const promotedListingsAsLinks = promotedListings.map((item) => ({
+    name: item.title,
+    href: `/explore/${item.slug}`,
+  }));
+
+  // Fungsi untuk membatasi item dan menambahkan "More" jika ada lebih dari 9
+  const limitListingsWithMore = (
+    listings: { name: string; href: string }[]
+  ) => {
+    const limitedListings = listings.slice(0, 9); // Ambil maksimal 9 item
+    if (listings.length > 9) {
+      return [
+        ...limitedListings,
+        {
+          name: "More",
+          href: "/all-listings", // Tautan ke halaman semua listing
+        },
+      ];
+    }
+    return listings;
+  };
+
+  // Batasi item untuk submenu All Listings dan All Brands
+  const limitedAllListingsAsLinks = limitListingsWithMore(allListingsAsLinks);
+  const limitedPromotedListingsAsLinks = limitListingsWithMore(
+    promotedListingsAsLinks
+  );
+
+  // Inject data ke "All Clothes" & "All Brands" di NAVBAR_ADD_LINKS
+  const updatedNavLinks = NAVBAR_ADD_LINKS.map((link) => {
+    if (link.name === "All Clothes") {
+      return {
+        ...link,
+        ALL: limitedAllListingsAsLinks,
+        FEATURED: [limitedPromotedListingsAsLinks],
+      };
+    }
+    if (link.name === "All Brands") {
+      return {
+        ...link,
+        ALL: limitedAllListingsAsLinks,
+        FEATURED: [limitedPromotedListingsAsLinks],
+      };
+    }
+    return link;
+  });
+
+  // Filter untuk navigasi utama (sebelum logo)
+  const mainNavLinks = updatedNavLinks.filter((link) =>
+    ["Women", "Men", "Kids", "All Clothes", "All Brands", "Sale"].includes(
+      link.name
+    )
+  );
+
+  // Filter untuk navigasi setelah logo
+  const rightOfLogoLinks = updatedNavLinks.filter((link) =>
+    ["Why", "How", "Deals", "Blog"].includes(link.name)
+  );
 
   return (
     <div className="bg-white">
       {/* Mobile menu */}
       <Dialog open={open} onClose={setOpen} className="relative z-40 lg:hidden">
-        <Dialog.Backdrop
-          //   transition
-          className="fixed inset-0 bg-black bg-opacity-25 transition-opacity duration-300 ease-linear data-[closed]:opacity-0"
-        />
-
+        <Dialog.Backdrop className="fixed inset-0 bg-black bg-opacity-25 transition-opacity duration-300 ease-linear data-[closed]:opacity-0" />
         <div className="fixed inset-0 z-40 flex">
-          <Dialog.Panel
-            // transition
-            className="relative flex w-full max-w-xs transform flex-col overflow-y-auto bg-white pb-12 shadow-xl transition duration-300 ease-in-out data-[closed]:-translate-x-full"
-          >
-            <div className="relative flex items-center justify-center p-4">
+          <Dialog.Panel className="relative flex w-full max-w-xs transform flex-col overflow-y-auto bg-white pb-12 shadow-xl transition duration-300 ease-in-out data-[closed]:-translate-x-full">
+            <div className="bg-gray-100 relative flex items-center justify-center p-4">
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="absolute left-4 -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
+                className="absolute left-4 -m-3 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
               >
                 <span className="sr-only">Close menu</span>
-                <XMarkIcon aria-hidden="true" className="h-6 w-6" />
+                <XIcon aria-hidden="true" className="h-6 w-6" />
               </button>
-
-              <Link href={"/"} className="text-lg font-bold">
+              <Link href="/" className="text-xl font-extrabold lowercase">
                 {COMPANY_BASIC_INFORMATION.NAME}
               </Link>
             </div>
 
             {/* Sign up or log in */}
-            <div className="border-b border-gray-200 px-4 py-6">
+            <div className="border-y border-gray-200 px-4 py-6">
               <Link
-                href="#"
-                onClick={() => setOpen(false)}
-                className="block w-full text-center bg-primaryDz px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-secondaryDz"
+                href="/propose"
+                className={cn(
+                  buttonVariants({ variant: "default", size: "sm" }),
+                  "block w-full text-center bg-primaryDz px-3 py-2 rounded-none hover:bg-secondaryDz"
+                )}
               >
                 Sign up or Log in
               </Link>
             </div>
 
-            <div className="px-4 py-6 space-y-6">
-              {/* Menu */}
-              {NAVBAR_ADD_LINKS.MENU.map((item) => (
-                <div key={item.name}>
-                  <Link
-                    href={item.href}
-                    onClick={() => setOpen(false)}
-                    className="block font-medium text-primaryDz"
-                  >
-                    {item.name}
-                  </Link>
-                </div>
-              ))}
+            <div className="p-4 space-y-4">
+              {updatedNavLinks.map((link) =>
+                link.ALL ? (
+                  <Disclosure key={link.name} as="div">
+                    {({ open }) => (
+                      <div>
+                        <Disclosure.Button className="flex w-full items-center justify-between text-left text-sm font-semibold text-primaryDz">
+                          <span>{link.name}</span>
+                          <ChevronRightIcon
+                            className={`h-5 w-5 transform transition-transform duration-200 ${
+                              open ? "rotate-90" : "text-gray-400"
+                            }`}
+                          />
+                        </Disclosure.Button>
+                        <Disclosure.Panel className="mt-4 space-y-4">
+                          <div>
+                            <p className="sr-only">All Categories</p>
+                            <ul className="mt-4 space-y-4">
+                              {/* Tampilkan hanya 9 item pertama */}
+                              {link.ALL.slice(0, 9).map((item) => (
+                                <li key={item.name}>
+                                  <Link
+                                    href={item.href}
+                                    onClick={() => setOpen(false)}
+                                    className="text-sm text-gray-500"
+                                  >
+                                    {item.name}
+                                  </Link>
+                                </li>
+                              ))}
 
-              {/* Categories */}
-              {NAVBAR_ADD_LINKS.CATEGORIES.map((category) => (
-                <Disclosure key={category.name} as="div">
-                  {({ open }) => (
-                    <div>
-                      <Disclosure.Button className="flex w-full items-center justify-between text-left text-base font-medium text-primaryDz">
-                        <span>{category.name}</span>
-                        <ChevronRightIcon
-                          className={`h-5 w-5 transform transition-transform duration-200 ${
-                            open ? "rotate-90 text-accentDz" : "text-gray-400"
-                          }`}
-                        />
-                      </Disclosure.Button>
-                      <Disclosure.Panel className="mt-6 space-y-6">
-                        <div>
-                          <p className="sr-only">All Categories</p>
-                          <ul className="mt-6 space-y-6">
-                            {category.all.map((item) => (
-                              <li key={item.name}>
-                                <Link
-                                  href={item.href}
-                                  onClick={() => setOpen(false)}
-                                  className="text-gray-500"
-                                >
-                                  {item.name}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div>
-                          <p className="font-medium text-primaryDz">
-                            Featured Categories
-                          </p>
-                          <ul className="mt-6 space-y-6">
-                            {category.featured[0].map((item) => (
-                              <li key={item.name}>
-                                <Link
-                                  href={item.href}
-                                  className="text-gray-500"
-                                >
-                                  {item.name}
-                                </Link>
-                              </li>
-                            ))}
-                            {category.featured[1].map((item) => (
-                              <li key={item.name}>
-                                <Link
-                                  href={item.href}
-                                  className="text-gray-500"
-                                >
-                                  {item.name}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </Disclosure.Panel>
-                    </div>
-                  )}
-                </Disclosure>
-              ))}
-
-              {/* Other */}
-              {NAVBAR_ADD_LINKS.OTHER.map((item) => (
-                <div key={item.name}>
+                              {/* Jika lebih dari 9, tampilkan link More */}
+                              {link.ALL.length > 9 && (
+                                <li key="more-link">
+                                  <Link
+                                    href="/explore" // ganti ke link apapun yang Anda mau
+                                    onClick={() => setOpen(false)}
+                                    className="text-sm text-gray-500 font-semibold"
+                                  >
+                                    More
+                                  </Link>
+                                </li>
+                              )}
+                            </ul>
+                          </div>
+                          <div>
+                            <p className="font-medium text-primaryDz">
+                              Featured Categories
+                            </p>
+                            <ul className="mt-4 space-y-4">
+                              {link.FEATURED[0].map((item) => (
+                                <li key={item.name}>
+                                  <Link
+                                    href={item.href}
+                                    className="text-sm text-gray-500"
+                                    onClick={() => setOpen(false)}
+                                  >
+                                    {item.name}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </Disclosure.Panel>
+                      </div>
+                    )}
+                  </Disclosure>
+                ) : (
                   <Link
-                    href={item.href}
+                    key={link.name}
+                    href={link.href ?? "#"}
+                    className="block text-sm font-semibold text-primaryDz"
                     onClick={() => setOpen(false)}
-                    className="block font-medium text-primaryDz"
                   >
-                    {item.name}
+                    {link.name}
                   </Link>
-                </div>
-              ))}
-            </div>
-
-            {/* Pages */}
-            <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-              {NAVBAR_ADD_LINKS.PAGES.map((page) => (
-                <div key={page.name}>
-                  <Link
-                    href={page.href}
-                    onClick={() => setOpen(false)}
-                    className="block font-medium text-primaryDz"
-                  >
-                    {page.name}
-                  </Link>
-                </div>
-              ))}
+                )
+              )}
             </div>
           </Dialog.Panel>
         </div>
@@ -259,233 +207,172 @@ export default function Header() {
 
       <header className="relative">
         <nav aria-label="Top">
-          {/* Top navigation */}
-          <div className="hidden lg:block">
-            <div className="mx-auto flex mt-6 -mb-4 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center space-x-6">
-                {NAVBAR_ADD_LINKS.MENU.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className="text-sm font-medium text-gray-700 hover:text-secondaryDz"
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-          {/* Secondary navigation */}
-          <div className="bg-white">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <div className="flex h-16 items-center justify-between">
-                <div className="flex flex-1 items-center lg:hidden">
-                  <button
-                    type="button"
-                    onClick={() => setOpen(true)}
-                    className="-ml-2 rounded-md bg-white p-2 text-gray-400"
-                  >
-                    <span className="sr-only">Open menu</span>
-                    <Bars3Icon aria-hidden="true" className="h-6 w-6" />
-                  </button>
-                </div>
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex h-16 items-center justify-between lg:space-x-6">
+              {/* Left Navigation Links */}
+              <Popover.Group className="hidden lg:flex lg:flex-1">
+                <div className="flex h-full space-x-4 lg:space-x-6">
+                  {mainNavLinks.map((link, index) =>
+                    link.ALL ? (
+                      <Popover key={index} className="flex">
+                        <Popover.Button className="relative z-50 -mb-px flex items-center border-b-2 border-transparent pt-px text-sm font-medium text-primaryDz transition-colors duration-200 ease-out hover:text-accentDz focus:outline-none whitespace-nowrap">
+                          {link.name}
+                        </Popover.Button>
 
-                {/* Flyout menus */}
-                <Popover.Group className="hidden lg:block lg:flex-1 lg:self-stretch">
-                  <div className="flex h-full space-x-4 lg:space-x-6">
-                    {NAVBAR_ADD_LINKS.CATEGORIES.map(
-                      (category, categoryIdx) => (
-                        <Popover key={category.name} className="flex">
-                          <div className="relative flex">
-                            <Popover.Button className="relative z-10 -mb-px flex items-center border-b-2 border-transparent pt-px text-sm font-medium text-gray-700 transition-colors duration-200 ease-out hover:text-accentDz data-[open]:border-accentDz data-[open]:text-accentDz">
-                              {category.name}
-                            </Popover.Button>
-                          </div>
+                        <Popover.Panel className="absolute inset-x-0 top-full text-gray-500 transition data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in sm:text-sm z-50">
+                          <div
+                            aria-hidden="true"
+                            className="absolute inset-0 top-1/2 bg-white shadow"
+                          />
+                          <div className="relative bg-white">
+                            <div className="mx-auto max-w-7xl px-8">
+                              <div className="grid grid-cols-2 items-start gap-x-8 gap-y-10 pb-12 pt-10">
+                                <div className="pr-8 border-r border-gray-200">
+                                  <ul className="space-y-6 sm:space-y-4">
+                                    {/* Tampilkan hanya 9 item pertama */}
+                                    {link.ALL.slice(0, 9).map((item) => (
+                                      <li key={item.name}>
+                                        <Link
+                                          href={item.href ?? "#"}
+                                          className="flex justify-between items-center w-full hover:text-accentDz"
+                                        >
+                                          <span>{item.name}</span>
+                                          <ChevronRightIcon
+                                            className="h-4 w-4 text-gray-400"
+                                            aria-hidden="true"
+                                          />
+                                        </Link>
+                                      </li>
+                                    ))}
 
-                          <Popover.Panel
-                            //   transition
-                            className="absolute inset-x-0 top-full text-gray-500 transition data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in sm:text-sm z-10"
-                          >
-                            {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
-                            <div
-                              aria-hidden="true"
-                              className="absolute inset-0 top-1/2 bg-white shadow"
-                            />
-
-                            <div className="relative bg-white">
-                              <div className="mx-auto max-w-7xl px-8">
-                                <div className="grid grid-cols-2 items-start gap-x-8 gap-y-10 pb-12 pt-10">
-                                  <div className="pr-8 border-r border-gray-200">
-                                    <p
-                                      id={`desktop-all-heading-${categoryIdx}`}
-                                      className="sr-only"
-                                    >
-                                      All Categories
+                                    {/* Jika lebih dari 9, tampilkan link More */}
+                                    {link.ALL.length > 9 && (
+                                      <li key="more-link">
+                                        <Link
+                                          href="/explore" // ganti ke link yang sesuai
+                                          className="flex justify-between items-center w-full font-semibold hover:text-accentDz"
+                                        >
+                                          <span>More</span>
+                                          <ChevronRightIcon
+                                            className="h-4 w-4 text-gray-400"
+                                            aria-hidden="true"
+                                          />
+                                        </Link>
+                                      </li>
+                                    )}
+                                  </ul>
+                                </div>
+                                <div className="grid grid-cols-1 gap-x-6 gap-y-10 lg:gap-x-8">
+                                  <div>
+                                    <p className="font-medium text-primaryDz">
+                                      Featured
                                     </p>
-                                    <ul
-                                      role="list"
-                                      aria-labelledby={`desktop-all-heading-${categoryIdx}`}
-                                      className="space-y-6 sm:space-y-4"
-                                    >
-                                      {category.all.map((item) => (
-                                        <li key={item.name}>
-                                          <Link
-                                            href={item.href}
-                                            className="flex justify-between items-center w-full hover:text-accentDz"
-                                          >
-                                            <span>{item.name}</span>
-                                            <ChevronRightIcon
-                                              className="h-4 w-4 text-gray-400"
-                                              aria-hidden="true"
-                                            />
-                                          </Link>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                  <div className="grid grid-cols-1 gap-x-6 gap-y-10 lg:gap-x-8">
-                                    <div>
-                                      <p
-                                        id="featured-categories"
-                                        className="font-medium text-primaryDz"
-                                      >
-                                        Featured Categories
-                                      </p>
-                                      <div className="sm:grid sm:grid-cols-2 sm:gap-x-6">
-                                        <ul
-                                          role="list"
-                                          aria-labelledby="featured-categories"
-                                          className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
-                                        >
-                                          {category.featured[0].map((item) => (
-                                            <li
-                                              key={item.name}
-                                              className="flex"
+                                    <div className="sm:grid sm:grid-cols-2 sm:gap-x-6">
+                                      <ul className="mt-4 space-y-4">
+                                        {link.FEATURED[0].map((item) => (
+                                          <li key={item.name}>
+                                            <Link
+                                              href={item.href ?? "#"}
+                                              className="hover:text-accentDz"
                                             >
-                                              <Link
-                                                href={item.href}
-                                                className="hover:text-accentDz"
-                                              >
-                                                {item.name}
-                                              </Link>
-                                            </li>
-                                          ))}
-                                        </ul>
-                                        <ul
-                                          role="list"
-                                          aria-label="More clothing"
-                                          className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
-                                        >
-                                          {category.featured[1].map((item) => (
-                                            <li
-                                              key={item.name}
-                                              className="flex"
-                                            >
-                                              <Link
-                                                href={item.href}
-                                                className="hover:text-accentDz"
-                                              >
-                                                {item.name}
-                                              </Link>
-                                            </li>
-                                          ))}
-                                        </ul>
-                                      </div>
+                                              {item.name}
+                                            </Link>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                      {/* 
+                                      Jika Anda ingin membagi data FEATURED menjadi 2 kolom, 
+                                      silakan pisahkan array promotedListingsAsLinks 
+                                      menjadi 2 array (misalnya dengan slice).
+                                      */}
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                          </Popover.Panel>
-                        </Popover>
-                      )
-                    )}
-
-                    {NAVBAR_ADD_LINKS.OTHER.map((item) => (
+                          </div>
+                        </Popover.Panel>
+                      </Popover>
+                    ) : (
                       <Link
-                        key={item.name}
-                        href={item.href}
-                        className="flex items-center text-sm font-medium text-gray-700 hover:text-accentDz"
+                        key={link.name}
+                        href={link.href ?? "#"}
+                        className="text-sm font-medium text-primaryDz hover:text-accentDz"
                       >
-                        {item.name}
+                        {link.name}
                       </Link>
-                    ))}
-                  </div>
-                </Popover.Group>
+                    )
+                  )}
+                </div>
+              </Popover.Group>
 
-                {/* Logo */}
-                <Link href={"/"} className="flex">
-                  <span className="text-lg font-bold">
+              {/* Mobile menu button */}
+              <div className="flex items-center lg:hidden">
+                <button
+                  type="button"
+                  onClick={() => setOpen(true)}
+                  className="-ml-2 p-2 text-gray-400"
+                >
+                  <Menu className="h-6 w-6" />
+                </button>
+              </div>
+
+              {/* Logo */}
+              <div className="flex justify-center lg:flex-1">
+                <Link href="/" className="flex">
+                  <h1 className="text-xl font-extrabold lowercase lg:text-2xl">
                     {COMPANY_BASIC_INFORMATION.NAME}
-                  </span>
+                  </h1>
+                </Link>
+              </div>
+
+              {/* Links next to the logo */}
+              <div className="hidden lg:flex lg:space-x-6">
+                {rightOfLogoLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    href={link.href ?? "#"}
+                    className="text-sm font-medium text-primaryDz hover:text-accentDz"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+
+              {/* Search and Account Icons */}
+              <div className="flex items-center space-x-4">
+                {/* Sign up or log in */}
+                <Link
+                  href="/propose"
+                  className={cn(
+                    buttonVariants({ variant: "default", size: "sm" }),
+                    "hidden bg-primaryDz rounded-none hover:bg-secondaryDz md:inline-flex"
+                  )}
+                >
+                  Sign up or Log in
                 </Link>
 
-                <div className="flex flex-1 items-center justify-end space-x-4 lg:space-x-6">
-                  {/* Pages */}
-                  <div className="hidden lg:block">
-                    <div className="flex h-full space-x-4 lg:space-x-6">
-                      {NAVBAR_ADD_LINKS.PAGES.map((pages) => (
-                        <Link
-                          key={pages.name}
-                          href={pages.href}
-                          className="flex items-center text-sm font-medium text-gray-700 hover:text-accentDz"
-                        >
-                          {pages.name}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
+                {/* Search Icon */}
+                <Popover className="relative">
+                  <Popover.Button className="flex items-center text-primaryDz hover:text-secondaryDz focus:outline-none">
+                    <Search className="h-6 w-6" />
+                  </Popover.Button>
+                  <Popover.Panel className="absolute right-0 mt-2 w-96 bg-white border border-gray-200 shadow-lg p-4 z-10">
+                    <Searchbar
+                      placeholder="Search by name.."
+                      id="nav_search"
+                      rootPage="/explore"
+                    />
+                  </Popover.Panel>
+                </Popover>
 
-                  {/* CTA */}
-                  <Link
-                    href="#"
-                    className="hidden bg-primaryDz px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-secondaryDz focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primaryDz lg:block"
-                  >
-                    Sign up or Log in
-                  </Link>
-
-                  {/* Search and Account */}
-                  <div className="flex items-center">
-                    <Link
-                      href="#"
-                      className="group flex items-center p-2 text-gray-400 hover:text-gray-500"
-                    >
-                      <span className="sr-only">Search</span>
-                      <MagnifyingGlassIcon
-                        aria-hidden="true"
-                        className="h-6 w-6"
-                      />
-                    </Link>
-                    {GENERAL_SETTINGS.USE_PUBLISH && (
-                      <>
-                        <Link
-                          href={"/account"}
-                          className="group -mr-2 flex items-center p-2 text-gray-400 hover:text-gray-500"
-                          prefetch={false}
-                          data-umami-event="Navbar: Account"
-                        >
-                          <UserIcon aria-hidden="true" className="h-6 w-6" />
-                          <span className="sr-only">Account</span>
-                        </Link>
-                        {process.env.NODE_ENV === "development" && (
-                          <Link
-                            href={"/secret-admin"}
-                            className={cn(
-                              buttonVariants({
-                                variant: "default",
-                                size: "sm",
-                              }),
-                              "absolute top-40 md:top-20 right-4"
-                            )}
-                            prefetch={false}
-                          >
-                            Admin
-                          </Link>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </div>
+                {/* Account Icon */}
+                <Link
+                  href="/account"
+                  className="flex items-center text-sm font-medium text-primaryDz hover:text-secondaryDz"
+                >
+                  <UserIcon className="h-6 w-6" />
+                </Link>
               </div>
             </div>
           </div>

@@ -34,39 +34,21 @@ function OverviewLoading(params: {
   maxCols: number;
 }) {
   return (
-    <div className="space-y-8">
+    <div
+      className={`grid grid-cols-1 md:grid-cols-3 gap-y-10 gap-x-8 lg:grid-cols-${params.maxCols.toString()} w-full`}
+    >
       {Array.from({ length: params.limit || 3 }, (_, i) => (
-        <div
-          key={i}
-          className="flex flex-col lg:flex-row overflow-hidden animate-pulse"
-        >
-          {/* Image Placeholder */}
-          <div className="w-full lg:w-1/3 relative">
-            <div className="block w-full aspect-[16/9] bg-gray-200 lg:h-full"></div>
-          </div>
-
-          {/* Content Placeholder */}
-          <div className="w-full lg:w-2/3 py-4 flex flex-col justify-between lg:p-4">
-            {/* Title Placeholder */}
-            <div className="space-y-3">
-              <div className="h-6 bg-gray-300 rounded w-2/3"></div>
-              <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-            </div>
-
-            {/* Excerpt Placeholder */}
-            <div className="mt-4 space-y-2">
-              <div className="h-4 bg-gray-200 rounded w-full"></div>
-              <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-              <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-            </div>
-
-            {/* Actions Placeholder */}
-            <div className="mt-6 flex space-x-4">
-              <div className="h-10 bg-gray-300 rounded w-32"></div>
-              <div className="h-10 bg-gray-300 rounded w-24"></div>
-            </div>
-          </div>
-        </div>
+        <ImageCard key={i} className="animate-pulse min-h-24">
+          <ImageCardImageContainer>
+            <div className="w-full h-full min-w-48 min-h-48 bg-gray-200" />
+          </ImageCardImageContainer>
+          <ImageCardFooter className="grid space-y-2">
+            <ImageCardTitle className="text-gray-500">Loading</ImageCardTitle>
+            <ImageCardDescription className="text-gray-500">
+              ...
+            </ImageCardDescription>
+          </ImageCardFooter>
+        </ImageCard>
       ))}
     </div>
   );
@@ -239,7 +221,7 @@ export default function ListingOverview({
       : undefined;
   const sortBy =
     SORT_DIRECTIONS.find(
-      (direction) => direction.value === (filterAndSortParams?.sort || "")
+      (direction) => direction.value === filterAndSortParams?.sort ?? ""
     ) || SORT_DIRECTIONS[0];
 
   return (
