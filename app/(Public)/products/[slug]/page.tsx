@@ -100,7 +100,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       listingData.title ??
       `Listing on ${COMPANY_BASIC_INFORMATION.NAME}`,
     customTags: [
-      listingData.subcategory.name,
+      listingData.subcategory?.name ?? "Uncategorized",
       ...listingData.subtags.map((tag) => tag.name),
     ],
     customImages:
@@ -212,7 +212,7 @@ export default async function SublistingPage({ params }: Props) {
                 key={sublisting.subcategory_id}
                 className="uppercase text-muted-foreground"
               >
-                {sublisting.subcategory.name}
+                {sublisting.subcategory?.name ?? "Uncategorized"}
               </Link>
 
               <SectionTitle>{sublisting.title}</SectionTitle>

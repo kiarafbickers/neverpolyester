@@ -99,7 +99,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       listingData.title ??
       `Listing on ${COMPANY_BASIC_INFORMATION.NAME}`,
     customTags: [
-      listingData.category.name,
+      listingData.category?.name ?? "Uncategorized",
       ...listingData.tags.map((tag) => tag.name),
     ],
     customImages:
