@@ -215,7 +215,7 @@ export default function Navbar_Public({
                   {mainNavLinks.map((link, index) =>
                     link.ALL ? (
                       <Popover key={index} className="flex">
-                        <Popover.Button className="relative z-50 -mb-px flex items-center border-b-2 border-transparent pt-px text-sm font-medium text-primaryDz transition-colors duration-200 ease-out hover:text-accentDz focus:outline-none whitespace-nowrap">
+                        <Popover.Button className="relative z-10 -mb-px flex items-center border-b-2 border-transparent pt-px text-sm font-medium text-primaryDz transition-colors duration-200 ease-out hover:text-accentDz focus:outline-none whitespace-nowrap">
                           {link.name}
                         </Popover.Button>
 
