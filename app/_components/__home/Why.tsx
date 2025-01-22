@@ -23,7 +23,7 @@ interface Props {
 
 export default function Why({ polyesterProcess, benefits }: Props) {
   return (
-    <div className="bg-primaryDz">
+    <div className="bg-blackDz">
       {/* Header Section */}
       <div className="relative">
         <div className="grid grid-cols-1 md:grid-cols-2">
@@ -59,7 +59,7 @@ export default function Why({ polyesterProcess, benefits }: Props) {
         </div>
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-primaryDz bg-opacity-50"
+          className="absolute inset-0 bg-blackDz bg-opacity-50"
         />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="relative mx-auto max-w-3xl flex-col items-center text-center">

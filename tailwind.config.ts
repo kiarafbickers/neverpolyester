@@ -76,9 +76,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        primaryDz: "#222222",
+        grayDz: "#FAF9F9", // Navbar
+        redDz: "AF4646", // Navbar link hover
+        blackDz: "#222222", // Text color
+        brownDz: "22201B", // Icon color
         secondaryDz: "#383838",
-        accentDz: "#AF4646",
         backgroundDz: "#F3EEE8",
         surfaceDz: "#FFFFFF",
         mutedDz: "#666666",

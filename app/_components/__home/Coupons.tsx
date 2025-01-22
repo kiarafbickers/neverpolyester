@@ -21,7 +21,7 @@ export default function Coupons({ listings, user }: CouponProps) {
       >
         <Disclosure.Button className="group flex w-full items-center justify-between border-b border-mutedDz pb-8">
           <div className="text-left">
-            <h2 className="text-3xl font-bold text-primaryDz sm:text-4xl">
+            <h2 className="text-3xl font-bold text-blackDz sm:text-4xl">
               Shop Our Brand Deals
             </h2>
             <p className="mt-4 text-base text-mutedDz">
@@ -40,10 +40,10 @@ export default function Coupons({ listings, user }: CouponProps) {
               return (
                 <div
                   key={index}
-                  className="relative bg-white shadow-sm border-2 border-b-4 border-primaryDz p-4 flex flex-col justify-between"
+                  className="relative bg-white shadow-sm border-2 border-b-4 border-blackDz p-4 flex flex-col justify-between"
                 >
                   {listing.is_promoted && (
-                    <span className="absolute top-0 right-0 bg-accentDz text-white text-xs font-bold px-2 py-1">
+                    <span className="absolute top-0 right-0 bg-redDz text-white text-xs font-bold px-2 py-1">
                       Featured
                     </span>
                   )}
@@ -74,7 +74,7 @@ export default function Coupons({ listings, user }: CouponProps) {
           <div className="mt-10 flex justify-center">
             <Link
               href={"/explore"}
-              className="bg-primaryDz px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-secondaryDz"
+              className="bg-blackDz px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-secondaryDz"
             >
               View All
             </Link>

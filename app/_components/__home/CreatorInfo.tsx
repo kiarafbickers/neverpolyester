@@ -6,7 +6,7 @@ export default function CreatorInfo() {
   return (
     <div className="bg-backgroundDz">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:px-8">
-        <div className="flex flex-col lg:flex-row lg:items-center gap-8 bg-white border-t-2 border-r-[6px] border-b-[6px] border-l-2 border-primaryDz p-6 md:p-10">
+        <div className="flex flex-col lg:flex-row lg:items-center gap-8 bg-white border-t-2 border-r-[6px] border-b-[6px] border-l-2 border-blackDz p-6 md:p-10">
           <div className="p-8 flex flex-col items-center justify-center lg:w-60">
             <Image
               src="/img/kiara-bickers.png"
@@ -15,7 +15,7 @@ export default function CreatorInfo() {
               height={96}
               className="rounded-full object-cover"
             />
-            <h3 className="mt-4 text-lg font-semibold text-primaryDz">
+            <h3 className="mt-4 text-lg font-semibold text-blackDz">
               Kiara Bickers
             </h3>
             <div className="mt-4 flex space-x-4">
@@ -23,7 +23,7 @@ export default function CreatorInfo() {
                 href="https://x.com/kiarabickers"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center w-8 h-8 bg-primaryDz rounded-lg text-white hover:bg-secondaryDz"
+                className="flex items-center justify-center w-8 h-8 bg-blackDz rounded-lg text-white hover:bg-secondaryDz"
               >
                 <span className="sr-only">X</span>
                 <svg
@@ -39,7 +39,7 @@ export default function CreatorInfo() {
                 href="https://kiarabickers.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center w-8 h-8 bg-successDz rounded-lg text-primaryDz hover:bg-highlightDz"
+                className="flex items-center justify-center w-8 h-8 bg-successDz rounded-lg text-blackDz hover:bg-highlightDz"
               >
                 <span className="sr-only">Website</span>
                 <Globe className="h-5 w-5" aria-hidden="true" />
@@ -51,7 +51,7 @@ export default function CreatorInfo() {
           <div className="hidden lg:block h-[230px] border-l border-neutralDz-100 lg:mr-7"></div>
 
           <div className="lg:flex-1">
-            <h2 className="text-3xl font-bold tracking-tight text-primaryDz sm:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight text-blackDz sm:text-4xl">
               Why I Built TimeFound AI?
             </h2>
             <p className="mt-8 text-mutedDz">Hey there, I&apos;m Kiara.</p>

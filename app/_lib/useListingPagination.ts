@@ -1,12 +1,6 @@
 "use client";
 
-// Import Types
-// Import External Packages
 import { useState } from "react";
-// Import Components
-// Import Functions & Actions & Hooks & State
-// Import Data
-// Import Assets & Icons
 
 type PaginationProps<T> = {
   initialPage?: number;
@@ -19,7 +13,7 @@ type PaginationProps<T> = {
  * Custom hook for managing pagination - BEST USED WITH DOWNLOADED DATA.
  * @returns An object containing the current data, current page, total pages, items per page, and functions to paginate.
  */
-export default function usePagination<T>({
+export default function useListingPagination<T>({
   initialPage = 1,
   initialItemsPerPage = 10,
   data,
@@ -64,5 +58,6 @@ export default function usePagination<T>({
     paginateBackFF,
     setItemsPerPage,
     setSearchTerm,
+    setCurrentPage,
   };
 }

@@ -6,14 +6,12 @@ import { useState } from "react";
 type CouponProps = {
   listing: Listing;
   user: User | null;
-  layout: "card" | "detail";
+  layout: "card" | "list" | "detail";
 };
 
-// Utilitas untuk masker kode diskon
 const maskCode = (code?: string) =>
   code ? code.replace(/.(?=.{2})/g, "*") : "NO CODE";
 
-// Sub-komponen untuk tombol copy dengan indikator "Copied!"
 const CopyButton = ({
   onCopy,
   isCopied,
@@ -45,18 +43,17 @@ export function ListingCoupon({ listing, user, layout }: CouponProps) {
   const handleCopy = (code: string, index: number) => {
     navigator.clipboard.writeText(code);
     setCopiedIndex(index);
-    setTimeout(() => setCopiedIndex(null), 2000); // Reset copied status after 2 seconds
+    setTimeout(() => setCopiedIndex(null), 2000);
   };
 
   const code = user ? listing.discount_code : maskCode(listing.discount_code);
 
-  // Layout "card"
   if (layout === "card") {
     return (
       <div className="relative w-full h-12 bg-lightDz border border-dashed border-gray-400 flex items-center mt-4">
         {user ? (
           <div className="flex items-center justify-between w-full px-4">
-            <span className="text-sm font-semibold text-primaryDz">{code}</span>
+            <span className="text-sm font-semibold text-blackDz">{code}</span>
             <CopyButton
               onCopy={() => handleCopy(listing.discount_code, 0)}
               isCopied={copiedIndex === 0}
@@ -64,11 +61,37 @@ export function ListingCoupon({ listing, user, layout }: CouponProps) {
           </div>
         ) : (
           <>
-            <button className="absolute left-[-1px] top-[-1px] w-[81%] h-[calc(100%+2px)] bg-primaryDz text-white px-4 text-sm font-medium hover:bg-secondaryDz flex items-center justify-between z-10">
+            <button className="absolute left-[-1px] top-[-1px] w-[81%] h-[calc(100%+2px)] bg-blackDz text-white px-4 text-sm font-medium hover:bg-secondaryDz flex items-center justify-between z-10">
               <span>Sign up to view</span>
               <ChevronRight className="w-5 h-5" aria-hidden="true" />
             </button>
-            <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-primaryDz text-sm font-semibold px-2">
+            <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blackDz text-sm font-semibold px-2">
+              {maskCode(listing.discount_code)}
+            </span>
+          </>
+        )}
+      </div>
+    );
+  }
+
+  if (layout === "list") {
+    return (
+      <div className="relative w-full max-w-48 h-8 bg-lightDz border border-dashed border-gray-400 flex items-center mt-4">
+        {user ? (
+          <div className="flex items-center justify-between w-full px-2">
+            <span className="text-sm font-semibold text-blackDz">{code}</span>
+            <CopyButton
+              onCopy={() => handleCopy(listing.discount_code, 0)}
+              isCopied={copiedIndex === 0}
+            />
+          </div>
+        ) : (
+          <>
+            <button className="absolute left-[-1px] top-[-1px] w-[81%] h-[calc(100%+2px)] bg-blackDz text-white px-4 text-xs hover:bg-secondaryDz flex items-center justify-between z-10">
+              <span>Sign up to view</span>
+              <ChevronRight className="w-5 h-5" aria-hidden="true" />
+            </button>
+            <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blackDz text-sm font-semibold px-2">
               {maskCode(listing.discount_code)}
             </span>
           </>
@@ -81,7 +104,6 @@ export function ListingCoupon({ listing, user, layout }: CouponProps) {
   if (layout === "detail") {
     return (
       <div className="grid grid-cols-1 lg:grid-cols-[auto,1fr,auto] bg-white p-2 border border-gray-200 gap-4 items-center relative">
-        {/* Kolom Kode Diskon */}
         <div className="flex items-center justify-between bg-gray-100 px-4 py-2 border border-dashed">
           <p className="text-lg font-bold text-gray-800 tracking-wide">
             {code}
@@ -95,7 +117,6 @@ export function ListingCoupon({ listing, user, layout }: CouponProps) {
           )}
         </div>
 
-        {/* Kolom Deskripsi Diskon */}
         <div className="text-sm text-gray-600">
           <p>
             Use code{" "}
@@ -105,7 +126,6 @@ export function ListingCoupon({ listing, user, layout }: CouponProps) {
           </p>
         </div>
 
-        {/* Tombol Copy (Desktop) */}
         {user && (
           <div className="hidden lg:flex justify-end items-center">
             <CopyButton
@@ -119,7 +139,7 @@ export function ListingCoupon({ listing, user, layout }: CouponProps) {
     );
   }
 
-  return null; // Default fallback
+  return null;
 }
 
 export default ListingCoupon;

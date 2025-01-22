@@ -10,11 +10,6 @@ import {
 } from "@/components/tags/TagSearchBox";
 import AdSlot from "@/components/ads/AdSlot";
 import {
-  SectionOuterContainer,
-  SubSectionInnerContainer,
-  SubSectionOuterContainer,
-} from "@/ui/Section";
-import {
   ImageCard,
   ImageCardDescription,
   ImageCardFooter,
@@ -73,11 +68,11 @@ export default async function Page({
   const tagData = await getPartialTags("active");
   const categoryData = await getPartialCategories("active");
   return (
-    <SectionOuterContainer className="bg-background-secondary">
-      <SubSectionOuterContainer className="md:py-10">
-        <SubSectionInnerContainer className="max-w-7xl">
+    <div className="bg-white">
+      <div className="md:py-10">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Breadcrumps />
-          <div className="flex gap-4 pt-4">
+          <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
             <Suspense fallback={null}>
               <TagSearchBox
                 tags={tagData.data}
@@ -85,9 +80,9 @@ export default async function Page({
                 className="hidden lg:block"
               />
             </Suspense>
-            <div className="flex-grow">
+            <div className="lg:col-span-3">
               <div className="flex flex-wrap sm:flex-nowrap justify-between">
-                <h1 className="text-3xl font-semibold whitespace-nowrap uppercase">
+                <h1 className="text-lg font-bold tracking-tight text-gray-900 sm:text-xl">
                   All {LISTINGS_SETTINGS.pluralName}
                 </h1>
                 <div className="flex justify-between w-full  sm:w-fit pt-4 sm:pt-0">
@@ -108,7 +103,7 @@ export default async function Page({
                   maxNumListings={1000}
                   maxCols={3}
                   preferPromoted
-                  itemsPerPage={12}
+                  itemsPerPage={3}
                   showSearch={false}
                   className="py-0 md:py-0"
                 />
@@ -117,9 +112,9 @@ export default async function Page({
           </div>
 
           <AdSlot slot={`explore-2`} />
-        </SubSectionInnerContainer>
-      </SubSectionOuterContainer>
+        </div>
+      </div>
       <NewsletterBox_BeeHiiv className="bg-white dark:bg-background-secondary" />
-    </SectionOuterContainer>
+    </div>
   );
 }

@@ -243,47 +243,42 @@ export default function ListingOverview({
     ) || SORT_DIRECTIONS[0];
 
   return (
-    <SubSectionOuterContainer
-      id={stringToSlug(title)}
-      className={cn("w-full", className)}
-    >
-      <SubSectionInnerContainer className="w-full max-w-5xl mx-auto">
-        {categoryNavigation && <SubSectionTitle>{title}</SubSectionTitle>}
+    <div>
+      {categoryNavigation && <SubSectionTitle>{title}</SubSectionTitle>}
 
-        <SubSectionContentContainer className="mt-6">
-          <Suspense fallback={<OverviewLoading limit={6} maxCols={maxCols} />}>
-            <OverviewGrid
-              limit={maxNumListings}
-              tagArray={tagArray}
-              sortBy={sortBy}
-              maxCols={maxCols}
-              preferPromoted={preferPromoted}
-              categoryFilter={categoryFilter}
-              searchQuery={searchFilter}
-              showPagination={showPagination}
-              itemsPerPage={itemsPerPage || maxCols * 2}
-              showSearch={showSearch}
-            />
-          </Suspense>
+      <div className="mt-6">
+        <Suspense fallback={<OverviewLoading limit={6} maxCols={maxCols} />}>
+          <OverviewGrid
+            limit={maxNumListings}
+            tagArray={tagArray}
+            sortBy={sortBy}
+            maxCols={maxCols}
+            preferPromoted={preferPromoted}
+            categoryFilter={categoryFilter}
+            searchQuery={searchFilter}
+            showPagination={showPagination}
+            itemsPerPage={itemsPerPage || maxCols * 2}
+            showSearch={showSearch}
+          />
+        </Suspense>
 
-          {categoryNavigation && (
-            <div
-              className="flex items-center mt-10
+        {categoryNavigation && (
+          <div
+            className="flex items-center mt-10
 						 dark:text-white justify-center"
+          >
+            <Link
+              href={buttonHref}
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "border-2 text-muted-foreground text-white bg-dark-foreground hover:border-gray-400 rounded-full"
+              )}
             >
-              <Link
-                href={buttonHref}
-                className={cn(
-                  buttonVariants({ variant: "outline" }),
-                  "border-2 text-muted-foreground text-white bg-dark-foreground hover:border-gray-400 rounded-full"
-                )}
-              >
-                {buttonText}
-              </Link>
-            </div>
-          )}
-        </SubSectionContentContainer>
-      </SubSectionInnerContainer>
-    </SubSectionOuterContainer>
+              {buttonText}
+            </Link>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

@@ -25,11 +25,11 @@ export default function ScrollingLabels({ labels }: ScrollingLabelsProps) {
           const labelDiv = document.createElement("div");
           labelDiv.className =
             "flex items-center flex-shrink-0 px-4 py-2 text-center mx-2";
-          labelDiv.innerHTML = `<p class="font-semibold text-primaryDz uppercase">${label}</p>`;
+          labelDiv.innerHTML = `<p class="font-semibold text-blackDz uppercase">${label}</p>`;
           container.appendChild(labelDiv);
 
           const bullet = document.createElement("span");
-          bullet.className = "mx-2 text-primaryDz";
+          bullet.className = "mx-2 text-blackDz";
           bullet.innerHTML = "&bull;";
           container.appendChild(bullet);
 

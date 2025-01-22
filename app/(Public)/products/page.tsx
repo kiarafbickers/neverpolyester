@@ -32,7 +32,7 @@ import getPublishedListingsAsKeyValuePair from "@/actions/listings/getPublishedL
 import getPartialSubtags from "@/actions/subtags/getPartialSubtags";
 import createMetaData from "@/lib/createMetaData";
 // Import Data
-import { COMPANY_BASIC_INFORMATION } from "@/constants";
+import { COMPANY_BASIC_INFORMATION, SUBLISTINGS_SETTINGS } from "@/constants";
 import serverAuth from "@/app/_actions/auth/serverAuth";
 
 // Import Assets & Icons
@@ -82,11 +82,11 @@ export default async function Page({
   const keyValueListings = await getPublishedListingsAsKeyValuePair();
 
   return (
-    <SectionOuterContainer className="bg-background-secondary">
-      <SubSectionOuterContainer className="md:py-10">
-        <SubSectionInnerContainer className="max-w-7xl">
+    <div className="bg-white">
+      <div className="md:py-10">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Breadcrumps />
-          <div className="flex flex-wrap sm:flex-nowrap gap-4 pt-4">
+          <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
             <Suspense fallback={null}>
               <TagSearchBox
                 tags={subtagData.data}
@@ -96,10 +96,10 @@ export default async function Page({
                 className="hidden lg:block"
               />
             </Suspense>
-            <div className="flex-grow">
+            <div className="lg:col-span-3">
               <div className="flex flex-wrap sm:flex-nowrap justify-between">
-                <SectionTitle className="mx-0 max-w-none text-left">
-                  All Products
+                <SectionTitle className="text-lg font-bold tracking-tight text-gray-900 sm:text-xl">
+                  All {SUBLISTINGS_SETTINGS.pluralName}
                 </SectionTitle>
 
                 <div className="flex justify-between w-full sm:w-fit pt-4 sm:pt-0">
@@ -132,9 +132,9 @@ export default async function Page({
           </div>
 
           <AdSlot slot={`products-2`} />
-        </SubSectionInnerContainer>
-      </SubSectionOuterContainer>
+        </div>
+      </div>
       <NewsletterBox_BeeHiiv className="bg-white dark:bg-background-secondary" />
-    </SectionOuterContainer>
+    </div>
   );
 }

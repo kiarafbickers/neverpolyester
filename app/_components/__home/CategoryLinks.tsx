@@ -25,7 +25,7 @@ export default function CategoryLinks({
       >
         <Disclosure.Button className="group flex w-full items-center justify-between border-b border-mutedDz pb-8">
           <div className="text-left">
-            <h2 className="text-3xl font-bold text-primaryDz sm:text-4xl">
+            <h2 className="text-3xl font-bold text-blackDz sm:text-4xl">
               {title}
             </h2>
             <p className="mt-4 text-base text-mutedDz">{description}</p>
@@ -45,7 +45,7 @@ export default function CategoryLinks({
                 className="flex flex-col items-center group"
               >
                 <div
-                  className="relative w-full pb-[100%] bg-white overflow-hidden border-2 border-b-4 border-primaryDz aspect-1"
+                  className="relative w-full pb-[100%] bg-white overflow-hidden border-2 border-b-4 border-blackDz aspect-1"
                   aria-hidden="true"
                 >
                   {category.image_url_small ? (
@@ -82,7 +82,7 @@ export default function CategoryLinks({
           <div className="mt-8 flex justify-center">
             <Link
               href={`/category`}
-              className="bg-white px-4 py-2 text-sm font-semibold text-primaryDz shadow-sm ring-1 ring-inset ring-primaryDz hover:bg-gray-50 hover:ring-secondaryDz"
+              className="bg-white px-4 py-2 text-sm font-semibold text-blackDz shadow-sm ring-1 ring-inset ring-blackDz hover:bg-gray-50 hover:ring-secondaryDz"
             >
               Shop All
             </Link>

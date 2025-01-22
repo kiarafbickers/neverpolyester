@@ -18,7 +18,7 @@ export default function LatestArticles({ articles }: { articles: BlogPost[] }) {
       >
         <Disclosure.Button className="group flex w-full items-center justify-between border-b border-mutedDz pb-8">
           <div className="text-left">
-            <h2 className="text-3xl font-bold text-primaryDz sm:text-4xl">
+            <h2 className="text-3xl font-bold text-blackDz sm:text-4xl">
               {title}
             </h2>
             <p className="mt-4 text-base text-secondaryDz">{subtitle}</p>
@@ -45,7 +45,7 @@ export default function LatestArticles({ articles }: { articles: BlogPost[] }) {
                   />
                 </div>
 
-                <h3 className="mt-4 text-lg font-semibold text-primaryDz">
+                <h3 className="mt-4 text-lg font-semibold text-blackDz">
                   {article.title}
                 </h3>
                 <p className="mt-2 text-sm text-mutedDz">
@@ -54,7 +54,7 @@ export default function LatestArticles({ articles }: { articles: BlogPost[] }) {
                 <div className="mt-4 flex justify-end">
                   <Link
                     href={`/blog/${article.slug}`}
-                    className="bg-white px-4 py-2 text-sm font-semibold text-primaryDz shadow-sm ring-1 ring-primaryDz hover:bg-gray-50 hover:ring-secondaryDz"
+                    className="bg-white px-4 py-2 text-sm font-semibold text-blackDz shadow-sm ring-1 ring-blackDz hover:bg-gray-50 hover:ring-secondaryDz"
                   >
                     Read More
                   </Link>
@@ -65,7 +65,7 @@ export default function LatestArticles({ articles }: { articles: BlogPost[] }) {
           <div className="mt-8 flex justify-center">
             <Link
               href={`/blog`}
-              className="bg-primaryDz px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-secondaryDz"
+              className="bg-blackDz px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-secondaryDz"
             >
               Read All
             </Link>

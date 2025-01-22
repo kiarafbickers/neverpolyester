@@ -6,10 +6,10 @@ import { ListingType } from "@/supabase-special-types";
 // Import Components
 import { Alert, AlertTitle, AlertDescription } from "@/ui/Alert";
 import ListingCard from "@/components/listings/ListingCard";
-import Pagination from "@/ui/Pagination";
+import ListingPagination from "../ListingPagination";
 import { Input } from "@/ui/Input";
 // Import Functions & Actions & Hooks & State
-import usePagination from "@/lib/usePagination";
+import useListingPagination from "@/lib/useListingPagination";
 import useClientAuth from "@/lib/useClientAuth";
 // Import Data
 // Import Assets & Icons
@@ -39,13 +39,16 @@ export default function ListingGrid({
     paginateFrontFF,
     setItemsPerPage,
     setSearchTerm,
-  } = usePagination({
+    setCurrentPage,
+  } = useListingPagination({
     initialItemsPerPage: initialItemsPerPage || maxCols * 2,
     data: listings,
     searchField: "title",
   });
 
   const { userObject: user } = useClientAuth({});
+
+  const totalItems = listings.length;
 
   return (
     <>
@@ -91,19 +94,19 @@ export default function ListingGrid({
               ))}
             </div>
           )}
-          {showPagination && (
-            <Pagination
+          {showPagination && listings.length > itemsPerPage && (
+            <ListingPagination
               itemsPerPage={itemsPerPage}
               totalItems={listings.length}
-              paginateBack={paginateBack}
-              paginateFront={paginateFront}
-              paginateBackFF={paginateBackFF}
-              paginateFrontFF={paginateFrontFF}
               currentPage={currentPage}
               totalPages={totalPages}
-              setItemsPerPage={setItemsPerPage}
-              pageSizeOptions={[maxCols * 2, maxCols * 4, maxCols * 8]}
+              paginateFront={paginateFront}
+              paginateBack={paginateBack}
+              paginateFrontFF={paginateFrontFF}
+              paginateBackFF={paginateBackFF}
+              setCurrentPage={setCurrentPage}
               nameOfItems="listings"
+              pageSizeOptions={[10, 20, 50]}
             />
           )}
         </>

@@ -89,7 +89,7 @@ export default function Navbar_Public({
   );
 
   return (
-    <div className="bg-white">
+    <div className="bg-grayDz">
       {/* Mobile menu */}
       <Dialog open={open} onClose={setOpen} className="relative z-40 lg:hidden">
         <Dialog.Backdrop className="fixed inset-0 bg-black bg-opacity-25 transition-opacity duration-300 ease-linear data-[closed]:opacity-0" />
@@ -99,7 +99,7 @@ export default function Navbar_Public({
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="absolute left-4 -m-3 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
+                className="absolute left-4 -m-3 inline-flex items-center justify-center rounded-md p-2 text-brandDz"
               >
                 <span className="sr-only">Close menu</span>
                 <XIcon aria-hidden="true" className="h-6 w-6" />
@@ -115,7 +115,7 @@ export default function Navbar_Public({
                 href="/propose"
                 className={cn(
                   buttonVariants({ variant: "default", size: "sm" }),
-                  "block w-full text-center bg-primaryDz px-3 py-2 rounded-none hover:bg-secondaryDz"
+                  "block w-full text-center bg-blackDz px-3 py-2 rounded-none hover:bg-secondaryDz"
                 )}
               >
                 Sign up or Log in
@@ -128,11 +128,11 @@ export default function Navbar_Public({
                   <Disclosure key={link.name} as="div">
                     {({ open }) => (
                       <div>
-                        <Disclosure.Button className="flex w-full items-center justify-between text-left text-sm font-semibold text-primaryDz">
+                        <Disclosure.Button className="flex w-full items-center justify-between text-left text-sm font-semibold text-blackDz">
                           <span>{link.name}</span>
                           <ChevronRightIcon
                             className={`h-5 w-5 transform transition-transform duration-200 ${
-                              open ? "rotate-90" : "text-gray-400"
+                              open ? "rotate-90" : "text-brownDz"
                             }`}
                           />
                         </Disclosure.Button>
@@ -168,7 +168,7 @@ export default function Navbar_Public({
                             </ul>
                           </div>
                           <div>
-                            <p className="font-medium text-primaryDz">
+                            <p className="font-medium text-blackDz">
                               Featured Categories
                             </p>
                             <ul className="mt-4 space-y-4">
@@ -193,7 +193,7 @@ export default function Navbar_Public({
                   <Link
                     key={link.name}
                     href={link.href ?? "#"}
-                    className="block text-sm font-semibold text-primaryDz"
+                    className="block text-sm font-semibold text-blackDz"
                     onClick={() => setOpen(false)}
                   >
                     {link.name}
@@ -215,7 +215,7 @@ export default function Navbar_Public({
                   {mainNavLinks.map((link, index) =>
                     link.ALL ? (
                       <Popover key={index} className="flex">
-                        <Popover.Button className="relative z-10 -mb-px flex items-center border-b-2 border-transparent pt-px text-sm font-medium text-primaryDz transition-colors duration-200 ease-out hover:text-accentDz focus:outline-none whitespace-nowrap">
+                        <Popover.Button className="relative z-10 -mb-px flex items-center border-b-2 border-transparent pt-px text-sm font-medium text-blackDz transition-colors duration-200 ease-out hover:text-redDz focus:outline-none whitespace-nowrap">
                           {link.name}
                         </Popover.Button>
 
@@ -234,11 +234,11 @@ export default function Navbar_Public({
                                       <li key={item.name}>
                                         <Link
                                           href={item.href ?? "#"}
-                                          className="flex justify-between items-center w-full hover:text-accentDz"
+                                          className="flex justify-between items-center w-full hover:text-redDz"
                                         >
                                           <span>{item.name}</span>
                                           <ChevronRightIcon
-                                            className="h-4 w-4 text-gray-400"
+                                            className="h-4 w-4 text-brownDz"
                                             aria-hidden="true"
                                           />
                                         </Link>
@@ -250,11 +250,11 @@ export default function Navbar_Public({
                                       <li key="more-link">
                                         <Link
                                           href="/explore" // ganti ke link yang sesuai
-                                          className="flex justify-between items-center w-full font-semibold hover:text-accentDz"
+                                          className="flex justify-between items-center w-full font-semibold hover:text-redDz"
                                         >
                                           <span>More</span>
                                           <ChevronRightIcon
-                                            className="h-4 w-4 text-gray-400"
+                                            className="h-4 w-4 text-brownDz"
                                             aria-hidden="true"
                                           />
                                         </Link>
@@ -264,7 +264,7 @@ export default function Navbar_Public({
                                 </div>
                                 <div className="grid grid-cols-1 gap-x-6 gap-y-10 lg:gap-x-8">
                                   <div>
-                                    <p className="font-medium text-primaryDz">
+                                    <p className="font-medium text-blackDz">
                                       Featured
                                     </p>
                                     <div className="sm:grid sm:grid-cols-2 sm:gap-x-6">
@@ -273,7 +273,7 @@ export default function Navbar_Public({
                                           <li key={item.name}>
                                             <Link
                                               href={item.href ?? "#"}
-                                              className="hover:text-accentDz"
+                                              className="hover:text-redDz"
                                             >
                                               {item.name}
                                             </Link>
@@ -297,7 +297,7 @@ export default function Navbar_Public({
                       <Link
                         key={link.name}
                         href={link.href ?? "#"}
-                        className="text-sm font-medium text-primaryDz hover:text-accentDz"
+                        className="text-sm font-medium text-blackDz hover:text-redDz"
                       >
                         {link.name}
                       </Link>
@@ -311,7 +311,7 @@ export default function Navbar_Public({
                 <button
                   type="button"
                   onClick={() => setOpen(true)}
-                  className="-ml-2 p-2 text-gray-400"
+                  className="-ml-2 p-2 text-brownDz"
                 >
                   <Menu className="h-6 w-6" />
                 </button>
@@ -332,7 +332,7 @@ export default function Navbar_Public({
                   <Link
                     key={link.name}
                     href={link.href ?? "#"}
-                    className="text-sm font-medium text-primaryDz hover:text-accentDz"
+                    className="text-sm font-medium text-blackDz hover:text-redDz"
                   >
                     {link.name}
                   </Link>
@@ -346,7 +346,7 @@ export default function Navbar_Public({
                   href="/propose"
                   className={cn(
                     buttonVariants({ variant: "default", size: "sm" }),
-                    "hidden bg-primaryDz rounded-none hover:bg-secondaryDz md:inline-flex"
+                    "hidden bg-blackDz rounded-none hover:bg-secondaryDz md:inline-flex"
                   )}
                 >
                   Sign up or Log in
@@ -354,8 +354,8 @@ export default function Navbar_Public({
 
                 {/* Search Icon */}
                 <Popover className="relative">
-                  <Popover.Button className="flex items-center text-primaryDz hover:text-secondaryDz focus:outline-none">
-                    <Search className="h-6 w-6" />
+                  <Popover.Button className="flex items-center text-brownDz hover:text-secondaryDz focus:outline-none">
+                    <Search className="h-6 w-6" aria-hidden="true" />
                   </Popover.Button>
                   <Popover.Panel className="absolute right-0 mt-2 w-96 bg-white border border-gray-200 shadow-lg p-4 z-10">
                     <Searchbar
@@ -369,7 +369,7 @@ export default function Navbar_Public({
                 {/* Account Icon */}
                 <Link
                   href="/account"
-                  className="flex items-center text-sm font-medium text-primaryDz hover:text-secondaryDz"
+                  className="flex items-center text-sm font-medium text-brownDz hover:text-secondaryDz"
                 >
                   <UserIcon className="h-6 w-6" />
                 </Link>

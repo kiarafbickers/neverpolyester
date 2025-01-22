@@ -25,14 +25,14 @@ export default function MainHero() {
         </div>
         <div className="w-full md:w-5/12 flex items-center">
           <div className="p-8 md:p-16">
-            <h2 className="text-3xl font-bold tracking-tight text-primaryDz md:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight text-blackDz md:text-4xl">
               {HERO_TITLE}
             </h2>
             <p className="mt-4 text-sm text-mutedDz">{HERO_SLOGAN}</p>
             <div className="mt-6 flex items-center gap-x-6">
               <Link
                 href={HERO_BUTTON_HREF}
-                className="border-t-2 border-r-2 border-b-[3px] border-l-2 border-primaryDz bg-white px-3.5 py-2.5 text-sm font-medium text-primaryDz hover:bg-gray-100 shadow-sm"
+                className="border-t-2 border-r-2 border-b-[3px] border-l-2 border-blackDz bg-white px-3.5 py-2.5 text-sm font-medium text-blackDz hover:bg-gray-100 shadow-sm"
               >
                 {HERO_BUTTON_TEXT}
               </Link>
@@ -55,14 +55,14 @@ export default function MainHero() {
         </div>
         <div className="w-full md:w-5/12 flex items-center order-2 md:order-1">
           <div className="p-8 md:p-16">
-            <h2 className="text-3xl font-bold tracking-tight text-primaryDz md:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight text-blackDz md:text-4xl">
               {HERO_TITLE}
             </h2>
             <p className="mt-6 text-sm text-mutedDz">{HERO_SLOGAN}</p>
             <div className="mt-10 flex items-center gap-x-6">
               <Link
                 href={HERO_BUTTON_HREF}
-                className="border-2 border-b-[3px] border-primaryDz bg-white px-3.5 py-2.5 text-sm font-medium text-primaryDz hover:bg-gray-100 shadow-sm"
+                className="border-2 border-b-[3px] border-blackDz bg-white px-3.5 py-2.5 text-sm font-medium text-blackDz hover:bg-gray-100 shadow-sm"
               >
                 {HERO_BUTTON_TEXT}
               </Link>

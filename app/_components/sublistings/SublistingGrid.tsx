@@ -6,13 +6,14 @@ import { SublistingType } from "@/supabase-special-types";
 // Import Components
 import { Alert, AlertTitle, AlertDescription } from "@/ui/Alert";
 import SublistingCard from "@/components/sublistings/SublistingCard";
-import Pagination from "@/ui/Pagination";
+import ListingPagination from "../ListingPagination";
 import { Input } from "@/ui/Input";
 // Import Functions & Actions & Hooks & State
-import usePagination from "@/lib/usePagination";
+import useListingPagination from "@/lib/useListingPagination";
 // Import Data
 // Import Assets & Icons
 import { AlertCircle } from "lucide-react";
+import { sub } from "date-fns";
 
 export default function SublistingGrid({
   sublistings,
@@ -42,7 +43,8 @@ export default function SublistingGrid({
     paginateFrontFF,
     setItemsPerPage,
     setSearchTerm,
-  } = usePagination({
+    setCurrentPage,
+  } = useListingPagination({
     initialItemsPerPage: initialItemsPerPage || maxCols * 2,
     data: sublistings,
     searchField: "title",
@@ -103,19 +105,19 @@ export default function SublistingGrid({
               ))}
             </div>
           )}
-          {showPagination && (
-            <Pagination
+          {showPagination && sublistings.length > itemsPerPage && (
+            <ListingPagination
               itemsPerPage={itemsPerPage}
               totalItems={sublistings.length}
-              paginateBack={paginateBack}
-              paginateFront={paginateFront}
-              paginateBackFF={paginateBackFF}
-              paginateFrontFF={paginateFrontFF}
               currentPage={currentPage}
               totalPages={totalPages}
-              setItemsPerPage={setItemsPerPage}
-              pageSizeOptions={[maxCols * 2, maxCols * 4, maxCols * 8]}
-              nameOfItems="products"
+              paginateFront={paginateFront}
+              paginateBack={paginateBack}
+              paginateFrontFF={paginateFrontFF}
+              paginateBackFF={paginateBackFF}
+              setCurrentPage={setCurrentPage}
+              nameOfItems="listings"
+              pageSizeOptions={[10, 20, 50]}
             />
           )}
         </>

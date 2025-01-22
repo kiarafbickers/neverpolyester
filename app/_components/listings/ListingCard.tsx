@@ -3,6 +3,7 @@ import { BadgeCheckIcon } from "lucide-react";
 import SupabaseImage from "@/components/SupabaseImage";
 import { GENERAL_SETTINGS } from "@/constants";
 import { AuthUserType, ListingType } from "@/supabase-special-types";
+import ListingCoupon from "./ListingCoupon";
 
 export default function ListingCard({
   listing,
@@ -76,23 +77,7 @@ export default function ListingCard({
 
           {/* Voucher Code */}
           {listing.discount_code && (
-            <div className="mt-3 flex items-center">
-              <p className="text-sm font-medium text-gray-600">Voucher Code:</p>
-              {user ? (
-                <span className="ml-2 rounded bg-green-50 px-3 py-1 text-sm font-semibold text-green-700">
-                  {listing.discount_code}
-                </span>
-              ) : (
-                <>
-                  <span className="ml-2 rounded bg-gray-100 px-3 py-1 text-sm font-semibold text-gray-800">
-                    *****{listing.discount_code.slice(-2)}
-                  </span>
-                  <span className="ml-2 rounded bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
-                    Log in to view
-                  </span>
-                </>
-              )}
-            </div>
+            <ListingCoupon listing={listing} user={user} layout="list" />
           )}
 
           {/* Excerpt */}

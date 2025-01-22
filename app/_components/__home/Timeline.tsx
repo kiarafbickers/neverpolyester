@@ -43,7 +43,7 @@ export default function Timeline({ timelineData }: Props) {
   return (
     <div className="bg-backgroundDz pb-16">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:px-8">
-        <h2 className="text-primaryDz text-center text-lg xl:text-2xl font-semibold mb-16 xl:mb-20">
+        <h2 className="text-blackDz text-center text-lg xl:text-2xl font-semibold mb-16 xl:mb-20">
           This is part of my personal challenge: 12 startups in 12 months.
         </h2>
         <div className="flex items-center gap-8">
@@ -67,7 +67,7 @@ export default function Timeline({ timelineData }: Props) {
                     flex: `0 0 ${100 / itemsPerPage}%`,
                   }}
                 >
-                  <span className="text-sm text-primaryDz font-semibold mb-2">
+                  <span className="text-sm text-blackDz font-semibold mb-2">
                     {item.month || ""}
                   </span>
                   <div className="flex items-center justify-center w-16 h-16 bg-white rounded-full border-2 border-highlightDz shadow">
@@ -86,7 +86,7 @@ export default function Timeline({ timelineData }: Props) {
                       </div>
                     )}
                   </div>
-                  <span className="text-sm text-primaryDz font-semibold mt-2 h-5">
+                  <span className="text-sm text-blackDz font-semibold mt-2 h-5">
                     {item.title || ""}
                   </span>
                 </div>
