@@ -1,6 +1,6 @@
 import serverAuth from "./_actions/auth/serverAuth";
 import { getPublishedPosts } from "./_actions/blog/getPublishedPosts";
-import getFullCategories from "./_actions/categories/getFullCategories";
+import { getFullSubcategories } from "./_actions/subcategories";
 import getListingCoupon from "./_actions/listings/getListingCoupon";
 import {
   getAllListingsForNavbar,
@@ -30,7 +30,7 @@ import {
 export default async function Page() {
   const { user } = await serverAuth({ checkUser: true });
   const { data: coupons } = await getListingCoupon(4);
-  const { data: categories } = await getFullCategories("all");
+  const { data: subcategories } = await getFullSubcategories("all");
   const { data: articles } = await getPublishedPosts(2);
   const { data: allListings } = await getAllListingsForNavbar(10);
   const { data: promotedListings } = await getPromotedListingsForNavbar(10);
@@ -50,7 +50,7 @@ export default async function Page() {
         <ScrollingLabels labels={LABELS} />
         <Steps steps={STEPS} />
         <Coupons listings={coupons} user={user} />
-        <CategoryLinks categories={categories} />
+        <CategoryLinks subcategories={subcategories} />
         <LatestArticles articles={articles} />
         <ScrollingLabels labels={LABELS} />
         <MediaLogos logos={MEDIA_PARTNERS} />

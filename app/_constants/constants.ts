@@ -199,7 +199,7 @@ export const GENERAL_SETTINGS = {
   // Do you - as an Admin - want to pre-approve each user-approved SUBlisting before it is published?
   // Set 'false' if you want to manually review and approve sublistings before they are published. This is advisable, if you allow users to publish sublistings.
   // If you set 'true', all sublistings will be published immediately after you or the user have published them.
-  PRE_ADMIN_APPROVE_SUBLISTINGS: false,
+  PRE_ADMIN_APPROVE_SUBLISTINGS: true,
 
   // Do you - as an Admin - want to pre-approve each user-approved blog post before it is published?
   // Set 'false' if you want to manually review and approve blog posts before they are published. This is advisable, if you allow users to publish blog posts.

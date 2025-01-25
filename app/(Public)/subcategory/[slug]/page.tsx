@@ -66,23 +66,27 @@ export default async function Page({ params, searchParams }: Props) {
   }
 
   return (
-    <SectionOuterContainer className="max-w-5xl mx-auto py-0 pb-12">
-      <SubcategoryHero subcategory={subcategory} />
-      <SublistingOverview
-        categoryNavigation={false}
-        filterAndSortParams={{
-          subcategory: params.slug,
-          sort: searchParams.sort ?? "newest",
-          tags: searchParams.tags ?? "",
-        }}
-        maxNumSublistings={100}
-        maxCols={3}
-        preferPromoted
-        className="py-0 md:py-0"
-        user={user}
-      />
+    <div className="bg-white">
+      <div className="md:py-10">
+        <SectionOuterContainer className="max-w-5xl mx-auto py-0 pb-12">
+          <SubcategoryHero subcategory={subcategory} />
+          <SublistingOverview
+            categoryNavigation={false}
+            filterAndSortParams={{
+              subcategory: params.slug,
+              sort: searchParams.sort ?? "newest",
+              tags: searchParams.tags ?? "",
+            }}
+            maxNumSublistings={100}
+            maxCols={3}
+            preferPromoted
+            className="py-0 md:py-0"
+            user={user}
+          />
 
-      <AdSlot slot={`${params.slug}-2`} />
-    </SectionOuterContainer>
+          <AdSlot slot={`${params.slug}-2`} />
+        </SectionOuterContainer>
+      </div>
+    </div>
   );
 }

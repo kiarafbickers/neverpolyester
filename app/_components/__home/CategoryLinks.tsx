@@ -7,14 +7,14 @@ import SupabaseImage from "../SupabaseImage";
 import Image from "next/image";
 
 export default function CategoryLinks({
-  categories,
+  subcategories,
 }: {
-  categories: Category[];
+  subcategories: Category[];
 }) {
   const title = "Shop Popular Categories";
   const description =
     "We've got everything from everyday basics to statement pieces.";
-  const limitedCategories = categories.slice(0, 12);
+  const limitedSubcategories = subcategories.slice(0, 12);
 
   return (
     <div className="bg-backgroundDz">
@@ -38,22 +38,22 @@ export default function CategoryLinks({
 
         <Disclosure.Panel>
           <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 md:grid-cols-6 mt-8">
-            {limitedCategories.map((category) => (
+            {limitedSubcategories.map((subcategory) => (
               <Link
-                key={category.id}
-                href={`/category/${category.slug}`}
+                key={subcategory.id}
+                href={`/subcategory/${subcategory.slug}`}
                 className="flex flex-col items-center group"
               >
                 <div
                   className="relative w-full pb-[100%] bg-white overflow-hidden border-2 border-b-4 border-blackDz aspect-1"
                   aria-hidden="true"
                 >
-                  {category.image_url_small ? (
+                  {subcategory.image_url_small ? (
                     <SupabaseImage
-                      dbImageUrl={category.image_url_small}
+                      dbImageUrl={subcategory.image_url_small}
                       imageAlt={
-                        category.description
-                          ? category.description
+                        subcategory.description
+                          ? subcategory.description
                           : "Tag Image"
                       }
                       width={640}
@@ -65,7 +65,7 @@ export default function CategoryLinks({
                   ) : (
                     <Image
                       src="/img/placeholder.png"
-                      alt={category.name}
+                      alt={subcategory.name}
                       className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
                       width={320}
                       height={320}
@@ -74,14 +74,14 @@ export default function CategoryLinks({
                   )}
                 </div>
                 <h3 className="mt-4 text-sm font-semibold text-gray-700">
-                  {category.name}
+                  {subcategory.name}
                 </h3>
               </Link>
             ))}
           </div>
           <div className="mt-8 flex justify-center">
             <Link
-              href={`/category`}
+              href={`/subcategory`}
               className="bg-white px-4 py-2 text-sm font-semibold text-blackDz shadow-sm ring-1 ring-inset ring-blackDz hover:bg-gray-50 hover:ring-secondaryDz"
             >
               Shop All
